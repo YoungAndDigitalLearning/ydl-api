@@ -1,7 +1,7 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include 
+from .views import authenticate_user
 
 urlpatterns = [
-    path('', include('skbrest.urls')),
-    path('auth', )
+    path('auth', authenticate_user)
 ]
