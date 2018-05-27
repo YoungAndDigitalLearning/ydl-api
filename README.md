@@ -17,7 +17,7 @@ pipenv run django-admin startproject djangoblockchained_backend
 ```
 
 Install Django rest
-``` python
+``` bash
 pipenv install djangorestframework
 pipenv install markdown       # Markdown support for the browsable API.
 pipenv install django-filter  # Filtering support
