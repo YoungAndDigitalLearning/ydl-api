@@ -9,6 +9,7 @@ djangorestframework = "*"
 markdown = "*"
 django-filter = "*"
 mysqlclient = "*"
+django-oauth-toolkit = "*"
 
 [dev-packages]
 pylint = "*"

@@ -21,7 +21,7 @@ class Teacher(models.Model):
 #class Moderator()
 
 class Course(models.Model):
-    name = models.TextField(unique=True)
+    name = models.TextField()
     students = models.ManyToManyField(Student)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     deadline = models.DateTimeField()
