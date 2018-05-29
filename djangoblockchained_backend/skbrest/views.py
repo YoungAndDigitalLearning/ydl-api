@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth import login, authenticate
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
+# Disable CRSF token
+@csrf_exempt
 def authenticate_user(request):
     if request.method == "POST":
         
