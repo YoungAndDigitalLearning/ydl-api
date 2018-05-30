@@ -20,3 +20,7 @@ def authenticate_user(request):
         else:
 
             return JsonResponse({"result": False})
+
+#@api_view(["POST"])
+#def register_user(request):
+#    pass
