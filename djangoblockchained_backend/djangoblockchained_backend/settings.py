@@ -29,26 +29,25 @@ ALLOWED_HOSTS = []
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
-    ),
 
     'DEFAULT_PERMISSION_CLASSES': (
+        # Man muss standardgemäß immer auth sein, wenn man eine rest anfrage stellt
         'rest_framework.permissions.IsAuthenticated',
-    )
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
 }
 
-OAUTH2_PROVIDER = {
-    # this is the list of available scopes
-    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'}
-}
+
 
 # Application definition
 
 INSTALLED_APPS = [
     'skbrest.apps.SkbrestConfig',
     'django.contrib.admin',
-    'oauth2_provider',
     'rest_framework',
     'django.contrib.auth',
     'django.contrib.contenttypes',

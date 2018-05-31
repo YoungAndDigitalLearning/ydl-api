@@ -21,6 +21,6 @@ def authenticate_user(request):
 
             return JsonResponse({"result": False})
 
-#@api_view(["POST"])
+#@api_view(["GET"])
 #def register_user(request):
 #    pass
