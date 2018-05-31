@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.urls import path, include 
-from .views import authenticate_user
-from .api import CreateUserView
+from rest_framework_jwt.views import obtain_jwt_token
+
+from .api import CourseAPIView
 
 urlpatterns = [
-    path('auth', authenticate_user),
-    path('register', CreateUserView.as_view())
+    path('token-auth/', obtain_jwt_token),
+    path('courses/', CourseAPIView.as_view())
 ]
