@@ -1,0 +1,146 @@
+pwd
+ls
+dir
+pwd
+cd ..
+ls
+cd ..
+ls
+python
+python3
+pipenv
+ls
+cd /home/
+ls
+cd ubuntu/
+ls
+mkdir Documents
+ls
+pip
+mysql
+sudo apt install python-pip
+pip
+pip3
+sudo apt install python3-pip
+apt install python3-pip
+sudo apt install python3
+sudo apt-get install python3-pip
+ping http://google.com
+ping google.com
+ping 81.169.171.6
+sudo apt-get install remmina
+sudo apt update
+sudo apt upgrade
+sudo apt-get install python3-pip
+sudo apt-get install software-properties-common
+sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+sudo add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://mirror.netcologne.de/mariadb/repo/10.3/ubuntu xenial main'
+add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://mirror.netcologne.de/mariadb/repo/10.3/ubuntu xenial main'
+sudo add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://mirror.netcologne.de/mariadb/repo/10.3/ubuntu xenial main'
+ydlearning
+sudo apt update
+sudo apt install mariadb-server
+ls
+sudo apt install mariadb-server
+px -a
+px-a
+ps-a
+ps -a
+kill 8047
+sudo kill 8047
+ps -a
+tux
+top
+ps -a
+top
+sudo apt-get install htop
+ps -a
+ps -ef | grep defunct
+kill -9 8047 8041
+sudo kill -9 8047 8041
+ps -ef | grep defunct
+ps -a
+sudo apt-get install htop
+mysql
+mysql -u root 
+mysql -u root -p
+htop
+pip3 
+update
+pip3 -update
+pip3 install --upgrade pip
+pip install --upgrade pip
+pip install --upgrade pip3
+pip3 install --upgrade pip3
+pip3 install --upgrade pip
+pip3
+. /home/ubuntu/.local/share/virtualenvs/djangoblockchained-backend-RAaPRV99/bin/activate
+pip
+pip -v
+pip -V
+pip install gunicorn
+sudo apt-get install remmina
+remmina
+exit
+sudo -H pip3 install --upgrade pip
+pip
+pip3
+pip3 install pipenv==2018.5.18
+sudo pip3 install pipenv==2018.5.18
+ls
+mkdir repo
+ls
+cd repo/
+it
+git
+git clone https://github.com/YoungAndDigitalLearning/djangoblockchained-backend.git
+s
+ls
+cd djangoblockchained-backend/
+ls
+git branch
+git branch -v
+pipenv sync
+sudo apt-get install python3.6
+pipenv sync --python 3.5
+sudo apt install libmariadbclient-dev
+pipenv sync --python 3.5
+sudo apt-get install libmariadbclient-dev
+pip3 install mysqlclient
+apt-get install python-dev
+sudo apt-get install python-dev
+pipenv sync --python 3.5
+pip install mysql-python
+ls /usr/bin/
+ls /usr/bin/ | grep _config
+ln -s /usr/bin/mariadb_config /usr/bin/mysql_config
+sudo ln -s /usr/bin/mariadb_config /usr/bin/mysql_config
+ls
+pipenv sync --python 3.5
+pip install mysql-python
+sudo apt-get install python3.6-dev libmysqlclient-dev
+sudo apt-get install python3.5-dev libmysqlclient-dev
+sudo apt-get install python3.5-dev
+python --version
+python3 --version
+python3.6 --version
+python3.5 -m pip install mysqlclient
+pip3 install mysqlclient
+pip install --upgrade wheel
+sudo pip install --upgrade wheel
+pip3 install mysqlclient
+apt-get install python-dev libmysqlclient-dev
+sudo apt-get install python-dev libmysqlclient-dev
+pip install MySQL-python
+htop
+pip3 install mysqlclient
+sudo pip3 install mysqlclient
+sudo apt install libssl-dev
+pip3 install mysqlclient
+sudo apt install libssl-dev
+sudo pip3 install mysqlclient
+pipenv sync --python 3.5
+mysql
+mysql -u root -p
+pipenv shell
+exit
