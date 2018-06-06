@@ -2,35 +2,93 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 
-# Create your models here.
 
 class Student(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    courses = models.ManyToManyField(Course, on_delete=model.CASCADE)
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        verbose_name = ('student')
+        verbose_name = ('students')
+
+
+class Teacher(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    courses = models.ManyToManyField(Course, on_delete=model.CASCADE)
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        verbose_name = ('teacher')
+        verbose_name = ('teachers')
+
+
+class Moderator(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
 
-class Teacher(models.Model):
-    student = models.OneToOneField(Student, on_delete=models.CASCADE)
+    class Meta:
+        verbose_name = ('moderator')
+        verbose_name = ('moderators')
 
-    def __str__(self):
-        return self.student.user.username
-
-#class Admin()
-
-#class Moderator()
 
 class Course(models.Model):
-    name = models.TextField()
+    name = models.CharField(max_length=100)
+    description = models.Charfield(max_length=512)
     students = models.ManyToManyField(Student)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     deadline = models.DateTimeField()
     student_count = models.IntegerField(validators=[MinValueValidator(0)])
     created = models.DateTimeField(auto_now_add=True)
+    price = models.IntegerField(default=0)
+    resources = models.ForeignKey(Resource, on_delete=models.CASCADE)
+    calender = models.ManyToManyField(CalenderEntry)
 
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = ('course')
+        verbose_name = ('courses')
 
 
-    
+class Anouncement(models.Model):
+    title = models.CharField(max_length=100)
+    author = models.ForeignKey(Moderator, on_delete=models.CASCADE)
+    date = models.DateField()
+    image = models.ImageField()
+    content = models.TextField()
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = ('Anouncement')
+        verbose_name = ('Anouncements')
+
+class Resource(models.Model):
+    name = models.CharField(max_length=100)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    uploaded = models.DateTimeField()
+    uploader = models.ForeignKey(User, on_delete=models.CASCADE)
+    expires = models.DateTimeField()
+    size = models.FloatField()
+    content = models.FileField()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = ('resource')
+        verbose_name = ('resources')
+
+class CalenderEntry(models.Model):
+    date = models.DateField()
+    #matter = models.
+    course = models.ForeignKey(Course)
