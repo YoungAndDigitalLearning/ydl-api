@@ -8,7 +8,7 @@ VS-Code-WS-LV.code-workspace
 
 # Database Settings
 database.cnf
-
+db.conf
 
 
 
