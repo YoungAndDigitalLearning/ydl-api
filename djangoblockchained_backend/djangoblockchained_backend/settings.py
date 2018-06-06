@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 REST_FRAMEWORK = {
 
     'DEFAULT_PERMISSION_CLASSES': (
-        # Man muss standardgemäß immer auth sein, wenn man eine rest anfrage stellt
+        #default is that you have to be authenticated to do anything
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
