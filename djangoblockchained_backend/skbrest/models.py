@@ -5,26 +5,25 @@ from django.core.validators import MinValueValidator
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    courses = models.ManyToManyField('Course', on_delete=models.CASCADE)
+    courses = models.ManyToManyField('Course')
 
     def __str__(self):
         return self.user.username
 
     class Meta:
         verbose_name = ('student')
-        verbose_name = ('students')
+        verbose_name_plural = ('students')
 
 
 class Teacher(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    courses = models.ManyToManyField('Course', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
 
     class Meta:
         verbose_name = ('teacher')
-        verbose_name = ('teachers')
+        verbose_name_plural = ('teachers')
 
 
 class Moderator(models.Model):
@@ -35,7 +34,7 @@ class Moderator(models.Model):
 
     class Meta:
         verbose_name = ('moderator')
-        verbose_name = ('moderators')
+        verbose_name_plural = ('moderators')
 
 
 class Course(models.Model):
@@ -53,7 +52,7 @@ class Course(models.Model):
 
     class Meta:
         verbose_name = ('course')
-        verbose_name = ('courses')
+        verbose_name_plural = ('courses')
 
 
 class Anouncement(models.Model):
@@ -68,7 +67,7 @@ class Anouncement(models.Model):
 
     class Meta:
         verbose_name = ('Anouncement')
-        verbose_name = ('Anouncements')
+        verbose_name_plural = ('Anouncements')
 
 class Resource(models.Model):
     name = models.CharField(max_length=100)
@@ -86,14 +85,14 @@ class Resource(models.Model):
 
     class Meta:
         verbose_name = ('resource')
-        verbose_name = ('resources')
+        verbose_name_plural = ('resources')
 
 class CalendarEntry(models.Model):
     MATTER_CHOICES = (
-        (PRESENTATION, 'Presentation'),
-        (HOMEWORK, 'Homework'),
-        (EXAM, 'Exam'),
+        ('PRESENTATION', 'Presentation'),
+        ('HOMEWORK', 'Homework'),
+        ('EXAM', 'Exam'),
     )
     date = models.DateField()
-    matter = models.CharField(choices=MATTER_CHOICES)
+    matter = models.CharField(choices=MATTER_CHOICES, max_length=12)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
