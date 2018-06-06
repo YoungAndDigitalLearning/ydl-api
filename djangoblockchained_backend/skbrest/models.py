@@ -5,7 +5,7 @@ from django.core.validators import MinValueValidator
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    courses = models.ManyToManyField(Course, on_delete=model.CASCADE)
+    courses = models.ManyToManyField('Course', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
@@ -17,7 +17,7 @@ class Student(models.Model):
 
 class Teacher(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    courses = models.ManyToManyField(Course, on_delete=model.CASCADE)
+    courses = models.ManyToManyField('Course', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
@@ -40,15 +40,13 @@ class Moderator(models.Model):
 
 class Course(models.Model):
     name = models.CharField(max_length=100)
-    description = models.Charfield(max_length=512)
+    description = models.CharField(max_length=512)
     students = models.ManyToManyField(Student)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     deadline = models.DateTimeField()
     student_count = models.IntegerField(validators=[MinValueValidator(0)])
     created = models.DateTimeField(auto_now_add=True)
     price = models.IntegerField(default=0)
-    resources = models.ForeignKey(Resource, on_delete=models.CASCADE)
-    calender = models.ManyToManyField(CalenderEntry)
 
     def __str__(self):
         return self.name
@@ -76,10 +74,12 @@ class Resource(models.Model):
     name = models.CharField(max_length=100)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     uploaded = models.DateTimeField()
+    effective_from = models.DateTimeField()
     uploader = models.ForeignKey(User, on_delete=models.CASCADE)
     expires = models.DateTimeField()
     size = models.FloatField()
     content = models.FileField()
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -88,7 +88,12 @@ class Resource(models.Model):
         verbose_name = ('resource')
         verbose_name = ('resources')
 
-class CalenderEntry(models.Model):
+class CalendarEntry(models.Model):
+    MATTER_CHOICES = (
+        (PRESENTATION, 'Presentation'),
+        (HOMEWORK, 'Homework'),
+        (EXAM, 'Exam'),
+    )
     date = models.DateField()
-    #matter = models.
-    course = models.ForeignKey(Course)
+    matter = models.CharField(choices=MATTER_CHOICES)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
