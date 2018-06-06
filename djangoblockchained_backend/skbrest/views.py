@@ -23,6 +23,6 @@ class CourseAPIView(ListAPIView):
         return Course.objects.filter(students=self.request.user.id)
 
     # Debug
-    # permission_classes = [
-    #    permissions.AllowAny # Or anon users can't register
-    # ]
+    permission_classes = [
+        permissions.AllowAny # Or anon users can't register
+    ]
