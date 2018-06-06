@@ -1,26 +1,28 @@
-from django.shortcuts import render
-from django.http import JsonResponse
-from django.contrib.auth import login, authenticate
-from django.views.decorators.csrf import csrf_exempt
+from rest_framework import permissions
+from rest_framework.generics import CreateAPIView, ListAPIView
+from django.contrib.auth.models import User  # If used custom user model
+# Our imports
+from .models import Course
+from .serializers import UserSerializer, CourseSerializer
 
-# Create your views here.
 
-# Disable CRSF token
-@csrf_exempt
-def authenticate_user(request):
-    if request.method == "POST":
-        
-        user = request.POST.get("username")
-        passw = request.POST.get("password")
-        isValidUser = authenticate(username = user, password = passw)
+class CreateUserAPIView(CreateAPIView):
 
-        if isValidUser:
+    model = User
+    permission_classes = [
+        permissions.AllowAny  # Or anon users can't register
+    ]
+    serializer_class = UserSerializer
 
-            return JsonResponse({"result": True})
-        else:
 
-            return JsonResponse({"result": False})
+class CourseAPIView(ListAPIView):
+    model = Course
+    serializer_class = CourseSerializer
 
-#@api_view(["GET"])
-#def register_user(request):
-#    pass
+    def get_queryset(self):
+        return Course.objects.filter(students=self.request.user.id)
+
+    # Debug
+    # permission_classes = [
+    #    permissions.AllowAny # Or anon users can't register
+    # ]

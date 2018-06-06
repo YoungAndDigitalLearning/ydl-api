@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include 
 from rest_framework_jwt.views import obtain_jwt_token
 
-from .api import CourseAPIView, CreateUserAPIView
+from .views import CourseAPIView, CreateUserAPIView
 
 urlpatterns = [
     path('token-auth/', obtain_jwt_token),
