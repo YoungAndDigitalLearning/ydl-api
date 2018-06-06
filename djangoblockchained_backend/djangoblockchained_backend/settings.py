@@ -93,20 +93,11 @@ WSGI_APPLICATION = 'djangoblockchained_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': "skb",
-        'USER': "root",
-        'PASSWORD': "",
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'OPTIONS': {
+            'read_default_file': 'djangoblockchained_backend/db.conf',
+        }
     }
-    #'default': {
-    #    'ENGINE': 'django.db.backends.mysql',
-    #    'OPTIONS': {
-    #        'read_default_file': '/database.cnf',
-    #    },
-    #}
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
