@@ -25,7 +25,7 @@ SECRET_KEY = '416th$s$mtx2q=)8%gvddmhpuld+&9oz1=k4wd+rilwvpiv3yn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["35.185.239.7"]
 
 
 REST_FRAMEWORK = {
@@ -136,3 +136,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/home/ren.karrass/repo/djangoblockchained-backend/djangoblockchained_backend/static/'
