@@ -12,6 +12,7 @@ mysqlclient = "*"
 django-oauth-toolkit = "*"
 djangorestframework-jwt = "*"
 pillow = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 pylint = "*"
