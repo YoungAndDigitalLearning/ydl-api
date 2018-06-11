@@ -25,7 +25,7 @@ SECRET_KEY = '416th$s$mtx2q=)8%gvddmhpuld+&9oz1=k4wd+rilwvpiv3yn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["35.185.239.7"]
+ALLOWED_HOSTS = ["35.185.239.7", "ydlearning.ml"]
 
 
 REST_FRAMEWORK = {
@@ -47,7 +47,6 @@ REST_FRAMEWORK = {
 
 INSTALLED_APPS = [
     'skbrest.apps.SkbrestConfig',
-    'corsheaders',
     'django.contrib.admin',
     'rest_framework',
     'django.contrib.auth',
@@ -58,7 +57,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -67,8 +65,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'djangoblockchained_backend.urls'
 
