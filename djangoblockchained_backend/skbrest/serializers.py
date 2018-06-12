@@ -48,7 +48,7 @@ class UserSerializer(serializers.ModelSerializer):
             'Dear ' + user.username + ', \n'+
             'Thank you for using Y&D Learning. \n' +
             'Please confirm your Email Adress. \n'+
-            'Link: http://localhost:8000/api/activate/{}/{}'.format(uid, token) + '\n' +
+            'Link: http://35.185.239.7:2222/api/activate/{}/{}'.format(uid, token) + '\n' +
             'Link expires in ' + str(settings.JWT_AUTH['JWT_EXPIRATION_DELTA']) + 'Minutes.',
             # Email send from
             'ydlearning.service@gmail.com',
