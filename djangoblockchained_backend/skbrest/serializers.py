@@ -8,16 +8,19 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
 
         user = User.objects.create(
-            username=validated_data['username']
+            username=validated_data['username'], 
+            email=validated_data['email']
             )
         user.set_password(validated_data['password'])
         user.save()
+        student = Student.objects.create(user=user)
+        student.save()
 
         return user
 
     class Meta:
         model = User
-        fields = ["password", "username"]
+        fields = ["password", "username", "email"]
 
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
