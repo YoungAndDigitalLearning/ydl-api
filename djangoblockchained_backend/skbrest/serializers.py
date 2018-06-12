@@ -19,9 +19,16 @@ from rest_framework_jwt.settings import api_settings
 from django.conf import settings
 # Email Stuff E
 
+jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
+    token = serializers.SerializerMethodField()
+    print("token:", token)
+
+    def get_token(self, obj):
+        return jwt_encode_handler(jwt_payload_handler(obj))
 
     def create(self, validated_data):
 
@@ -35,8 +42,7 @@ class UserSerializer(serializers.ModelSerializer):
         student.save()
 
         uid = urlsafe_base64_encode(force_bytes(user.pk)).decode()
-        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
 
         payload = jwt_payload_handler(user)
         token = jwt_encode_handler(payload)
@@ -62,7 +68,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["password", "username", "email"]
+        fields = ["password", "username", "email", "token"]
 
 
 class CourseSerializer(serializers.ModelSerializer):
