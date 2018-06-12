@@ -6,6 +6,7 @@ from django.core.validators import MinValueValidator
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     courses = models.ManyToManyField('Course')
+    isEmailActivated = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username
@@ -17,6 +18,7 @@ class Student(models.Model):
 
 class Teacher(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    isEmailActivated = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username
