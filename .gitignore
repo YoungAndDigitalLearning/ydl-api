@@ -10,7 +10,8 @@ VS-Code-WS-LV.code-workspace
 database.cnf
 db.conf
 
-
+# Settings.py
+djangoblockchained_backend/djangoblockchained_backend/settings.py
 
 # __________________________________________
 
