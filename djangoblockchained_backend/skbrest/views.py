@@ -74,4 +74,3 @@ class CourseAPIView(ListAPIView):
         permissions.AllowAny # Or anon users can't register
     ]
 
-
