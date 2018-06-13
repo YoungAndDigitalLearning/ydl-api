@@ -55,8 +55,11 @@ class UserSerializer(serializers.ModelSerializer):
         context = {
             'user':user.username,
             'link':'http://35.185.239.7:2222/api/activate/{}/{}'.format(uid, token),
-            'expires_in':str(settings.JWT_AUTH['JWT_EXPIRATION_DELTA']) + 'Minutes.',
-            'logo_img_link':"https://lh3.googleusercontent.com/PL8M-2OhoDITza8WOCdveAax9yQuXzaDakaJHcivO1ZjJg5D1u0eb9gzgx8VSLlfVT4vitIV2GIPkc8OfGJrR6rpko1U8JuV4CAZ2p-gvc4NhVUthlbaEz9HcKwY98UFiwN79pzu=s742-no"
+            'expires_in':str(settings.JWT_AUTH['JWT_EXPIRATION_DELTA']) + ' Minutes.',
+            'logo_img_link':"https://lh3.googleusercontent.com/PL8M-2OhoDITza8WOCdveAax9yQuXzaDakaJHcivO1ZjJg5D1u0eb9gzgx8VSLlfVT4vitIV2GIPkc8OfGJrR6rpko1U8JuV4CAZ2p-gvc4NhVUthlbaEz9HcKwY98UFiwN79pzu=s742-no",
+            'email_sendto':user.email,
+            'ydl_email':"ydlearning.service@gmail.com",
+            'ydl_url':"www.ydlearning.ml"
         }
         html = html_template.render(context)
 
@@ -104,24 +107,24 @@ class LongUserSerializer(serializers.ModelSerializer):
         except ObjectDoesNotExist:
             pass
 
-        if student: 
-            #print("cs", Course.objects.get(id = 1).students.all())
-            #print("name:", student.user)
-            #print("stc:", student.course_set.all())
-            return LongLongSerializer(student).data["course_set"]
-        #CourseSerializer(student.course_set.all()).data 
-        elif teacher:
-            return Course.objects.filter(teacher = teacher.id).data
+        if teacher:
+            return TeacherSerializer(teacher).data["course_set"]
+        elif student: 
+            return StudentSerializer(student).data["course_set"]    #CourseSerializer(student.course_set.all()).data 
+        
 
     class Meta:
         model = User
         fields = ["username", "first_name", "last_name", "email", "last_login", "date_joined", "courses"]
 
-class LongLongSerializer(serializers.ModelSerializer):
-    # user = serializers.PrimaryKeyRelatedField(read_only=True)
-   # user = LongUserSerializer(read_only=True) 
-
+class StudentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Student
+        fields = ["user", "isEmailActivated", "course_set"]
+
+class TeacherSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Teacher
         fields = ["user", "isEmailActivated", "course_set"]

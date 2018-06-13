@@ -3,7 +3,7 @@ from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIVie
 from django.contrib.auth.models import User  # If used custom user model
 # Our imports
 from .models import Course, Student
-from .serializers import UserSerializer, CourseSerializer, LongUserSerializer, LongLongSerializer
+from .serializers import UserSerializer, CourseSerializer, LongUserSerializer, StudentSerializer
 
 # Email Stuff A
 from django.http import HttpResponse
@@ -84,7 +84,7 @@ class CourseAPIView(ListAPIView):
 
 class LonngLongListApiView(ListAPIView):
     model = Student 
-    serializer_class = LongLongSerializer
+    serializer_class = StudentSerializer
 
     queryset = Student.objects.all()
 
