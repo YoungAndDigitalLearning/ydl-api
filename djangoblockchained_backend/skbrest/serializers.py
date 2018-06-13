@@ -94,9 +94,9 @@ class LongUserSerializer(serializers.ModelSerializer):
             pass
 
         if student: 
-            print("cs", Course.objects.get(id = 1).students.all())
-            print("name:", student.user)
-            print("stc:", student.course_set.all())
+            #print("cs", Course.objects.get(id = 1).students.all())
+            #print("name:", student.user)
+            #print("stc:", student.course_set.all())
             return LongLongSerializer(student).data["course_set"]
         #CourseSerializer(student.course_set.all()).data 
         elif teacher:
