@@ -2,8 +2,8 @@ from rest_framework import permissions
 from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, RetrieveAPIView
 from django.contrib.auth.models import User  # If used custom user model
 # Our imports
-from .models import Course, Student
-from .serializers import UserSerializer, CourseSerializer, LongUserSerializer, StudentSerializer
+from .models import Course, Student, Resource, Anouncement
+from .serializers import UserSerializer, CourseSerializer, LongUserSerializer, StudentSerializer, ResourceSerializer, AnouncementSerializer
 
 # Email Stuff A
 from django.http import HttpResponse
@@ -91,3 +91,36 @@ class LonngLongListApiView(ListAPIView):
     permission_classes = [
         permissions.AllowAny # Or users can't register
     ]
+
+class ListCreateResourceAPIView(ListCreateAPIView):
+    model = Resource
+    serializer_class = ResourceSerializer
+
+    queryset = Resource.objects.all()
+
+class ListCreateAnouncementAPIView(ListCreateAPIView):
+    model = Anouncement
+    serializer_class = AnouncementSerializer
+
+    # queryset = Anouncement.objects.all()
+
+    def get_queryset(self):
+        if self.request.method == "GET":
+            limit = self.request.GET.get("limit", None)
+            if limit:
+                return Anouncement.objects.all()[:int(limit)]
+            else:
+                return Anouncement.objects.all()
+
+    # Everyone should see 
+    permission_classes = [
+        permissions.AllowAny # Or users can't register
+    ]
+
+class LimitListAnouncementAPIView(ListAPIView):
+    model = Anouncement
+    serializer_class = AnouncementSerializer
+
+    def get_queryset(self):
+        print("Quarks", self.kwargs["limit"])
+        return Anouncement.objects.all()[:self.kwargs["limit"]]
