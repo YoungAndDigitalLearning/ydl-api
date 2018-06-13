@@ -1,5 +1,5 @@
 from rest_framework import permissions
-from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, RetrieveAPIView
 from django.contrib.auth.models import User  # If used custom user model
 # Our imports
 from .models import Course, Student
@@ -61,7 +61,14 @@ class ListCreateUserAPIView(ListCreateAPIView):
     
     def get_serializer_class(self):
         return UserSerializer if self.request.method == "POST" else LongUserSerializer
+    
+class DetailUserAPIView(RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = LongUserSerializer
 
+class DetailCourseAPIView(RetrieveAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
 
 class CourseAPIView(ListAPIView):
     model = Course

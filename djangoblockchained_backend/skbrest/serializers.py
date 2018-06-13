@@ -17,6 +17,9 @@ from django.core.mail import EmailMessage
 from rest_framework_jwt.settings import api_settings
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+
+from django.template import Context
+from django.template.loader import get_template
 # Email Stuff E
  
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
@@ -47,21 +50,29 @@ class UserSerializer(serializers.ModelSerializer):
         payload = jwt_payload_handler(user)
         token = jwt_encode_handler(payload)
 
+        html_template = get_template('skbrest/verification_email.html')
+
+        context = {
+            'user':user.username,
+            'link':'http://35.185.239.7:2222/api/activate/{}/{}'.format(uid, token),
+            'expires_in':str(settings.JWT_AUTH['JWT_EXPIRATION_DELTA']) + 'Minutes.',
+            'logo_img_link':"https://lh3.googleusercontent.com/PL8M-2OhoDITza8WOCdveAax9yQuXzaDakaJHcivO1ZjJg5D1u0eb9gzgx8VSLlfVT4vitIV2GIPkc8OfGJrR6rpko1U8JuV4CAZ2p-gvc4NhVUthlbaEz9HcKwY98UFiwN79pzu=s742-no"
+        }
+        html = html_template.render(context)
+
         send_mail(
             # Subject
             'Verify email adress for Y&D Learning',
+            '',
             # Content
-            'Dear ' + user.username + ', \n'+
-            'Thank you for using Y&D Learning. \n' +
-            'Please confirm your Email Adress. \n'+
-            'Link: http://35.185.239.7:2222/api/activate/{}/{}'.format(uid, token) + '\n' +
-            'Link expires in ' + str(settings.JWT_AUTH['JWT_EXPIRATION_DELTA']) + 'Minutes.',
+                # 
             # Email send from
             'ydlearning.service@gmail.com',
             # Email send to
             [user.email],
             # fail silently
             fail_silently=False,
+            html_message = html
         )
 
         return user
