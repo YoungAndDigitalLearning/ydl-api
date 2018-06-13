@@ -1,6 +1,8 @@
+# -- coding: utf-8 --
+
 from rest_framework import serializers
 from django.contrib.auth.models import User  # If used custom user model
-from .models import Student, Teacher, Course
+from .models import Student, Teacher, Course, Resource, Anouncement
 from django.core.mail import send_mail
 
 # Email Stuff A
@@ -21,6 +23,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.template import Context
 from django.template.loader import get_template
 # Email Stuff E
+
+from django.utils import timezone
  
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
@@ -55,7 +59,7 @@ class UserSerializer(serializers.ModelSerializer):
         context = {
             'user':user.username,
             'link':'http://35.185.239.7:2222/api/activate/{}/{}'.format(uid, token),
-            'expires_in':str(settings.JWT_AUTH['JWT_EXPIRATION_DELTA']) + ' Minutes.',
+            'expires_in':str(settings.JWT_AUTH['JWT_EXPIRATION_DELTA']) + ' Minutes',
             'logo_img_link':"https://lh3.googleusercontent.com/PL8M-2OhoDITza8WOCdveAax9yQuXzaDakaJHcivO1ZjJg5D1u0eb9gzgx8VSLlfVT4vitIV2GIPkc8OfGJrR6rpko1U8JuV4CAZ2p-gvc4NhVUthlbaEz9HcKwY98UFiwN79pzu=s742-no",
             'email_sendto':user.email,
             'ydl_email':"ydlearning.service@gmail.com",
@@ -128,3 +132,27 @@ class TeacherSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teacher
         fields = ["user", "isEmailActivated", "course_set"]
+
+class ResourceSerializer(serializers.ModelSerializer):
+    content = serializers.SerializerMethodField()
+    size = serializers.SerializerMethodField()
+
+    # only return content if effective date is now or already passed 
+    def get_content(self, obj):
+        if obj.effective_from >= timezone.now():
+            return self.context["request"].build_absolute_uri(obj.content.url)
+        else:
+            return None
+
+    def get_size(self, obj):
+        return obj.content.size
+
+    class Meta:
+        model = Resource
+        fields = ["name", "uploaded", "effective_from", "uploader", "expires", "size", "content"]
+
+class AnouncementSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Anouncement
+        fields = "__all__"    

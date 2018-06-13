@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include 
 from rest_framework_jwt.views import obtain_jwt_token
 
-from .views import CourseAPIView, ListCreateUserAPIView, activate, LonngLongListApiView, DetailUserAPIView, DetailCourseAPIView
+from .views import CourseAPIView, ListCreateUserAPIView, activate, LonngLongListApiView, DetailUserAPIView, DetailCourseAPIView, ListCreateResourceAPIView, ListCreateAnouncementAPIView, LimitListAnouncementAPIView
 
 urlpatterns = [
     path('token-auth/', obtain_jwt_token),
@@ -11,6 +11,8 @@ urlpatterns = [
     path('students/', LonngLongListApiView.as_view()),
     path('users/', ListCreateUserAPIView.as_view()),
     path('users/<int:pk>', DetailUserAPIView.as_view()),
-    path('activate/<uidb64>/<token>/', activate)
+    path('activate/<uidb64>/<token>/', activate),
+    path('resources/', ListCreateResourceAPIView.as_view()),
+    path('anouncements/', ListCreateAnouncementAPIView.as_view()), # use ...anouncements/?limit=<int:limit>... for limited An 
 ]
  

@@ -48,7 +48,7 @@ class Course(models.Model):
     student_count = models.IntegerField(validators=[MinValueValidator(0)])
     created = models.DateTimeField(auto_now_add=True)
     price = models.IntegerField(default=0)
-    ressources = models.ManyToManyField("Resource") 
+    resources = models.ManyToManyField("Resource") 
 
     def __str__(self):
         return self.name
@@ -78,7 +78,6 @@ class Resource(models.Model):
     effective_from = models.DateTimeField()
     uploader = models.ForeignKey(User, on_delete=models.CASCADE)
     expires = models.DateTimeField()
-    size = models.FloatField()
     content = models.FileField()
 
     def __str__(self):
