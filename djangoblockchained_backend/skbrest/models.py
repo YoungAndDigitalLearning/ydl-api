@@ -48,6 +48,7 @@ class Course(models.Model):
     student_count = models.IntegerField(validators=[MinValueValidator(0)])
     created = models.DateTimeField(auto_now_add=True)
     price = models.IntegerField(default=0)
+    ressources = models.ManyToManyField("Resource") 
 
     def __str__(self):
         return self.name
@@ -59,7 +60,7 @@ class Course(models.Model):
 
 class Anouncement(models.Model):
     title = models.CharField(max_length=100)
-    author = models.ForeignKey(Moderator, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField()
     image = models.ImageField()
     content = models.TextField()
@@ -73,14 +74,12 @@ class Anouncement(models.Model):
 
 class Resource(models.Model):
     name = models.CharField(max_length=100)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     uploaded = models.DateTimeField()
     effective_from = models.DateTimeField()
     uploader = models.ForeignKey(User, on_delete=models.CASCADE)
     expires = models.DateTimeField()
     size = models.FloatField()
     content = models.FileField()
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -98,3 +97,10 @@ class CalendarEntry(models.Model):
     date = models.DateField()
     matter = models.CharField(choices=MATTER_CHOICES, max_length=12)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = ('calendar entry')
+        verbose_name_plural = ('calendar entries')
+    
+    def __str__(self):
+        return self.matter
