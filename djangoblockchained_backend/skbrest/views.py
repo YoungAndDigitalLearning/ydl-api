@@ -1,9 +1,9 @@
 from rest_framework import permissions
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView
 from django.contrib.auth.models import User  # If used custom user model
 # Our imports
-from .models import Course
-from .serializers import UserSerializer, CourseSerializer
+from .models import Course, Student
+from .serializers import UserSerializer, CourseSerializer, LongUserSerializer, LongLongSerializer
 
 # Email Stuff A
 from django.http import HttpResponse
@@ -14,7 +14,6 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
-from .tokens import account_activation_token
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from rest_framework_jwt.serializers import VerifyJSONWebTokenSerializer
@@ -49,17 +48,19 @@ def activate(request, uidb64, token):
     else:
         return HttpResponse('Activation link is invalid!')
 
-class CreateUserAPIView(CreateAPIView):
+class ListCreateUserAPIView(ListCreateAPIView):
 
     model = User
     permission_classes = [
-        permissions.AllowAny  # Or anon users can't register
+        permissions.AllowAny  # Or users can't register
     ]
-    serializer_class = UserSerializer
-  # def create(self, request, *args, **kwargs):
-  #     
-  #     serializer = self.serializer(...)
-  #     data = serializer.data
+    # serializer_class = UserSerializer
+
+    def get_queryset(self):
+        return User.objects.filter(id=self.request.user.id)
+    
+    def get_serializer_class(self):
+        return UserSerializer if self.request.method == "POST" else LongUserSerializer
 
 
 class CourseAPIView(ListAPIView):
@@ -71,6 +72,15 @@ class CourseAPIView(ListAPIView):
 
     # Debug
     permission_classes = [
-        permissions.AllowAny # Or anon users can't register
+        permissions.AllowAny # Or users can't register
     ]
 
+class LonngLongListApiView(ListAPIView):
+    model = Student 
+    serializer_class = LongLongSerializer
+
+    queryset = Student.objects.all()
+
+    permission_classes = [
+        permissions.AllowAny # Or users can't register
+    ]
