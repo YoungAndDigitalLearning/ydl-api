@@ -12,20 +12,20 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
-from .tokens import account_activation_token
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from rest_framework_jwt.settings import api_settings
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 # Email Stuff E
-
+ 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     token = serializers.SerializerMethodField()
-    print("token:", token)
+    # print("token:", token)
 
     def get_token(self, obj):
         return jwt_encode_handler(jwt_payload_handler(obj))
@@ -70,8 +70,47 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ["password", "username", "email", "token"]
 
-
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = "__all__"
+
+# Nur für Get auf den User 
+class LongUserSerializer(serializers.ModelSerializer):
+    courses = serializers.SerializerMethodField()
+
+    def get_courses(self, obj):
+        student = None
+        teacher = None
+
+        # try to get student OR teacher
+        try:
+            student = Student.objects.get(user = obj.id)
+        except ObjectDoesNotExist:
+            pass
+        try:
+            teacher = Teacher.objects.get(user = obj.id)
+        except ObjectDoesNotExist:
+            pass
+
+        if student: 
+            print("cs", Course.objects.get(id = 1).students.all())
+            print("name:", student.user)
+            print("stc:", student.course_set.all())
+            return LongLongSerializer(student).data["course_set"]
+        #CourseSerializer(student.course_set.all()).data 
+        elif teacher:
+            return Course.objects.filter(teacher = teacher.id).data
+
+    class Meta:
+        model = User
+        fields = ["username", "first_name", "last_name", "email", "last_login", "date_joined", "courses"]
+
+class LongLongSerializer(serializers.ModelSerializer):
+    # user = serializers.PrimaryKeyRelatedField(read_only=True)
+   # user = LongUserSerializer(read_only=True) 
+
+
+    class Meta:
+        model = Student
+        fields = ["user", "isEmailActivated", "course_set"]
