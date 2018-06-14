@@ -15,6 +15,7 @@ db.conf
 
 # Settings.py
 djangoblockchained_backend/djangoblockchained_backend/settings.py
+djangoblockchained_backend/static
 
 # __________________________________________
 

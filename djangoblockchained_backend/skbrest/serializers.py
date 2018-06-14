@@ -86,7 +86,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["password", "username", "email", "token"]
+        fields = ["id", "password", "username", "email", "token"]
 
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
