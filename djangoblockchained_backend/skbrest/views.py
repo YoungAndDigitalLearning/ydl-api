@@ -3,7 +3,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, RetrieveAPIView
 from django.contrib.auth.models import User  # If used custom user model
 # Our imports
-from .models import Course, Student, Resource, Anouncement
+from .models import Course, Student, Resource, Anouncement, Teacher
 from .serializers import UserSerializer, CourseSerializer, LongUserSerializer, StudentSerializer, ResourceSerializer, AnouncementSerializer
 
 # Email Stuff A
@@ -19,6 +19,7 @@ from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from rest_framework_jwt.serializers import VerifyJSONWebTokenSerializer
 from rest_framework_jwt.settings import api_settings
+from django.core.exceptions import ObjectDoesNotExist
 # Email Stuff E
 
 jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
@@ -76,8 +77,32 @@ class CourseAPIView(ListAPIView):
     model = Course
     serializer_class = CourseSerializer
 
+    
+
     def get_queryset(self):
-        return Course.objects.filter(students=self.request.user.id)
+        student = None
+        teacher = None
+
+        # try to get student OR teacher
+        try:
+            student = Student.objects.get(user = self.request.user.id)
+        except ObjectDoesNotExist:
+            pass
+        try:
+            teacher = Teacher.objects.get(user = self.request.user.id)
+        except ObjectDoesNotExist:
+            pass
+
+        if teacher:
+            return Course.objects.filter(teacher=teacher.id)
+        elif student: 
+            return Course.objects.filter(students=student.id)
+
+        #print("couse", Course.objects.all()[0].students.all())
+        #print("couse", Course.objects.filter(students__id=19))
+        # return Course.objects.filter(students=self.request.user.id)
+
+        
 
     # Debug
     permission_classes = [
