@@ -2,6 +2,9 @@
 # VS Code
 .vscode
 
+# media
+djangoblockchained_backend/media
+
 # VS Code Workspace
 .code-workspace
 VS-Code-WS-LV.code-workspace
