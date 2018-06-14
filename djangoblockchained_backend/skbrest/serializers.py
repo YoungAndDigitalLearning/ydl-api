@@ -119,7 +119,7 @@ class LongUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["username", "first_name", "last_name", "email", "last_login", "date_joined", "courses"]
+        fields = ["id", "username", "first_name", "last_name", "email", "last_login", "date_joined", "courses"]
 
 class StudentSerializer(serializers.ModelSerializer):
 
