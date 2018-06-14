@@ -1,4 +1,5 @@
 from rest_framework import permissions
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, RetrieveAPIView
 from django.contrib.auth.models import User  # If used custom user model
 # Our imports
@@ -48,7 +49,7 @@ def activate(request, uidb64, token):
     else:
         return HttpResponse('Activation link is invalid!')
 
-class ListCreateUserAPIView(ListCreateAPIView):
+class ListCreateUserAPIView(ModelViewSet):
 
     model = User
     permission_classes = [
@@ -57,7 +58,8 @@ class ListCreateUserAPIView(ListCreateAPIView):
     # serializer_class = UserSerializer
 
     def get_queryset(self):
-        return User.objects.filter(id=self.request.user.id)
+        return User.objects.all()
+        #User.objects.filter(id=self.request.user.id)
     
     def get_serializer_class(self):
         return UserSerializer if self.request.method == "POST" else LongUserSerializer
