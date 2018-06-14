@@ -77,8 +77,6 @@ class CourseAPIView(ListAPIView):
     model = Course
     serializer_class = CourseSerializer
 
-    
-
     def get_queryset(self):
         student = None
         teacher = None
@@ -101,8 +99,6 @@ class CourseAPIView(ListAPIView):
         #print("couse", Course.objects.all()[0].students.all())
         #print("couse", Course.objects.filter(students__id=19))
         # return Course.objects.filter(students=self.request.user.id)
-
-        
 
     # Debug
     permission_classes = [
