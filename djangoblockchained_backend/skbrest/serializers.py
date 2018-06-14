@@ -152,6 +152,7 @@ class ResourceSerializer(serializers.ModelSerializer):
         fields = ["name", "uploaded", "effective_from", "uploader", "expires", "size", "content"]
 
 class AnouncementSerializer(serializers.ModelSerializer):
+    author = LongUserSerializer(many = False, read_only = True)
 
     class Meta:
         model = Anouncement

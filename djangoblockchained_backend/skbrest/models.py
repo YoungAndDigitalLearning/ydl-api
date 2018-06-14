@@ -61,7 +61,7 @@ class Course(models.Model):
 class Anouncement(models.Model):
     title = models.CharField(max_length=100)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateField()
+    date = models.DateTimeField()
     image = models.ImageField()
     content = models.TextField()
 
@@ -71,6 +71,8 @@ class Anouncement(models.Model):
     class Meta:
         verbose_name = ('Anouncement')
         verbose_name_plural = ('Anouncements')
+        ordering = ["-date"]
+
 
 class Resource(models.Model):
     name = models.CharField(max_length=100)
