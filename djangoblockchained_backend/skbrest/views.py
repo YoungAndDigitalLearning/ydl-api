@@ -26,6 +26,18 @@ jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
 
 
 def activate(request, uidb64, token):
+    """
+    Activates an account
+    
+    Arguments:
+        request {[type]} -- [description]
+        uidb64 {[type]} -- [description]
+        token {[type]} -- [description]
+    
+    Returns:
+        [type] -- [description]
+    """
+
     try:
         uid = force_text(urlsafe_base64_decode(uidb64).decode())
         user = User.objects.get(pk=uid)
@@ -52,6 +64,12 @@ def activate(request, uidb64, token):
 
 class ListCreateUserAPIView(ModelViewSet):
 
+    """ User Resource
+    ---
+    create_request_serializer: UserSerializer
+    create_response_serializer: UserSerializer
+    """
+
     model = User
     permission_classes = [
         permissions.AllowAny  # Or users can't register
@@ -63,7 +81,10 @@ class ListCreateUserAPIView(ModelViewSet):
         #User.objects.filter(id=self.request.user.id)
     
     def get_serializer_class(self):
-        return UserSerializer if self.request.method == "POST" else LongUserSerializer
+        if self.request.method == "POST":
+            return UserSerializer
+        else:
+            return LongUserSerializer
     
 class DetailUserAPIView(RetrieveAPIView):
     queryset = User.objects.all()
