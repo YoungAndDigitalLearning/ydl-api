@@ -58,12 +58,12 @@ class UserSerializer(serializers.ModelSerializer):
 
         context = {
             'user':user.username,
-            'link':'http://35.185.239.7:2222/api/activate/{}/{}'.format(uid, token),
+            'link':'https://ydlearning.com/activate/{}/{}'.format(uid, token),
             'expires_in':str(settings.JWT_AUTH['JWT_EXPIRATION_DELTA']) + ' hours', # change plural! 
             'logo_img_link':"https://lh3.googleusercontent.com/PL8M-2OhoDITza8WOCdveAax9yQuXzaDakaJHcivO1ZjJg5D1u0eb9gzgx8VSLlfVT4vitIV2GIPkc8OfGJrR6rpko1U8JuV4CAZ2p-gvc4NhVUthlbaEz9HcKwY98UFiwN79pzu=s742-no",
             'email_sendto':user.email,
-            'ydl_email':"ydlearning.service@gmail.com",
-            'ydl_url':"www.ydlearning.ml"
+            'ydl_email':"admin@ydlearning.com",
+            'ydl_url':"www.ydlearning.com"
         }
         html = html_template.render(context)
 
@@ -74,7 +74,7 @@ class UserSerializer(serializers.ModelSerializer):
             # Content
                 # 
             # Email send from
-            'ydlearning.service@gmail.com',
+            'admin@ydlearning.com',
             # Email send to
             [user.email],
             # fail silently
