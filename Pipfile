@@ -14,6 +14,7 @@ djangorestframework-jwt = "*"
 pillow = "*"
 django-cors-headers = "*"
 gunicorn = "*"
+django-rest-swagger = "*"
 
 [dev-packages]
 pylint = "*"

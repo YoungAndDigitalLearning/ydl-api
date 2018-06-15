@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include 
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
+from rest_framework_swagger.views import get_swagger_view
 
 
 from .views import CourseAPIView, ListCreateUserAPIView, activate, LonngLongListApiView, DetailUserAPIView, DetailCourseAPIView, ListCreateResourceAPIView, ListCreateAnouncementAPIView, LimitListAnouncementAPIView
@@ -16,7 +17,10 @@ user_detail = ListCreateUserAPIView.as_view({
     'delete': 'destroy'
 })
 
+schema_view = get_swagger_view(title='Y&D Learning API')
+
 urlpatterns = [
+    path('', schema_view),
     path('token/auth/', obtain_jwt_token),
     path('token/refresh/', refresh_jwt_token),
     path('token/verify/', verify_jwt_token),
