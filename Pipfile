@@ -15,6 +15,7 @@ pillow = "*"
 django-cors-headers = "*"
 gunicorn = "*"
 django-rest-swagger = "*"
+"django-sendgrid-v5" = "*"
 
 [dev-packages]
 pylint = "*"
