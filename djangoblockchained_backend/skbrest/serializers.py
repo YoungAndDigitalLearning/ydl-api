@@ -78,7 +78,8 @@ class UserSerializer(serializers.ModelSerializer):
             # Content
                 # 
             # Email send from
-            'admin@ydlearning.com',
+            #'admin@ydlearning.com',
+            'no-reply@ydlearning.com',
             # Email send to
             [user.email],
             # fail silently

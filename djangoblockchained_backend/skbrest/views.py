@@ -32,7 +32,7 @@ def render_email(request):
         # change plural!
         'expires_in': '1:00:00',
         'expires_time': ' hours',
-        'logo_img_link': "https://lh3.googleusercontent.com/PL8M-2OhoDITza8WOCdveAax9yQuXzaDakaJHcivO1ZjJg5D1u0eb9gzgx8VSLlfVT4vitIV2GIPkc8OfGJrR6rpko1U8JuV4CAZ2p-gvc4NhVUthlbaEz9HcKwY98UFiwN79pzu=s742-no",
+        'logo_img_link': "https://ydlearning.com/.media/logo/YDL-Logo-220px.png",
         'email_sendto': 'Croozer@ydlearning.com',
         'ydl_email': "admin@ydlearning.com",
         'ydl_url': "www.ydlearning.com",
