@@ -25,15 +25,34 @@ from django.core.exceptions import ObjectDoesNotExist
 jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
 
 
+def render_email(request):
+    context = {
+        'user': 'Croozer',
+        'link': '#',
+        # change plural!
+        'expires_in': '1:00:00',
+        'expires_time': ' hours',
+        'logo_img_link': "https://lh3.googleusercontent.com/PL8M-2OhoDITza8WOCdveAax9yQuXzaDakaJHcivO1ZjJg5D1u0eb9gzgx8VSLlfVT4vitIV2GIPkc8OfGJrR6rpko1U8JuV4CAZ2p-gvc4NhVUthlbaEz9HcKwY98UFiwN79pzu=s742-no",
+        'email_sendto': 'Croozer@ydlearning.com',
+        'ydl_email': "admin@ydlearning.com",
+        'ydl_url': "www.ydlearning.com",
+        'ydl_url_github': "https://github.com/YoungAndDigitalLearning",
+        'ydl_url_impr': "www.ydlearning.com/impressum",
+        'ydl_url_prpol': "www.ydlearning.com/privacypolicy",
+    }
+
+    return render(request, "skbrest/verification_email.html", context)
+
+
 def activate(request, uidb64, token):
     """
     Activates an account
-    
+
     Arguments:
         request {[type]} -- [description]
         uidb64 {[type]} -- [description]
         token {[type]} -- [description]
-    
+
     Returns:
         [type] -- [description]
     """
@@ -47,9 +66,9 @@ def activate(request, uidb64, token):
         user = None
     verifier = VerifyJSONWebTokenSerializer()
     # print("verifier:", verifier.validate({'token':token}))
-    validated = None 
+    validated = None
     # verifier.validate({'token':token})
-    try: 
+    try:
         validated = jwt_decode_handler(token)
     except:
         pass
@@ -61,6 +80,7 @@ def activate(request, uidb64, token):
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
         return HttpResponse('Activation link is invalid!')
+
 
 class ListCreateUserAPIView(ModelViewSet):
 
@@ -78,21 +98,24 @@ class ListCreateUserAPIView(ModelViewSet):
 
     def get_queryset(self):
         return User.objects.all()
-        #User.objects.filter(id=self.request.user.id)
-    
+        # User.objects.filter(id=self.request.user.id)
+
     def get_serializer_class(self):
         if self.request.method == "POST":
             return UserSerializer
         else:
             return LongUserSerializer
-    
+
+
 class DetailUserAPIView(RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = LongUserSerializer
 
+
 class DetailCourseAPIView(RetrieveAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+
 
 class CourseAPIView(ListAPIView):
     model = Course
@@ -104,17 +127,17 @@ class CourseAPIView(ListAPIView):
 
         # try to get student OR teacher
         try:
-            student = Student.objects.get(user = self.request.user.id)
+            student = Student.objects.get(user=self.request.user.id)
         except ObjectDoesNotExist:
             pass
         try:
-            teacher = Teacher.objects.get(user = self.request.user.id)
+            teacher = Teacher.objects.get(user=self.request.user.id)
         except ObjectDoesNotExist:
             pass
 
         if teacher:
             return Course.objects.filter(teacher=teacher.id)
-        elif student: 
+        elif student:
             return Course.objects.filter(students=student.id)
 
         #print("couse", Course.objects.all()[0].students.all())
@@ -123,24 +146,27 @@ class CourseAPIView(ListAPIView):
 
     # Debug
     permission_classes = [
-        permissions.AllowAny # Or users can't register
+        permissions.AllowAny  # Or users can't register
     ]
 
+
 class LonngLongListApiView(ListAPIView):
-    model = Student 
+    model = Student
     serializer_class = StudentSerializer
 
     queryset = Student.objects.all()
 
     permission_classes = [
-        permissions.AllowAny # Or users can't register
+        permissions.AllowAny  # Or users can't register
     ]
+
 
 class ListCreateResourceAPIView(ListCreateAPIView):
     model = Resource
     serializer_class = ResourceSerializer
 
     queryset = Resource.objects.all()
+
 
 class ListCreateAnouncementAPIView(ListCreateAPIView):
     model = Anouncement
@@ -156,10 +182,11 @@ class ListCreateAnouncementAPIView(ListCreateAPIView):
             else:
                 return Anouncement.objects.all()
 
-    # Everyone should see 
+    # Everyone should see
     permission_classes = [
-        permissions.AllowAny # Or users can't register
+        permissions.AllowAny  # Or users can't register
     ]
+
 
 class LimitListAnouncementAPIView(ListAPIView):
     model = Anouncement

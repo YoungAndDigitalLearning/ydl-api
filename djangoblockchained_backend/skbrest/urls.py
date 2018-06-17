@@ -3,8 +3,11 @@ from django.urls import path, include
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 from rest_framework_swagger.views import get_swagger_view
 
+from .views import CourseAPIView, ListCreateUserAPIView, activate, LonngLongListApiView, DetailUserAPIView, DetailCourseAPIView, \
+ListCreateResourceAPIView, ListCreateAnouncementAPIView, LimitListAnouncementAPIView, render_email
+# import .views 
 
-from .views import CourseAPIView, ListCreateUserAPIView, activate, LonngLongListApiView, DetailUserAPIView, DetailCourseAPIView, ListCreateResourceAPIView, ListCreateAnouncementAPIView, LimitListAnouncementAPIView
+from django.conf import settings
 
 user_list = ListCreateUserAPIView.as_view({
     'get': 'list',
@@ -33,4 +36,10 @@ urlpatterns = [
     path('resources/', ListCreateResourceAPIView.as_view()),
     path('anouncements/', ListCreateAnouncementAPIView.as_view()), # use ...anouncements/?limit=<int:limit>... for limited An 
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += [
+        path('html', render_email),
+    ]
  
