@@ -37,7 +37,7 @@ def render_email(request):
         'ydl_email': "admin@ydlearning.com",
         'ydl_url': "www.ydlearning.com",
         'ydl_url_github': "https://github.com/YoungAndDigitalLearning",
-        'ydl_url_impr': "www.ydlearning.com/impressum",
+        'ydl_url_impr': "www.ydlearning.com/impressum.html",
         'ydl_url_prpol': "www.ydlearning.com/privacypolicy",
     }
 
