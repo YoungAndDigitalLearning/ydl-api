@@ -1,5 +1,4 @@
-{% extends "skbrest/base.html" %}
-{% block content %}
+{% extends "skbrest/base.html" %} {% block content %}
 <!-- Wrapper/Container Table: Use a wrapper table to control the width and the background color consistently of your email. Use this approach instead of setting attributes on the body tag. -->
 <table cellpadding="0" width="100%" cellspacing="0" border="0" id="backgroundTable" class='bgBody'>
 	<tr>
@@ -66,7 +65,8 @@
 																</i>.
 																<br/>
 																<br/> Please click on the button below to confirm your email.
-																<br/> Link expires in {{expires_in}}.
+																<br/> Link expires in
+																<b>{{expires_in}}</b> {{expires_time}}.
 															</p>
 														</div>
 													</div>
@@ -113,12 +113,23 @@
 																</i>
 															</span>
 															<br/>
-															<span style="font-size:11px;color:#555;font-family:Helvetica, Arial, sans-serif;line-height:200%;">Contact us: {{ydl_email}}</span>
+															<span style="font-size:11px;color:#555;font-family:Helvetica, Arial, sans-serif;line-height:200%;">
+																Contact us: {{ydl_email}}</span>
 															<br/>
-															<span style="font-size:11px;color:#555;font-family:Helvetica, Arial, sans-serif;line-height:200%;">Visit us:
+															<span style="font-size:11px;color:#555;font-family:Helvetica, Arial, sans-serif;line-height:200%;">
+																Visit us:
 																<a href={{ydl_url}}>{{ydl_url}}</a>
 															</span>
-
+															<span style="font-size:11px;color:#555;font-family:Helvetica, Arial, sans-serif;line-height:200%;">
+																Impressum:
+																<a href={{ydl_url_impr}}>Impressum</a>
+															</span>
+															<!--
+															<span style="font-size:11px;color:#555;font-family:Helvetica, Arial, sans-serif;line-height:200%;">
+																Privacy Policy:
+																<a href={{ydl_url_prpol}}>Privacy Policy</a>
+															</span>
+															-->
 															<!--
 																<br/>
 																<span style="font-size:13px;color:#181818;font-family:Helvetica, Arial, sans-serif;line-height:200%;">
@@ -139,8 +150,9 @@
 												<td width="40%" height="70" align="right" valign="top" align='right' style="padding-bottom:20px;">
 													<table width="100%" border="0" cellspacing="0" cellpadding="0" align='right'>
 														<tr>
+
+															<td width='57%'></td>
 															<!--
-																<td width='57%'></td>
 																<td valign="top" width='34'>
 																	<div class="contentEditableContainer contentFacebookEditable" style='display:inline;'>
 																		<div class="contentEditable">
@@ -148,24 +160,24 @@
 																		</div>
 																	</div>
 																</td>
-
-
-																<td valign="top" width='34'>
-																	<div class="contentEditableContainer contentTwitterEditable" style='display:inline;'>
-																		<div class="contentEditable">
-																			<img src="" data-default="placeholder" data-max-width='30' data-customIcon="true" width='30' height='30' alt='' style='margin-right:40x;'>
-																		</div>
-																	</div>
-																</td>
 																-->
 
+															<td valign="top" width='2'>
+																<div class="contentEditableContainer contentTwitterEditable" style='float:right;'>
+																	<div class="contentEditable">
+																		<a target='_blank' href="{{ydl_url_github}}" data-default="placeholder" style="text-decoration:none;">
+																			<img src="http://ydlearning.bplaced.net/.media/GitHubMark/PNG/GitHub-Mark-64px.png" data-default="placeholder" data-max-width='30'
+																			 data-customIcon="true" width='35' height='35' alt='github'>
+																		</a>
+																	</div>
+																</div>
+															</td>
 
 															<td valign="top" width='34'>
-																<div class="contentEditableContainer contentImageEditable" style='display:inline;float:right;'>
+																<div class="contentEditableContainer contentImageEditable" style='display:inline; float:right;'>
 																	<div class="contentEditable">
 																		<a target='_blank' href="{{ydl_url}}" data-default="placeholder" style="text-decoration:none;">
-																			<img src={{logo_img_link}} width="40" height="40" data-max-width="40" alt='YDL-Logo' style='margin-right:40x;padding-top:10px;'
-																			/>
+																			<img src={{logo_img_link}} width="35" height="35" alt='YDL-Logo' style='margin-right:40x;' />
 																		</a>
 																	</div>
 																</div>
