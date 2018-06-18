@@ -3,7 +3,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, RetrieveAPIView
 from django.contrib.auth.models import User  # If used custom user model
 # Our imports
-from .models import Course, Student, Resource, Anouncement, Teacher
+from .models import Course, Student, Resource, Anouncement, Teacher, User
 from .serializers import UserSerializer, CourseSerializer, LongUserSerializer, StudentSerializer, ResourceSerializer, AnouncementSerializer
 
 # Email Stuff A
@@ -15,7 +15,6 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
-from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from rest_framework_jwt.serializers import VerifyJSONWebTokenSerializer
 from rest_framework_jwt.settings import api_settings
@@ -23,7 +22,6 @@ from django.core.exceptions import ObjectDoesNotExist
 # Email Stuff E
 
 jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
-
 
 def render_email(request):
     context = {
@@ -82,7 +80,7 @@ def activate(request, uidb64, token):
         return HttpResponse('Activation link is invalid!')
 
 
-class ListCreateUserAPIView(ModelViewSet):
+class ListCreateUserViewSet(ModelViewSet):
 
     """ User Resource
     ---
@@ -122,35 +120,17 @@ class CourseAPIView(ListAPIView):
     serializer_class = CourseSerializer
 
     def get_queryset(self):
-        student = None
-        teacher = None
-
-        # try to get student OR teacher
-        try:
-            student = Student.objects.get(user=self.request.user.id)
-        except ObjectDoesNotExist:
-            pass
-        try:
-            teacher = Teacher.objects.get(user=self.request.user.id)
-        except ObjectDoesNotExist:
-            pass
-
-        if teacher:
-            return Course.objects.filter(teacher=teacher.id)
-        elif student:
-            return Course.objects.filter(students=student.id)
-
-        #print("couse", Course.objects.all()[0].students.all())
-        #print("couse", Course.objects.filter(students__id=19))
-        # return Course.objects.filter(students=self.request.user.id)
+        if self.request.user.is_teacher:
+            return Course.objects.filter(teacher=self.request.user.id)
+        elif self.request.user.is_student:
+            return Course.objects.filter(students=self.request.user.id)
 
     # Debug
-    permission_classes = [
-        permissions.AllowAny  # Or users can't register
-    ]
+    # permission_classes = [
+    #     permissions.AllowAny  # Or users can't register
+    # ]
 
-
-class LonngLongListApiView(ListAPIView):
+class StudentListApiView(ListAPIView):
     model = Student
     serializer_class = StudentSerializer
 

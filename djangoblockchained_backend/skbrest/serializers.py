@@ -1,8 +1,7 @@
 # -- coding: utf-8 --
 
 from rest_framework import serializers
-from django.contrib.auth.models import User  # If used custom user model
-from .models import Student, Teacher, Course, Resource, Anouncement
+from .models import Student, Teacher, Course, Resource, Anouncement, User
 from django.core.mail import send_mail
 
 # Email Stuff A
@@ -13,8 +12,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.template.loader import render_to_string
-from django.contrib.auth.models import User
+from django.template.loader import render_to_string 
 from django.core.mail import EmailMessage
 from rest_framework_jwt.settings import api_settings
 from django.conf import settings
@@ -30,9 +28,8 @@ jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
 class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
+    # password = serializers.CharField(write_only=True)
     token = serializers.SerializerMethodField()
-    # print("token:", token)
 
     def get_token(self, obj):
         return jwt_encode_handler(jwt_payload_handler(obj))
@@ -41,7 +38,8 @@ class UserSerializer(serializers.ModelSerializer):
 
         user = User.objects.create(
             username=validated_data['username'],
-            email=validated_data['email']
+            email=validated_data['email'],
+            is_student=True,
         )
         user.set_password(validated_data['password'])
         user.save()
@@ -49,7 +47,6 @@ class UserSerializer(serializers.ModelSerializer):
         student.save()
 
         uid = urlsafe_base64_encode(force_bytes(user.pk)).decode()
-
 
         payload = jwt_payload_handler(user)
         token = jwt_encode_handler(payload)
@@ -84,43 +81,35 @@ class UserSerializer(serializers.ModelSerializer):
             [user.email],
             # fail silently
             fail_silently=False,
-            html_message = html
+            html_message = html,
         )
 
         return user
 
     class Meta:
         model = User
-        fields = ["id", "password", "username", "email", "token"]
+        fields = ["password", "username", "email", "token"]
+        extra_kwargs = {
+            'username': {'write_only': True, 'read_only': False},
+            'email': {'write_only': True, 'read_only': False},
+            'password': {'write_only': True, 'read_only': False},
+        }
 
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
-        fields = "__all__"
+        fields = "__all__" 
 
 # Nur für Get auf den User 
 class LongUserSerializer(serializers.ModelSerializer):
     courses = serializers.SerializerMethodField()
 
     def get_courses(self, obj):
-        student = None
-        teacher = None
 
-        # try to get student OR teacher
-        try:
-            student = Student.objects.get(user = obj.id)
-        except ObjectDoesNotExist:
-            pass
-        try:
-            teacher = Teacher.objects.get(user = obj.id)
-        except ObjectDoesNotExist:
-            pass
-
-        if teacher:
-            return TeacherSerializer(teacher).data["course_set"]
-        elif student: 
-            return StudentSerializer(student).data["course_set"]    #CourseSerializer(student.course_set.all()).data 
-        
+        if obj.is_teacher:
+            return TeacherSerializer(obj.teacher).data["course_set"]
+        elif obj.is_student: 
+            return StudentSerializer(obj.student ).data["course_set"]
 
     class Meta:
         model = User
