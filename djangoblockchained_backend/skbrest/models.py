@@ -3,9 +3,13 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
 
 class User(AbstractUser):
+    def upload_to(self, filename):
+        return "images/{}/{}".format(self.id, filename)
+
     is_student = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
     isEmailActivated = models.BooleanField(default=False)
+    profile_picture = models.ImageField(upload_to = upload_to, blank=True)
 
     def __str__(self):
         return self.username
