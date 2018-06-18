@@ -113,19 +113,19 @@ class LongUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["id", "username", "first_name", "last_name", "email", "last_login", "date_joined", "courses"]
+        fields = ["id", "username", "first_name", "last_name", "email", "last_login", "date_joined", "isEmailActivated", "courses", "is_teacher"]
 
 class StudentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Student
-        fields = ["user", "isEmailActivated", "course_set"]
+        fields = ["user", "course_set"]
 
 class TeacherSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Teacher
-        fields = ["user", "isEmailActivated", "course_set"]
+        fields = ["user", "course_set"]
 
 class ResourceSerializer(serializers.ModelSerializer):
     content = serializers.SerializerMethodField()
