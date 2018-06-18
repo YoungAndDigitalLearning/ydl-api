@@ -3,7 +3,7 @@
 .vscode
 
 # media
-djangoblockchained_backend/media
+ydl_api/media
 
 # VS Code Workspace
 .code-workspace
@@ -14,8 +14,8 @@ database.cnf
 db.conf
 
 # Settings.py
-djangoblockchained_backend/djangoblockchained_backend/settings.py
-djangoblockchained_backend/static
+ydl_api/ydl_api/settings.py
+ydl_api/static
 
 # __________________________________________
 

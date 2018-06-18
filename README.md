@@ -12,7 +12,7 @@ pip install pipenv==2018.5.18
 
 pipenv install --python 3.6
 
-pipenv run django-admin startproject djangoblockchained_backend
+pipenv run django-admin startproject ydl_api
 
 ```
 
