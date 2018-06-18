@@ -1,15 +1,21 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
 
-
-class Student(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    courses = models.ManyToManyField('Course')
+class User(AbstractUser):
+    is_student = models.BooleanField(default=False)
+    is_teacher = models.BooleanField(default=False)
     isEmailActivated = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user.username
+        return self.username
+
+class Student(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    courses = models.ManyToManyField('Course')
+
+    def __str__(self):
+        return str(self.user)
 
     class Meta:
         verbose_name = ('student')
@@ -17,11 +23,10 @@ class Student(models.Model):
 
 
 class Teacher(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    isEmailActivated = models.BooleanField(default=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 
     def __str__(self):
-        return self.user.username
+        return str(self.user)
 
     class Meta:
         verbose_name = ('teacher')
@@ -29,10 +34,10 @@ class Teacher(models.Model):
 
 
 class Moderator(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 
     def __str__(self):
-        return self.user.username
+        return str(self.user)
 
     class Meta:
         verbose_name = ('moderator')
