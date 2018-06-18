@@ -55,7 +55,7 @@ class UserSerializer(serializers.ModelSerializer):
 
         context = {
             'user':user.username,
-            'link':'https://ydlearning.com/activate/{}/{}'.format(uid, token),
+            'link':'https://api.ydlearning.com/activate/{}/{}'.format(uid, token),
             'expires_in':str(settings.JWT_AUTH['JWT_EXPIRATION_DELTA']),
             'expires_time': ' hours',  # change plural!
             'logo_img_link':"https://lh3.googleusercontent.com/PL8M-2OhoDITza8WOCdveAax9yQuXzaDakaJHcivO1ZjJg5D1u0eb9gzgx8VSLlfVT4vitIV2GIPkc8OfGJrR6rpko1U8JuV4CAZ2p-gvc4NhVUthlbaEz9HcKwY98UFiwN79pzu=s742-no",
