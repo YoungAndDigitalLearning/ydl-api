@@ -61,10 +61,10 @@ class UserSerializer(serializers.ModelSerializer):
             'logo_img_link':"https://lh3.googleusercontent.com/PL8M-2OhoDITza8WOCdveAax9yQuXzaDakaJHcivO1ZjJg5D1u0eb9gzgx8VSLlfVT4vitIV2GIPkc8OfGJrR6rpko1U8JuV4CAZ2p-gvc4NhVUthlbaEz9HcKwY98UFiwN79pzu=s742-no",
             'email_sendto':user.email,
             'ydl_email':"admin@ydlearning.com",
-            'ydl_url':"www.ydlearning.com",
+            'ydl_url':"https://www.ydlearning.com",
             'ydl_url_github': "https://github.com/YoungAndDigitalLearning",
-            'ydl_url_impr': "www.ydlearning.com/impressum.html",
-            'ydl_url_prpol': "www.ydlearning.com/privacypolicy",
+            'ydl_url_impr': "https://www.ydlearning.com/impressum.html",
+            'ydl_url_prpol': "https://www.ydlearning.com/privacypolicy",
         }
         html = html_template.render(context)
 
