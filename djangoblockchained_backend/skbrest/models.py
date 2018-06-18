@@ -4,7 +4,7 @@ from django.core.validators import MinValueValidator
 
 class User(AbstractUser):
     def upload_to(self, filename):
-        return "images/{}/{}".format(self.id, filename)
+        return "images/profiles/{}/{}".format(self.id, filename)
 
     is_student = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
@@ -71,7 +71,12 @@ class Anouncement(models.Model):
     title = models.CharField(max_length=100)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField()
-    image = models.ImageField()
+
+    def upload_to(self, filename):
+        return "images/anouncements/{}/{}".format(self.id, filename)
+
+    image = models.ImageField(upload_to = upload_to, blank=True)
+
     content = models.TextField()
 
     def __str__(self):
@@ -89,7 +94,11 @@ class Resource(models.Model):
     effective_from = models.DateTimeField()
     uploader = models.ForeignKey(User, on_delete=models.CASCADE)
     expires = models.DateTimeField()
-    content = models.FileField()
+
+    def upload_to(self, filename):
+        return "resources/{}/{}".format(self.id, filename)
+
+    content = models.FileField(upload_to = upload_to)
 
     def __str__(self):
         return self.name
