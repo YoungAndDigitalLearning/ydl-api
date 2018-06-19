@@ -1,7 +1,7 @@
 # -- coding: utf-8 --
 
 from rest_framework import serializers
-from .models import Student, Teacher, Course, Resource, Anouncement, User
+from .models import Student, Teacher, Course, Resource, Announcement, User
 from django.core.mail import send_mail
 
 # Email Stuff A
@@ -51,7 +51,7 @@ class UserSerializer(serializers.ModelSerializer):
         payload = jwt_payload_handler(user)
         token = jwt_encode_handler(payload)
 
-        html_template = get_template('skbrest/verification_email.html')
+        html_template = get_template('api/verification_email.html')
 
         context = {
             'user':user.username,
@@ -145,9 +145,9 @@ class ResourceSerializer(serializers.ModelSerializer):
         model = Resource
         fields = ["name", "uploaded", "effective_from", "uploader", "expires", "size", "content"]
 
-class AnouncementSerializer(serializers.ModelSerializer):
+class AnnouncementSerializer(serializers.ModelSerializer):
     author = LongUserSerializer(many = False, read_only = True)
 
     class Meta:
-        model = Anouncement
+        model = Announcement
         fields = "__all__"    

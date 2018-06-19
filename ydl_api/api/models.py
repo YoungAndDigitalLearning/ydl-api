@@ -67,13 +67,13 @@ class Course(models.Model):
         verbose_name_plural = ('courses')
 
 
-class Anouncement(models.Model):
+class Announcement(models.Model):
     title = models.CharField(max_length=100)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField()
 
     def upload_to(self, filename):
-        return "images/anouncements/{}/{}".format(self.id, filename)
+        return "images/announcements/{}/{}".format(self.id, filename)
 
     image = models.ImageField(upload_to = upload_to, blank=True)
 
@@ -83,8 +83,8 @@ class Anouncement(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = ('Anouncement')
-        verbose_name_plural = ('Anouncements')
+        verbose_name = ('Announcement')
+        verbose_name_plural = ('announcements')
         ordering = ["-date"]
 
 
