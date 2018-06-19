@@ -20,6 +20,6 @@ from django.contrib.auth.models import User
 from rest_framework import permissions, routers, serializers, viewsets
 
 urlpatterns = [
-    path('', include("skbrest.urls")),
+    path('', include("api.urls")),
     path('admin/', admin.site.urls)
 ]

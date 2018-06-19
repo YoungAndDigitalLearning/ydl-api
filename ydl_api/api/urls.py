@@ -4,7 +4,7 @@ from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify
 from rest_framework_swagger.views import get_swagger_view
 
 from .views import CourseAPIView, ListCreateUserViewSet, activate, StudentListApiView, DetailUserAPIView, DetailCourseAPIView, \
-ListCreateResourceAPIView, ListCreateAnouncementAPIView, LimitListAnouncementAPIView, render_email
+ListCreateResourceAPIView, ListCreateAnnouncementAPIView, LimitListAnnouncementAPIView, render_email
 # import .views 
 
 from django.conf import settings
@@ -34,7 +34,7 @@ urlpatterns = [
     path('users/<int:pk>', user_detail),
     path('activate/<uidb64>/<token>/', activate),
     path('resources/', ListCreateResourceAPIView.as_view()),
-    path('anouncements/', ListCreateAnouncementAPIView.as_view()), # use ...anouncements/?limit=<int:limit>... for limited An 
+    path('announcements/', ListCreateAnnouncementAPIView.as_view()), # use ...announcements/?limit=<int:limit>... for limited An 
 ]
 
 

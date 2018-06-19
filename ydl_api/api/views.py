@@ -3,8 +3,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, RetrieveAPIView
 from django.contrib.auth.models import User  # If used custom user model
 # Our imports
-from .models import Course, Student, Resource, Anouncement, Teacher, User
-from .serializers import UserSerializer, CourseSerializer, LongUserSerializer, StudentSerializer, ResourceSerializer, AnouncementSerializer
+from .models import Course, Student, Resource, Announcement, Teacher, User
+from .serializers import UserSerializer, CourseSerializer, LongUserSerializer, StudentSerializer, ResourceSerializer, AnnouncementSerializer
 
 # Email Stuff A
 from django.http import HttpResponse
@@ -39,7 +39,7 @@ def render_email(request):
         'ydl_url_prpol': "www.ydlearning.com/privacypolicy",
     }
 
-    return render(request, "skbrest/verification_email.html", context)
+    return render(request, "api/verification_email.html", context)
 
 
 def activate(request, uidb64, token):
@@ -148,19 +148,19 @@ class ListCreateResourceAPIView(ListCreateAPIView):
     queryset = Resource.objects.all()
 
 
-class ListCreateAnouncementAPIView(ListCreateAPIView):
-    model = Anouncement
-    serializer_class = AnouncementSerializer
+class ListCreateAnnouncementAPIView(ListCreateAPIView):
+    model = Announcement
+    serializer_class = AnnouncementSerializer
 
-    # queryset = Anouncement.objects.all()
+    # queryset = Announcement.objects.all()
 
     def get_queryset(self):
         if self.request.method == "GET":
             limit = self.request.GET.get("limit", None)
             if limit:
-                return Anouncement.objects.all()[:int(limit)]
+                return Announcement.objects.all()[:int(limit)]
             else:
-                return Anouncement.objects.all()
+                return Announcement.objects.all()
 
     # Everyone should see
     permission_classes = [
@@ -168,10 +168,10 @@ class ListCreateAnouncementAPIView(ListCreateAPIView):
     ]
 
 
-class LimitListAnouncementAPIView(ListAPIView):
-    model = Anouncement
-    serializer_class = AnouncementSerializer
+class LimitListAnnouncementAPIView(ListAPIView):
+    model = Announcement
+    serializer_class = AnnouncementSerializer
 
     def get_queryset(self):
         print("Quarks", self.kwargs["limit"])
-        return Anouncement.objects.all()[:self.kwargs["limit"]]
+        return Announcement.objects.all()[:self.kwargs["limit"]]
