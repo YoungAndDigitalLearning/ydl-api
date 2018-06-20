@@ -11,12 +11,21 @@ class User(AbstractUser):
     isEmailActivated = models.BooleanField(default=False)
     profile_picture = models.ImageField(upload_to = upload_to, blank=True)
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.is_student:
+            student = Student(user = self)
+            student.save()
+        elif self.is_teacher:
+            teacher = Teacher(user = self)
+            teacher.save()
+
     def __str__(self):
         return self.username
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    courses = models.ManyToManyField('Course')
+    courses = models.ManyToManyField('Course', blank = True)
 
     def __str__(self):
         return str(self.user)
