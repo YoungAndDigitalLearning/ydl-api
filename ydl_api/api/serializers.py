@@ -56,13 +56,14 @@ class UserSerializer(serializers.ModelSerializer):
             'link':'https://api.ydlearning.com/activate/{}/{}'.format(uid, token),
             'expires_in':str(settings.JWT_AUTH['JWT_EXPIRATION_DELTA']),
             'expires_time': ' hours',  # change plural!
-            'logo_img_link':"https://lh3.googleusercontent.com/PL8M-2OhoDITza8WOCdveAax9yQuXzaDakaJHcivO1ZjJg5D1u0eb9gzgx8VSLlfVT4vitIV2GIPkc8OfGJrR6rpko1U8JuV4CAZ2p-gvc4NhVUthlbaEz9HcKwY98UFiwN79pzu=s742-no",
+            #'logo_img_link':"https://lh3.googleusercontent.com/PL8M-2OhoDITza8WOCdveAax9yQuXzaDakaJHcivO1ZjJg5D1u0eb9gzgx8VSLlfVT4vitIV2GIPkc8OfGJrR6rpko1U8JuV4CAZ2p-gvc4NhVUthlbaEz9HcKwY98UFiwN79pzu=s742-no",
             'email_sendto':user.email,
+            'ydl_context': "Context Text",
             'ydl_email':"admin@ydlearning.com",
             'ydl_url':"https://www.ydlearning.com",
             'ydl_url_github': "https://github.com/YoungAndDigitalLearning",
-            'ydl_url_impr': "https://www.ydlearning.com/impressum.html",
-            'ydl_url_prpol': "https://www.ydlearning.com/privacypolicy",
+            'ydl_url_impr': "https://www.ydlearning.com/sites/impressum.html",
+            #'ydl_url_prpol': "https://www.ydlearning.com/privacypolicy",
         }
         html = html_template.render(context)
 
@@ -102,12 +103,53 @@ class CourseSerializer(serializers.ModelSerializer):
 class LongUserSerializer(serializers.ModelSerializer):
     courses = serializers.SerializerMethodField()
 
+    def update(self, instance, validated_data):
+        if instance.email != validated_data.get('email', instance.email):
+            instance.isEmailActivated = False
+
+            uid = urlsafe_base64_encode(force_bytes(instance.pk)).decode()
+
+            payload = jwt_payload_handler(instance)
+            token = jwt_encode_handler(payload)
+
+            html_template = get_template('api/verification_email.html')
+
+            context = {
+                'user': validated_data.get('username', instance.username),
+                'link':'https://api.ydlearning.com/activate/{}/{}'.format(uid, token),
+                'expires_in':str(settings.JWT_AUTH['JWT_EXPIRATION_DELTA']),
+                'expires_time': ' hours',  # change plural!
+                #'logo_img_link':"https://lh3.googleusercontent.com/PL8M-2OhoDITza8WOCdveAax9yQuXzaDakaJHcivO1ZjJg5D1u0eb9gzgx8VSLlfVT4vitIV2GIPkc8OfGJrR6rpko1U8JuV4CAZ2p-gvc4NhVUthlbaEz9HcKwY98UFiwN79pzu=s742-no",
+                'email_sendto': validated_data.get('email', instance.email),
+                'ydl_context': "Context Text",
+                'ydl_email':"admin@ydlearning.com",
+                'ydl_url':"https://www.ydlearning.com",
+                'ydl_url_github': "https://github.com/YoungAndDigitalLearning",
+                'ydl_url_impr': "https://www.ydlearning.com/sites/impressum.html",
+            }
+            html = html_template.render(context)
+            send_mail(
+                # Subject
+                '[Y&D Learning] Please verify your email address.',
+                '',
+                # Content
+                    # 
+                # Email send from
+                #'admin@ydlearning.com',
+                'no-reply@ydlearning.com',
+                # Email send to
+                [validated_data.get('email', instance.email)],
+                # fail silently
+                fail_silently=False,
+                html_message = html,
+            )
+
     def get_courses(self, obj):
 
         if obj.is_teacher:
             return TeacherSerializer(obj.teacher).data["course_set"]
         elif obj.is_student: 
-            return StudentSerializer(obj.student ).data["course_set"]
+            return StudentSerializer(obj.student ).data["courses"]
 
     class Meta:
         model = User
@@ -117,7 +159,7 @@ class StudentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Student
-        fields = ["user", "course_set"]
+        fields = ["user", "courses"]
 
 class TeacherSerializer(serializers.ModelSerializer):
 
@@ -138,6 +180,8 @@ class ResourceSerializer(serializers.ModelSerializer):
 
     def get_size(self, obj):
         return obj.content.size
+    
+    html_template = get_template('api/verification_email.html')
 
     class Meta:
         model = Resource

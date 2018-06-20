@@ -72,8 +72,8 @@ def activate(request, uidb64, token):
         pass
 
     if user is not None and validated:
+        user.isEmailActivated = True
         user.save()
-        login(request, user)
         # return redirect('home')
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
