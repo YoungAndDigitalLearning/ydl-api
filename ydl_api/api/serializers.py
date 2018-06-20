@@ -43,8 +43,6 @@ class UserSerializer(serializers.ModelSerializer):
         )
         user.set_password(validated_data['password'])
         user.save()
-        student = Student.objects.create(user=user)
-        student.save()
 
         uid = urlsafe_base64_encode(force_bytes(user.pk)).decode()
 
