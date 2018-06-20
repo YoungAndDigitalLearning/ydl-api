@@ -12,7 +12,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.template.loader import render_to_string 
+from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from rest_framework_jwt.settings import api_settings
 from django.conf import settings
@@ -23,9 +23,10 @@ from django.template.loader import get_template
 # Email Stuff E
 
 from django.utils import timezone
- 
+
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
 
 class UserSerializer(serializers.ModelSerializer):
     # password = serializers.CharField(write_only=True)
@@ -52,18 +53,17 @@ class UserSerializer(serializers.ModelSerializer):
         html_template = get_template('api/verification_email.html')
 
         context = {
-            'user':user.username,
-            'link':'https://api.ydlearning.com/activate/{}/{}'.format(uid, token),
-            'expires_in':str(settings.JWT_AUTH['JWT_EXPIRATION_DELTA']),
+            'user': user.username,
+            'link': 'https://api.ydlearning.com/activate/{}/{}'.format(uid, token),
+            'expires_in': str(settings.JWT_AUTH['JWT_EXPIRATION_DELTA']),
             'expires_time': ' hours',  # change plural!
-            #'logo_img_link':"https://lh3.googleusercontent.com/PL8M-2OhoDITza8WOCdveAax9yQuXzaDakaJHcivO1ZjJg5D1u0eb9gzgx8VSLlfVT4vitIV2GIPkc8OfGJrR6rpko1U8JuV4CAZ2p-gvc4NhVUthlbaEz9HcKwY98UFiwN79pzu=s742-no",
-            'email_sendto':user.email,
+            # 'logo_img_link':"",
+            'email_sendto': user.email,
             'ydl_context': "Context Text",
-            'ydl_email':"admin@ydlearning.com",
-            'ydl_url':"https://www.ydlearning.com",
+            'ydl_email': "admin@ydlearning.com",
+            'ydl_url': "https://www.ydlearning.com",
             'ydl_url_github': "https://github.com/YoungAndDigitalLearning",
             'ydl_url_impr': "https://www.ydlearning.com/sites/impressum.html",
-            #'ydl_url_prpol': "https://www.ydlearning.com/privacypolicy",
         }
         html = html_template.render(context)
 
@@ -72,15 +72,15 @@ class UserSerializer(serializers.ModelSerializer):
             '[Y&D Learning] Please verify your email address.',
             '',
             # Content
-                # 
+            #
             # Email send from
-            #'admin@ydlearning.com',
+            # 'admin@ydlearning.com',
             'no-reply@ydlearning.com',
             # Email send to
             [user.email],
             # fail silently
             fail_silently=False,
-            html_message = html,
+            html_message=html,
         )
 
         return user
@@ -97,9 +97,10 @@ class UserSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
-        fields = "__all__" 
+        fields = "__all__"
 
-# Nur für Get auf den User 
+# Nur für Get auf den User
+
 class LongUserSerializer(serializers.ModelSerializer):
     courses = serializers.SerializerMethodField()
 
@@ -116,14 +117,14 @@ class LongUserSerializer(serializers.ModelSerializer):
 
             context = {
                 'user': validated_data.get('username', instance.username),
-                'link':'https://api.ydlearning.com/activate/{}/{}'.format(uid, token),
-                'expires_in':str(settings.JWT_AUTH['JWT_EXPIRATION_DELTA']),
+                'link': 'https://api.ydlearning.com/activate/{}/{}'.format(uid, token),
+                'expires_in': str(settings.JWT_AUTH['JWT_EXPIRATION_DELTA']),
                 'expires_time': ' hours',  # change plural!
-                #'logo_img_link':"https://lh3.googleusercontent.com/PL8M-2OhoDITza8WOCdveAax9yQuXzaDakaJHcivO1ZjJg5D1u0eb9gzgx8VSLlfVT4vitIV2GIPkc8OfGJrR6rpko1U8JuV4CAZ2p-gvc4NhVUthlbaEz9HcKwY98UFiwN79pzu=s742-no",
+                # 'logo_img_link':"",
                 'email_sendto': validated_data.get('email', instance.email),
                 'ydl_context': "Context Text",
-                'ydl_email':"admin@ydlearning.com",
-                'ydl_url':"https://www.ydlearning.com",
+                'ydl_email': "admin@ydlearning.com",
+                'ydl_url': "https://www.ydlearning.com",
                 'ydl_url_github': "https://github.com/YoungAndDigitalLearning",
                 'ydl_url_impr': "https://www.ydlearning.com/sites/impressum.html",
             }
@@ -133,27 +134,29 @@ class LongUserSerializer(serializers.ModelSerializer):
                 '[Y&D Learning] Please verify your email address.',
                 '',
                 # Content
-                    # 
+                #
                 # Email send from
-                #'admin@ydlearning.com',
+                # 'admin@ydlearning.com',
                 'no-reply@ydlearning.com',
                 # Email send to
                 [validated_data.get('email', instance.email)],
                 # fail silently
                 fail_silently=False,
-                html_message = html,
+                html_message=html,
             )
 
     def get_courses(self, obj):
 
         if obj.is_teacher:
             return TeacherSerializer(obj.teacher).data["course_set"]
-        elif obj.is_student: 
-            return StudentSerializer(obj.student ).data["courses"]
+        elif obj.is_student:
+            return StudentSerializer(obj.student).data["courses"]
 
     class Meta:
         model = User
-        fields = ["id", "username", "first_name", "last_name", "email", "last_login", "date_joined", "isEmailActivated", "courses", "is_teacher"]
+        fields = ["id", "username", "first_name", "last_name", "last_login", "date_joined",
+                  "isEmailActivated", "courses", "is_teacher"]  # "email", Debug (Dont show emails on website)
+
 
 class StudentSerializer(serializers.ModelSerializer):
 
@@ -171,7 +174,7 @@ class ResourceSerializer(serializers.ModelSerializer):
     content = serializers.SerializerMethodField()
     size = serializers.SerializerMethodField()
 
-    # only return content if effective date is now or already passed 
+    # only return content if effective date is now or already passed
     def get_content(self, obj):
         if obj.effective_from >= timezone.now():
             return self.context["request"].build_absolute_uri(obj.content.url)
@@ -180,16 +183,17 @@ class ResourceSerializer(serializers.ModelSerializer):
 
     def get_size(self, obj):
         return obj.content.size
-    
+
     html_template = get_template('api/verification_email.html')
 
     class Meta:
         model = Resource
-        fields = ["name", "uploaded", "effective_from", "uploader", "expires", "size", "content"]
+        fields = ["name", "uploaded", "effective_from",
+                  "uploader", "expires", "size", "content"]
 
 class AnnouncementSerializer(serializers.ModelSerializer):
-    author = LongUserSerializer(many = False, read_only = True)
+    author = LongUserSerializer(many=False, read_only=True)
 
     class Meta:
         model = Announcement
-        fields = "__all__"    
+        fields = "__all__"

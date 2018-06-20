@@ -16,6 +16,7 @@ django-cors-headers = "*"
 gunicorn = "*"
 django-rest-swagger = "*"
 "django-sendgrid-v5" = "*"
+django-payments = "*"
 
 [dev-packages]
 pylint = "*"

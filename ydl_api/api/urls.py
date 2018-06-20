@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path, include 
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 from rest_framework_swagger.views import get_swagger_view
+from django.conf.urls import include, url
 
 from .views import CourseAPIView, ListCreateUserViewSet, activate, StudentListApiView, DetailUserAPIView, DetailCourseAPIView, \
 ListCreateResourceAPIView, ListCreateAnnouncementAPIView, LimitListAnnouncementAPIView, render_email
@@ -35,6 +36,7 @@ urlpatterns = [
     path('activate/<uidb64>/<token>/', activate),
     path('resources/', ListCreateResourceAPIView.as_view()),
     path('announcements/', ListCreateAnnouncementAPIView.as_view()), # use ...announcements/?limit=<int:limit>... for limited An 
+    path('payments/', include('payments.urls')),
 ]
 
 
