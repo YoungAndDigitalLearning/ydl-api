@@ -28,7 +28,7 @@ class User(AbstractUser):
         if self.is_student:
             student = Student(user = self)
             student.save()
-        elif self.is_teacher:
+        if self.is_teacher:
             teacher = Teacher(user = self)
             teacher.save()
 
