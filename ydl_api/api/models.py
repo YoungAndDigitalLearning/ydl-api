@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
 
+class Language(models.Model):
+    name = models.CharField(max_length=100)
+
 class User(AbstractUser):
     def upload_to(self, filename):
         return "images/profiles/{}/{}".format(self.id, filename)
@@ -10,6 +13,7 @@ class User(AbstractUser):
     is_teacher = models.BooleanField(default=False)
     isEmailActivated = models.BooleanField(default=False)
     profile_picture = models.ImageField(upload_to = upload_to, blank=True)
+    languages = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -44,7 +48,7 @@ class Teacher(models.Model):
     class Meta:
         verbose_name = ('teacher')
         verbose_name_plural = ('teachers')
-
+ 
 
 class Moderator(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -60,13 +64,13 @@ class Moderator(models.Model):
 class Course(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=512)
-    students = models.ManyToManyField(Student)
+    # students = models.ManyToManyField(Student)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     deadline = models.DateTimeField()
-    student_count = models.IntegerField(validators=[MinValueValidator(0)])
+    student_count = models.IntegerField(validators=[MinValueValidator(0)], default=0)
     created = models.DateTimeField(auto_now_add=True)
     price = models.IntegerField(default=0)
-    resources = models.ManyToManyField("Resource") 
+    resources = models.ManyToManyField("Resource", blank=True) 
 
     def __str__(self):
         return self.name
@@ -79,7 +83,7 @@ class Course(models.Model):
 class Announcement(models.Model):
     title = models.CharField(max_length=100)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateTimeField()
+    date = models.DateTimeField(auto_now_add=True)
 
     def upload_to(self, filename):
         return "images/announcements/{}/{}".format(self.id, filename)
@@ -99,10 +103,11 @@ class Announcement(models.Model):
 
 class Resource(models.Model):
     name = models.CharField(max_length=100)
-    uploaded = models.DateTimeField()
+    uploaded = models.DateTimeField(auto_now_add=True)
     effective_from = models.DateTimeField()
     uploader = models.ForeignKey(User, on_delete=models.CASCADE)
     expires = models.DateTimeField()
+#   content
 
     def upload_to(self, filename):
         return "resources/{}/{}".format(self.id, filename)
