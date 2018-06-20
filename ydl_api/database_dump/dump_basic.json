@@ -1,0 +1,180 @@
+[
+       {
+        "model": "api.user",
+        "pk": 3,
+        "fields": {
+            "password": "pbkdf2_sha256$100000$1Y0Flfbwkr1c$csLdormuw7AyoJAusRUEEF21L4b7GdmzqnlsrgUwPO4=",
+            "last_login": "2018-06-19T23:46:24Z",
+            "is_superuser": false,
+            "username": "Croozer",
+            "first_name": "KeepKroozin",
+            "last_name": "Croozer",
+            "email": "ren.karrass+Croozer@gmail.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2018-06-19T23:41:03Z",
+            "is_student": true,
+            "is_teacher": true,
+            "isEmailActivated": true,
+            "profile_picture": "",
+            "languages": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "api.user",
+        "pk": 4,
+        "fields": {
+            "password": "pbkdf2_sha256$100000$WMjUZ372hQ65$+GrzeZscG678azkrGeozxuGaNowJ9zVYq1hQybEE0hw=",
+            "last_login": "2018-06-19T23:46:07Z",
+            "is_superuser": false,
+            "username": "Hansi",
+            "first_name": "Hansi",
+            "last_name": "Hansi",
+            "email": "ren.karrass+Croozer@gmail.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2018-06-19T23:41:47Z",
+            "is_student": true,
+            "is_teacher": false,
+            "isEmailActivated": false,
+            "profile_picture": "",
+            "languages": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "api.user",
+        "pk": 5,
+        "fields": {
+            "password": "pbkdf2_sha256$100000$4vi4C89CuKCf$wdfZaxswoBDgtqPdAhuP5+0qQTmFBbj96AN34xT3vrU=",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "HansiF",
+            "first_name": "",
+            "last_name": "",
+            "email": "ren.karrass@gmail.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2018-06-20T00:21:48.248Z",
+            "is_student": true,
+            "is_teacher": false,
+            "isEmailActivated": false,
+            "profile_picture": "",
+            "languages": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "api.user",
+        "pk": 6,
+        "fields": {
+            "password": "pbkdf2_sha256$100000$hk8DC9nBqbhm$toi4OI/znpPwC7WJ/vivXe476MOfMkOsIPfzlKxhuns=",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "HansiFF",
+            "first_name": "",
+            "last_name": "",
+            "email": "ren.karrass@gmail.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2018-06-20T00:23:35.832Z",
+            "is_student": true,
+            "is_teacher": false,
+            "isEmailActivated": false,
+            "profile_picture": "",
+            "languages": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "api.user",
+        "pk": 7,
+        "fields": {
+            "password": "pbkdf2_sha256$100000$0sWwqPRiDZQA$oYMfEX6Z9G/R3RcURKgiPUnCvBfML6uec4X6lldFlfk=",
+            "last_login": "2018-06-20T00:28:15.171Z",
+            "is_superuser": false,
+            "username": "HansiFFF",
+            "first_name": "",
+            "last_name": "",
+            "email": "ren.karrass@gmail.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2018-06-20T00:27:59.249Z",
+            "is_student": true,
+            "is_teacher": false,
+            "isEmailActivated": false,
+            "profile_picture": "",
+            "languages": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "api.student",
+        "pk": 3,
+        "fields": {
+            "courses": []
+        }
+    },
+    {
+        "model": "api.student",
+        "pk": 4,
+        "fields": {
+            "courses": []
+        }
+    },
+    {
+        "model": "api.student",
+        "pk": 5,
+        "fields": {
+            "courses": []
+        }
+    },
+    {
+        "model": "api.student",
+        "pk": 6,
+        "fields": {
+            "courses": []
+        }
+    },
+    {
+        "model": "api.student",
+        "pk": 7,
+        "fields": {
+            "courses": []
+        }
+    },
+    {
+        "model": "api.teacher",
+        "pk": 3,
+        "fields": {}
+    },
+    {
+        "model": "api.announcement",
+        "pk": 1,
+        "fields": {
+            "title": "Neuer Klingonisch Kurs!",
+            "author": 3,
+            "date": "2018-06-20T00:30:09Z",
+            "image": "",
+            "content": "Lerne gerne (h\u00f6h\u00f6) hier Klingonisch"
+        }
+    },
+    {
+        "model": "api.resource",
+        "pk": 1,
+        "fields": {
+            "name": "sadad",
+            "uploaded": "2018-06-19T23:47:40Z",
+            "effective_from": "2018-06-19T23:47:41Z",
+            "uploader": 3,
+            "expires": "2018-06-19T23:47:45Z",
+            "content": "resources/None/YDL-Logo05x.png"
+        }
+    }
+]

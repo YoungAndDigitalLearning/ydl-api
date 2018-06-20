@@ -5,6 +5,9 @@ from django.core.validators import MinValueValidator
 class Language(models.Model):
     name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
 class User(AbstractUser):
     def upload_to(self, filename):
         return "images/profiles/{}/{}".format(self.id, filename)
@@ -127,7 +130,7 @@ class CalendarEntry(models.Model):
         ('HOMEWORK', 'Homework'),
         ('EXAM', 'Exam'),
     )
-    date = models.DateField()
+    date = models.DateTimeField()
     matter = models.CharField(choices=MATTER_CHOICES, max_length=12)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
