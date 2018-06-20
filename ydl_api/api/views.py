@@ -21,6 +21,11 @@ from rest_framework_jwt.settings import api_settings
 from django.core.exceptions import ObjectDoesNotExist
 # Email Stuff E
 
+# Payment
+from django.shortcuts import get_object_or_404, redirect
+from django.template.response import TemplateResponse
+from payments import get_payment_model, RedirectNeeded
+
 jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
 
 def render_email(request):
@@ -167,7 +172,6 @@ class ListCreateAnnouncementAPIView(ListCreateAPIView):
         permissions.AllowAny  # Or users can't register
     ]
 
-
 class LimitListAnnouncementAPIView(ListAPIView):
     model = Announcement
     serializer_class = AnnouncementSerializer
@@ -175,3 +179,15 @@ class LimitListAnnouncementAPIView(ListAPIView):
     def get_queryset(self):
         print("Quarks", self.kwargs["limit"])
         return Announcement.objects.all()[:self.kwargs["limit"]]
+
+
+
+
+def payment_details(request, payment_id):
+    payment = get_object_or_404(get_payment_model(), id=payment_id)
+    try:
+        form = payment.get_form(data=request.POST or None)
+    except RedirectNeeded as redirect_to:
+        return redirect(str(redirect_to))
+    return TemplateResponse(request, 'payment.html',
+                            {'form': form, 'payment': payment})

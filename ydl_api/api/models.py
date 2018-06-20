@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
+from decimal import Decimal
+
+from payments import PurchasedItem
+from payments.models import BasePayment
 
 class Language(models.Model):
     name = models.CharField(max_length=100)
@@ -17,6 +21,7 @@ class User(AbstractUser):
     isEmailActivated = models.BooleanField(default=False)
     profile_picture = models.ImageField(upload_to = upload_to, blank=True)
     languages = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    credit = models.DecimalField(max_digits=19, decimal_places=2, default=0)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -33,6 +38,7 @@ class User(AbstractUser):
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     courses = models.ManyToManyField('Course', blank = True)
+    # paid_courses = models.ManyToManyField('Course', blank = True)
 
     def __str__(self):
         return str(self.user)
@@ -40,7 +46,6 @@ class Student(models.Model):
     class Meta:
         verbose_name = ('student')
         verbose_name_plural = ('students')
-
 
 class Teacher(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -67,7 +72,6 @@ class Moderator(models.Model):
 class Course(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=512)
-    # students = models.ManyToManyField(Student)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     deadline = models.DateTimeField()
     student_count = models.IntegerField(validators=[MinValueValidator(0)], default=0)
@@ -81,6 +85,8 @@ class Course(models.Model):
     class Meta:
         verbose_name = ('course')
         verbose_name_plural = ('courses')
+
+#class PaidCourse(models.Model):
 
 
 class Announcement(models.Model):
@@ -140,3 +146,16 @@ class CalendarEntry(models.Model):
     
     def __str__(self):
         return self.matter
+
+class Payment(BasePayment):
+
+    def get_failure_url(self):
+        return 'https://ydlearning.com/failure/'
+
+    def get_success_url(self):
+        return 'https://ydlearning.com/success/'
+
+    def get_purchased_items(self):
+        # you'll probably want to retrieve these from an associated order
+        yield PurchasedItem(name='The Hound of the Baskervilles', sku='BSKV',
+                            quantity=9, price=Decimal(10), currency='USD')
