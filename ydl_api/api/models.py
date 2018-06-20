@@ -13,7 +13,7 @@ class User(AbstractUser):
     is_teacher = models.BooleanField(default=False)
     isEmailActivated = models.BooleanField(default=False)
     profile_picture = models.ImageField(upload_to = upload_to, blank=True)
-    languages = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True)
+    languages = models.ForeignKey(Language, on_delete=models.CASCADE, null=True)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
