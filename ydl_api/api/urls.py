@@ -4,21 +4,25 @@ from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify
 from rest_framework_swagger.views import get_swagger_view
 from django.conf.urls import include, url
 
-from .views import CourseAPIView, ListCreateUserViewSet, activate, StudentListApiView, DetailUserAPIView, DetailCourseAPIView, \
-ListCreateResourceAPIView, ListCreateAnnouncementAPIView, LimitListAnnouncementAPIView, render_email
+from .views import CourseAPIView, UserViewSet, activate, StudentListApiView, DetailUserAPIView, DetailCourseAPIView, \
+ListCreateResourceAPIView, ListCreateAnnouncementAPIView, LimitListAnnouncementAPIView, render_email, PostViewSet
 # import .views 
 
 from django.conf import settings
 
-user_list = ListCreateUserViewSet.as_view({
+user_list = UserViewSet.as_view({
     'get': 'list',
     'post': 'create'
 })
-user_detail = ListCreateUserViewSet.as_view({
+user_detail = UserViewSet.as_view({
     'get': 'retrieve',
     'put': 'update',
     'patch': 'partial_update',
     'delete': 'destroy'
+})
+post_list = PostViewSet.as_view({
+    'get': 'list',
+    'post': 'create'
 })
 
 schema_view = get_swagger_view(title='Y&D Learning API')
@@ -37,6 +41,7 @@ urlpatterns = [
     path('resources/', ListCreateResourceAPIView.as_view()),
     path('announcements/', ListCreateAnnouncementAPIView.as_view()), # use ...announcements/?limit=<int:limit>... for limited An 
     path('payments/', include('payments.urls')),
+    path('posts/', post_list, name="post-list")
 ]
 
 
