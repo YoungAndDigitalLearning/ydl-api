@@ -1,7 +1,7 @@
 # -- coding: utf-8 --
 
 from rest_framework import serializers
-from .models import Student, Teacher, Course, Resource, Announcement, User
+from .models import Student, Teacher, Course, Resource, Announcement, User, Post
 from django.core.mail import send_mail
 
 # Email Stuff A
@@ -94,13 +94,23 @@ class UserSerializer(serializers.ModelSerializer):
             'password': {'write_only': True, 'read_only': False},
         }
 
+
 class CourseSerializer(serializers.ModelSerializer):
+    # PrimaryKeyRelatedField(many=True, read_only=True)
+    posts = serializers.SerializerMethodField()
+
+    def get_posts(self, obj):
+        print("Murks", Post.objects.filter(course=obj))
+
+        return [PostSerializer(post).data["id"] for post in Post.objects.filter(course=obj, parent_post__isnull=True)]
+        # PostSerializer(Post.objects.filter(course = obj)).data
+
     class Meta:
         model = Course
         fields = "__all__"
 
-# Nur für Get auf den User
 
+# Nur für Get auf den User
 class LongUserSerializer(serializers.ModelSerializer):
     courses = serializers.SerializerMethodField()
 
@@ -164,11 +174,13 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         fields = ["user", "courses"]
 
+
 class TeacherSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Teacher
         fields = ["user", "course_set"]
+
 
 class ResourceSerializer(serializers.ModelSerializer):
     content = serializers.SerializerMethodField()
@@ -191,9 +203,17 @@ class ResourceSerializer(serializers.ModelSerializer):
         fields = ["name", "uploaded", "effective_from",
                   "uploader", "expires", "size", "content"]
 
+
 class AnnouncementSerializer(serializers.ModelSerializer):
     author = LongUserSerializer(many=False, read_only=True)
 
     class Meta:
         model = Announcement
+        fields = "__all__"
+
+
+class PostSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
         fields = "__all__"
