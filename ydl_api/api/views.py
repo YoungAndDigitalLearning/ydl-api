@@ -3,8 +3,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, RetrieveAPIView
 from django.contrib.auth.models import User  # If used custom user model
 # Our imports
-from .models import Course, Student, Resource, Announcement, Teacher, User
-from .serializers import UserSerializer, CourseSerializer, LongUserSerializer, StudentSerializer, ResourceSerializer, AnnouncementSerializer
+from .models import Course, Student, Resource, Announcement, Teacher, User, Post
+from .serializers import UserSerializer, CourseSerializer, LongUserSerializer, StudentSerializer, ResourceSerializer, AnnouncementSerializer, PostSerializer
 
 # Email Stuff A
 from django.http import HttpResponse
@@ -27,6 +27,7 @@ from django.template.response import TemplateResponse
 from payments import get_payment_model, RedirectNeeded
 
 jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
+
 
 def render_email(request):
     context = {
@@ -85,7 +86,7 @@ def activate(request, uidb64, token):
         return HttpResponse('Activation link is invalid!')
 
 
-class ListCreateUserViewSet(ModelViewSet):
+class UserViewSet(ModelViewSet):
 
     """ User Resource
     ---
@@ -135,6 +136,7 @@ class CourseAPIView(ListAPIView):
     #     permissions.AllowAny  # Or users can't register
     # ]
 
+
 class StudentListApiView(ListAPIView):
     model = Student
     serializer_class = StudentSerializer
@@ -172,6 +174,7 @@ class ListCreateAnnouncementAPIView(ListCreateAPIView):
         permissions.AllowAny  # Or users can't register
     ]
 
+
 class LimitListAnnouncementAPIView(ListAPIView):
     model = Announcement
     serializer_class = AnnouncementSerializer
@@ -179,8 +182,6 @@ class LimitListAnnouncementAPIView(ListAPIView):
     def get_queryset(self):
         print("Quarks", self.kwargs["limit"])
         return Announcement.objects.all()[:self.kwargs["limit"]]
-
-
 
 
 def payment_details(request, payment_id):
@@ -191,3 +192,13 @@ def payment_details(request, payment_id):
         return redirect(str(redirect_to))
     return TemplateResponse(request, 'payment.html',
                             {'form': form, 'payment': payment})
+
+
+class PostViewSet(ModelViewSet):
+    model = Post
+    serializer_class = PostSerializer
+    queryset = Post.objects.all()
+
+    permission_classes = [
+        permissions.AllowAny  # Or users can't register
+    ]
