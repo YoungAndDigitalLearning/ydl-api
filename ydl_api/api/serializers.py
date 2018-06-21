@@ -214,6 +214,15 @@ class AnnouncementSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
 
+    childs = serializers.SerializerMethodField()
+
+    def get_childs(self, obj):
+        for child in obj.childs.all():
+            if obj.childs is not "":
+                yield PostSerializer(child).data
+            else:
+                return None
+
     class Meta:
         model = Post
-        fields = "__all__"
+        fields = ["id", "title", "text", "date", "author", "course", "childs"]

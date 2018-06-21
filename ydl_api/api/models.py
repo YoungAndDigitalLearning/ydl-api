@@ -166,7 +166,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="posts")
-    parent_post = models.ForeignKey("Post", on_delete=models.CASCADE, blank=True, null=True) 
+    childs = models.ManyToManyField("Post", blank=True) 
 
     
     def __str__(self):
