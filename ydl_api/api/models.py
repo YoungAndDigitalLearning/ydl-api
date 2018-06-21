@@ -163,7 +163,7 @@ class Payment(BasePayment):
 class Post(models.Model):
     title = models.CharField(max_length=100)
     text = models.TextField()
-    author = models.OneToOneField(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="posts")
     parent_post = models.ForeignKey("Post", on_delete=models.CASCADE, blank=True, null=True) 
