@@ -239,6 +239,14 @@ class CourseAPIView(ListAPIView):
     #     permissions.AllowAny  # Or users can't register
     # ]
 
+class CourseAllAPIView(ListAPIView):
+    model = Course
+    serializer_class = CourseSerializer
+
+    def get_queryset(self):
+        
+        return Course.objects.filter(price=0)
+
 
 class StudentListApiView(ListAPIView):
     model = Student
