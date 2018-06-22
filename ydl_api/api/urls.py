@@ -5,7 +5,7 @@ from rest_framework_swagger.views import get_swagger_view
 from django.conf.urls import include, url
 
 from .views import CourseAPIView, UserViewSet, activate, StudentListApiView, DetailUserAPIView, DetailCourseAPIView, \
-ListCreateResourceAPIView, ListCreateAnnouncementAPIView, LimitListAnnouncementAPIView, render_email, PostViewSet
+ListCreateResourceAPIView, ListCreateAnnouncementAPIView, LimitListAnnouncementAPIView, render_email, PostViewSet, CourseAllAPIView
 # import .views 
 
 from django.conf import settings
@@ -49,6 +49,7 @@ urlpatterns = [
     path('payments/', include('payments.urls')),
     path('posts/', post_list, name="post-list"),
     path('posts/<int:pk>', post_detail, name="post-detail"),
+    path('courses/free/', CourseAllAPIView.as_view()),
 ]
 
 
