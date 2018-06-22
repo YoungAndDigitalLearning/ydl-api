@@ -235,9 +235,9 @@ class CourseAPIView(ListAPIView):
             return Course.objects.filter(student=self.request.user.id)
 
     # Debug
-    # permission_classes = [
-    #     permissions.AllowAny  # Or users can't register
-    # ]
+    permission_classes = [
+        permissions.AllowAny  # Or users can't register
+    ]
 
 class CourseAllAPIView(ListAPIView):
     model = Course

@@ -17,6 +17,7 @@ gunicorn = "*"
 django-rest-swagger = "*"
 "django-sendgrid-v5" = "*"
 django-payments = "*"
+drf-yasg = {extras = ["validation"]}
 
 [dev-packages]
 pylint = "*"

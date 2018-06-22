@@ -31,9 +31,15 @@ class User(AbstractUser):
         if self.is_student:
             student = Student(user=self)
             student.save()
+        else:
+            if hasattr(self, 'student'):
+                self.student.delete()
         if self.is_teacher:
             teacher = Teacher(user=self)
             teacher.save()
+        else:
+            if hasattr(self, 'teacher'):
+                self.teacher.delete()
 
     def __str__(self):
         return self.username
