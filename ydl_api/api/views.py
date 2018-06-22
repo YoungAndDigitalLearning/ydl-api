@@ -26,22 +26,28 @@ from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from payments import get_payment_model, RedirectNeeded
 
+# own 404
+from django.shortcuts import (
+    render_to_response
+)
+from django.template import RequestContext
+
 jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
 
 
 def render_email(request):
     context = {
-            'user': 'Croozer',
-            'link': 'https://api.ydlearning.com/activate/',
-            'expires_in': '1',
-            'expires_time': ' hours',  # change plural!
-            # 'logo_img_link':"",
-            'email_sendto': 'Croozer@',
-            'ydl_context': "Context Text",
-            'ydl_email': "admin@ydlearning.com",
-            'ydl_url': "https://www.ydlearning.com",
-            'ydl_url_github': "https://github.com/YoungAndDigitalLearning",
-            'ydl_url_impr': "https://www.ydlearning.com/sites/impressum.html",
+        'user': 'Croozer',
+        'link': 'https://api.ydlearning.com/activate/',
+        'expires_in': '1',
+        'expires_time': ' hours',  # change plural!
+        # 'logo_img_link':"",
+        'email_sendto': 'Croozer@',
+        'ydl_context': "Context Text",
+        'ydl_email': "admin@ydlearning.com",
+        'ydl_url': "https://www.ydlearning.com",
+        'ydl_url_github': "https://github.com/YoungAndDigitalLearning",
+        'ydl_url_impr': "https://www.ydlearning.com/sites/impressum.html",
     }
 
     # return render(request, "api/verification_email.html", context)
@@ -239,12 +245,13 @@ class CourseAPIView(ListAPIView):
         permissions.AllowAny  # Or users can't register
     ]
 
+
 class CourseAllAPIView(ListAPIView):
     model = Course
     serializer_class = CourseSerializer
 
     def get_queryset(self):
-        
+
         return Course.objects.filter(price=0)
 
 
@@ -313,3 +320,26 @@ class PostViewSet(ModelViewSet):
     permission_classes = [
         permissions.AllowAny  # Or users can't register
     ]
+
+
+from rest_framework.exceptions import NotFound
+
+def error404(request):
+    print("Page not found")
+    raise NotFound(detail="Error 404, page not found. Custom", code=404)
+
+# def error_404_view(request, exception):
+#     print("Page not found")
+#     return render(request,'myapp/404.html')
+
+# HTTP Error 404
+# def page_not_found(request):
+#     print("Page not found")
+#     response = render_to_response(
+#         '404.html',
+#         context_instance=RequestContext(request)
+#     )
+# 
+#     response.status_code = 404
+# 
+#     return response
