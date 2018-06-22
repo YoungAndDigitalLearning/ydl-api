@@ -102,7 +102,7 @@ class CourseSerializer(serializers.ModelSerializer):
     def get_posts(self, obj):
         print("Murks", Post.objects.filter(course=obj))
 
-        return [PostSerializer(post).data["id"] for post in Post.objects.filter(course=obj, parent_post__isnull=True)]
+        return [PostSerializer(post).data["id"] for post in Post.objects.filter(course=obj, childs__isnull=True)]
         # PostSerializer(Post.objects.filter(course = obj)).data
 
     class Meta:

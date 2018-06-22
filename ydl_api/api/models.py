@@ -6,11 +6,13 @@ from decimal import Decimal
 from payments import PurchasedItem
 from payments.models import BasePayment
 
+
 class Language(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
+
 
 class User(AbstractUser):
     def upload_to(self, filename):
@@ -19,25 +21,28 @@ class User(AbstractUser):
     is_student = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
     isEmailActivated = models.BooleanField(default=False)
-    profile_picture = models.ImageField(upload_to = upload_to, blank=True)
-    languages = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    profile_picture = models.ImageField(upload_to=upload_to, blank=True)
+    languages = models.ForeignKey(
+        Language, on_delete=models.CASCADE, blank=True, null=True)
     credit = models.DecimalField(max_digits=19, decimal_places=2, default=0)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if self.is_student:
-            student = Student(user = self)
+            student = Student(user=self)
             student.save()
         if self.is_teacher:
-            teacher = Teacher(user = self)
+            teacher = Teacher(user=self)
             teacher.save()
 
     def __str__(self):
         return self.username
 
+
 class Student(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    courses = models.ManyToManyField('Course', blank = True)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, primary_key=True)
+    courses = models.ManyToManyField('Course', blank=True)
     # paid_courses = models.ManyToManyField('Course', blank = True)
 
     def __str__(self):
@@ -47,8 +52,10 @@ class Student(models.Model):
         verbose_name = ('student')
         verbose_name_plural = ('students')
 
+
 class Teacher(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, primary_key=True)
 
     def __str__(self):
         return str(self.user)
@@ -56,10 +63,11 @@ class Teacher(models.Model):
     class Meta:
         verbose_name = ('teacher')
         verbose_name_plural = ('teachers')
- 
+
 
 class Moderator(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, primary_key=True)
 
     def __str__(self):
         return str(self.user)
@@ -74,10 +82,11 @@ class Course(models.Model):
     description = models.CharField(max_length=512)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     deadline = models.DateTimeField()
-    student_count = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+    student_count = models.IntegerField(
+        validators=[MinValueValidator(0)], default=0)
     created = models.DateTimeField(auto_now_add=True)
     price = models.IntegerField(default=0)
-    resources = models.ManyToManyField("Resource", blank=True) 
+    resources = models.ManyToManyField("Resource", blank=True)
 
     def __str__(self):
         return self.name
@@ -86,7 +95,7 @@ class Course(models.Model):
         verbose_name = ('course')
         verbose_name_plural = ('courses')
 
-#class PaidCourse(models.Model):
+# class PaidCourse(models.Model):
 
 
 class Announcement(models.Model):
@@ -97,7 +106,7 @@ class Announcement(models.Model):
     def upload_to(self, filename):
         return "images/announcements/{}/{}".format(self.id, filename)
 
-    image = models.ImageField(upload_to = upload_to, blank=True)
+    image = models.ImageField(upload_to=upload_to, blank=True)
 
     content = models.TextField()
 
@@ -121,7 +130,7 @@ class Resource(models.Model):
     def upload_to(self, filename):
         return "resources/{}/{}".format(self.id, filename)
 
-    content = models.FileField(upload_to = upload_to)
+    content = models.FileField(upload_to=upload_to)
 
     def __str__(self):
         return self.name
@@ -129,6 +138,7 @@ class Resource(models.Model):
     class Meta:
         verbose_name = ('resource')
         verbose_name_plural = ('resources')
+
 
 class CalendarEntry(models.Model):
     MATTER_CHOICES = (
@@ -143,9 +153,10 @@ class CalendarEntry(models.Model):
     class Meta:
         verbose_name = ('calendar entry')
         verbose_name_plural = ('calendar entries')
-    
+
     def __str__(self):
         return self.matter
+
 
 class Payment(BasePayment):
 
@@ -160,14 +171,21 @@ class Payment(BasePayment):
         yield PurchasedItem(name='The Hound of the Baskervilles', sku='BSKV',
                             quantity=9, price=Decimal(10), currency='USD')
 
+
 class Post(models.Model):
     title = models.CharField(max_length=100)
     text = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="posts")
-    childs = models.ManyToManyField("Post", blank=True) 
+    course = models.ForeignKey(
+        Course, on_delete=models.CASCADE, related_name="posts")
+    childs = models.ManyToManyField("Post", blank=True)
 
-    
     def __str__(self):
         return self.title
+
+class Message(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="receiver")
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sender")
+    text = models.CharField(max_length=4096)
+    date = models.DateTimeField(auto_now_add=True)
