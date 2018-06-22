@@ -9,9 +9,13 @@ from .views import CourseAPIView, UserViewSet, activate, StudentListApiView, Det
 ListCreateResourceAPIView, ListCreateAnnouncementAPIView, LimitListAnnouncementAPIView, render_email, PostViewSet, CourseAllAPIView
 # import .views 
 
+
 from django.conf.urls import (
-handler400, handler403, handler404, handler500
-)
+  handler400, handler403, handler404, handler500)
+
+from api.views import error404
+handler404 = error404
+
 
 from django.conf import settings
 
