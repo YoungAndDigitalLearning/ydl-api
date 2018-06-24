@@ -7,6 +7,8 @@ from .models import Course, Student, Resource, Announcement, Teacher, User, Post
 from .serializers import UserSerializer, CourseSerializer, LongUserSerializer, StudentSerializer, \
     ResourceSerializer, AnnouncementSerializer, PostSerializer, MessageSerializer
 
+from django.db.models import Q 
+
 # Email Stuff A
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
