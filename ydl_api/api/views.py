@@ -236,10 +236,13 @@ class CourseAPIView(ListAPIView):
     serializer_class = CourseSerializer
 
     def get_queryset(self):
-        if self.request.user.is_teacher:
+        if self.request.user.is_teacher and self.request.user.is_student:
+            return Course.objects.filter(Q(teacher=self.request.user.id) | Q(student=self.request.user.id)) 
+        elif self.request.user.is_teacher:
             return Course.objects.filter(teacher=self.request.user.id)
         elif self.request.user.is_student:
             return Course.objects.filter(student=self.request.user.id)
+        
 
     # Debug
     permission_classes = [
