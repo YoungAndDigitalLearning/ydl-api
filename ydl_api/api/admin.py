@@ -5,6 +5,10 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ("__str__", "id", "teacher", "is_teacher", "student", "isEmailActivated", "credit") 
     list_display_links = ("__str__", "teacher", "student") 
 
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ("__str__", "sender", "receiver", "text", "date")
+    list_display_links =("__str__", "sender", "receiver")
+
 
 # Register your models here.
 admin.site.register(User, UserAdmin)
@@ -16,4 +20,4 @@ admin.site.register(Announcement)
 admin.site.register(Resource)
 admin.site.register(Language)
 admin.site.register(Post)
-admin.site.register(Message)
+admin.site.register(Message, MessageAdmin)
