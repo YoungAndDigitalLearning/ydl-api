@@ -156,6 +156,8 @@ class LongUserSerializer(serializers.ModelSerializer):
                 html_message=html,
             )
 
+        super().update(instance, validated_data)
+
         return instance
         
 
