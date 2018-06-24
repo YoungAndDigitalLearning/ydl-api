@@ -1,8 +1,9 @@
 # -- coding: utf-8 --
 
 from rest_framework import serializers
-from .models import Student, Teacher, Course, Resource, Announcement, User, Post
+from .models import Student, Teacher, Course, Resource, Announcement, User, Post, Message
 from django.core.mail import send_mail
+from django.db.models import Q
 
 # Email Stuff A
 from django.http import HttpResponse
@@ -112,8 +113,9 @@ class CourseSerializer(serializers.ModelSerializer):
 # Nur für Get auf den User
 class LongUserSerializer(serializers.ModelSerializer):
     courses = serializers.SerializerMethodField()
+    messages = serializers.SerializerMethodField()
 
-    def update(self, instance, validated_data):
+    def update(self, instance, validated_data, *args, **kwargs):
         if instance.email != validated_data.get('email', instance.email):
             instance.isEmailActivated = False
 
@@ -154,17 +156,37 @@ class LongUserSerializer(serializers.ModelSerializer):
                 html_message=html,
             )
 
+        super().update(*args, **kwargs)
+        
+
     def get_courses(self, obj):
 
         if obj.is_teacher:
             return TeacherSerializer(obj.teacher).data["course_set"]
         elif obj.is_student:
             return StudentSerializer(obj.student).data["courses"]
+        
+    def get_messages(self, obj):
+        messages = {}
+
+        for message in Message.objects.filter(Q(receiver = obj) | Q(sender = obj)):
+            if message.sender != obj:
+                try:
+                    messages[int(message.sender.id)].append(MessageSerializer(message).data)
+                except KeyError:
+                    messages[int(message.sender.id)] = [MessageSerializer(message).data]
+            else:
+                try:
+                    messages[int(message.receiver.id)].append(MessageSerializer(message).data)
+                except KeyError:
+                    messages[int(message.receiver.id)] = [MessageSerializer(message).data]
+        return messages
+
 
     class Meta:
         model = User
         fields = ["id", "username", "first_name", "last_name", "last_login", "date_joined",
-                  "isEmailActivated", "courses", "is_teacher"]  # "email", Debug (Dont show emails on website)
+                  "isEmailActivated", "courses", "is_teacher", "messages"]  # "email", Debug (Dont show emails on website)
 
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -225,3 +247,9 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ["id", "title", "text", "date", "author", "course", "childs"]
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = "__all__"

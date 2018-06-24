@@ -3,8 +3,9 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, RetrieveAPIView
 from django.contrib.auth.models import User  # If used custom user model
 # Our imports
-from .models import Course, Student, Resource, Announcement, Teacher, User, Post
-from .serializers import UserSerializer, CourseSerializer, LongUserSerializer, StudentSerializer, ResourceSerializer, AnnouncementSerializer, PostSerializer
+from .models import Course, Student, Resource, Announcement, Teacher, User, Post, Message
+from .serializers import UserSerializer, CourseSerializer, LongUserSerializer, StudentSerializer, \
+    ResourceSerializer, AnnouncementSerializer, PostSerializer, MessageSerializer
 
 # Email Stuff A
 from django.http import HttpResponse
@@ -322,24 +323,11 @@ class PostViewSet(ModelViewSet):
     ]
 
 
-from rest_framework.exceptions import NotFound
+class MessageViewSet(ModelViewSet):
+    model = Message
+    serializer_class = MessageSerializer
+    queryset = Message.objects.all()
 
-def error404(request):
-    print("Page not found")
-    raise NotFound(detail="Error 404, page not found. Custom", code=404)
-
-# def error_404_view(request, exception):
-#     print("Page not found")
-#     return render(request,'myapp/404.html')
-
-# HTTP Error 404
-# def page_not_found(request):
-#     print("Page not found")
-#     response = render_to_response(
-#         '404.html',
-#         context_instance=RequestContext(request)
-#     )
-# 
-#     response.status_code = 404
-# 
-#     return response
+    permission_classes = [
+        permissions.AllowAny  # Or users can't register
+    ]
