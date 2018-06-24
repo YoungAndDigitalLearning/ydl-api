@@ -156,7 +156,7 @@ class LongUserSerializer(serializers.ModelSerializer):
                 html_message=html,
             )
 
-        super().update(*args, **kwargs)
+        return instance
         
 
     def get_courses(self, obj):
