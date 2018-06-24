@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Teacher, Student, Course, CalendarEntry, Announcement, Resource, User, Language, Post
+from .models import Teacher, Student, Course, CalendarEntry, Announcement, Resource, User, Language, Post, Message
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ("__str__", "id", "teacher", "is_teacher", "student", "isEmailActivated", "credit") 
@@ -16,3 +16,4 @@ admin.site.register(Announcement)
 admin.site.register(Resource)
 admin.site.register(Language)
 admin.site.register(Post)
+admin.site.register(Message)

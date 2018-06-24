@@ -10,12 +10,6 @@ ListCreateResourceAPIView, ListCreateAnnouncementAPIView, LimitListAnnouncementA
 # import .views 
 
 
-from django.conf.urls import (
-  handler400, handler403, handler404, handler500)
-
-from api.views import error404
-handler404 = error404
-
 
 from django.conf import settings
 
