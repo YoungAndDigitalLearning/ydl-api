@@ -6,13 +6,13 @@ from rest_framework_swagger.views import get_swagger_view
 from django.conf.urls import include, url
 
 from .views import CourseAPIView, UserViewSet, activate, StudentListApiView, DetailUserAPIView, DetailCourseAPIView, \
-ListCreateResourceAPIView, ListCreateAnnouncementAPIView, LimitListAnnouncementAPIView, render_email, PostViewSet, CourseAllAPIView
-# import .views 
-
-
+    ListCreateResourceAPIView, ListCreateAnnouncementAPIView, LimitListAnnouncementAPIView, render_email, PostViewSet, CourseAllAPIView, \
+    MessageViewSet
+# import .views
 
 from django.conf import settings
 
+# User
 user_list = UserViewSet.as_view({
     'get': 'list',
     'post': 'create'
@@ -23,11 +23,25 @@ user_detail = UserViewSet.as_view({
     'patch': 'partial_update',
     'delete': 'destroy'
 })
+
+# Post
 post_list = PostViewSet.as_view({
     'get': 'list',
     'post': 'create'
 })
 post_detail = PostViewSet.as_view({
+    'get': 'retrieve',
+    'put': 'update',
+    'patch': 'partial_update',
+    'delete': 'destroy'
+})
+
+# Message
+message_list = PostViewSet.as_view({
+    'get': 'list',
+    'post': 'create'
+})
+message_detail = PostViewSet.as_view({
     'get': 'retrieve',
     'put': 'update',
     'patch': 'partial_update',
@@ -40,17 +54,17 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 schema_view = get_schema_view(
-   openapi.Info(
-      title="Snippets API",
-      default_version='v1',
-      description="Test description",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@snippets.local"),
-      license=openapi.License(name="BSD License"),
-   ),
-   validators=['flex', 'ssv'],
-   public=True,
-   permission_classes=(permissions.IsAuthenticatedOrReadOnly,),
+    openapi.Info(
+        title="Y&D Learning API",
+        default_version='v1',
+        description="Rest API Documentation for Y&D Learning",
+        terms_of_service="https://ydlearning.com/sites/impressum.html",
+        contact=openapi.Contact(email="admin@ydlearning.com"),
+        license=openapi.License(name=""),  # License
+    ),
+    validators=['flex', 'ssv'],
+    public=True,
+    permission_classes=(permissions.IsAuthenticatedOrReadOnly,),
 )
 
 urlpatterns = [
@@ -64,20 +78,23 @@ urlpatterns = [
     path('users/', user_list, name="user-list"),
     path('users/<int:pk>', user_detail),
     path('activate/<uidb64>/<token>/', activate),
-    path('resources/', ListCreateResourceAPIView.as_view()),
-    path('announcements/', ListCreateAnnouncementAPIView.as_view()), # use ...announcements/?limit=<int:limit>... for limited An 
+    path('resources/', ListCreateResourceAPIView.as_view()), # use ...announcements/?limit=<int:limit>... for limited An
+    path('announcements/', ListCreateAnnouncementAPIView.as_view()),
     path('payments/', include('payments.urls')),
     path('posts/', post_list, name="post-list"),
     path('posts/<int:pk>', post_detail, name="post-detail"),
     path('courses/free/', CourseAllAPIView.as_view()),
-    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=None), name='schema-json'),
-    path('', schema_view.with_ui('swagger', cache_timeout=None), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=None), name='schema-redoc'),
+    path('messages/', message_list, name="message-list"),
+    path('messages/<int:pk>', message_detail),
+    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(
+        cache_timeout=None), name='schema-json'),
+    path('', schema_view.with_ui('swagger', cache_timeout=None),
+         name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc',
+                                       cache_timeout=None), name='schema-redoc'),
 ]
-
 
 if settings.DEBUG:
     urlpatterns += [
         path('html', render_email),
     ]
- 
