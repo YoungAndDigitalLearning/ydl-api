@@ -219,7 +219,8 @@ class ResourceSerializer(serializers.ModelSerializer):
     def get_size(self, obj):
         return obj.content.size
 
-    html_template = get_template('api/verification_email.html')
+    # def create(self, validated_data):
+       
 
     class Meta:
         model = Resource

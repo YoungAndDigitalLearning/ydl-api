@@ -135,6 +135,42 @@ class Resource(models.Model):
 
     def upload_to(self, filename):
         return "resources/{}/{}".format(self.id, filename)
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # html_template = get_template('api/verification_email.html')
+
+
+        #context = {
+        #    'user': self.objects user.username,
+        #    'link': 'https://api.ydlearning.com/activate/{}/{}'.format(uid, token),
+        #    'expires_in': str(settings.JWT_AUTH['JWT_EXPIRATION_DELTA']),
+        #    'expires_time': ' hours',  # change plural!
+        #    # 'logo_img_link':"",
+        #    'email_sendto': user.email,
+        #    'ydl_context': "Context Text",
+        #    'ydl_email': "admin@ydlearning.com",
+        #    'ydl_url': "https://www.ydlearning.com",
+        #    'ydl_url_github': "https://github.com/YoungAndDigitalLearning",
+        #    'ydl_url_impr': "https://www.ydlearning.com/sites/impressum.html",
+        #}
+        #html = html_template.render(context)
+#
+        #send_mail(
+        #    # Subject
+        #    '[Y&D Learning] Please verify your email address.',
+        #    '',
+        #    # Content
+        #    #
+        #    # Email send from
+        #    # 'admin@ydlearning.com',
+        #    'no-reply@ydlearning.com',
+        #    # Email send to
+        #    [user.email],
+        #    # fail silently
+        #    fail_silently=False,
+        #    html_message=html,
+        #)    
 
     content = models.FileField(upload_to=upload_to)
 
