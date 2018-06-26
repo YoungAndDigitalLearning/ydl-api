@@ -78,7 +78,8 @@ urlpatterns = [
     path('users/', user_list, name="user-list"),
     path('users/<int:pk>', user_detail),
     path('activate/<uidb64>/<token>/', activate),
-    path('resources/', ListCreateResourceAPIView.as_view()), # use ...announcements/?limit=<int:limit>... for limited An
+    # use ...announcements/?limit=<int:limit>... for limited An
+    path('resources/', ListCreateResourceAPIView.as_view()),
     path('announcements/', ListCreateAnnouncementAPIView.as_view()),
     path('payments/', include('payments.urls')),
     path('posts/', post_list, name="post-list"),
