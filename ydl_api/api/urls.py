@@ -6,12 +6,17 @@ from rest_framework_swagger.views import get_swagger_view
 from django.conf.urls import include, url
 
 from .views import CourseAPIView, UserViewSet, activate, StudentListApiView, DetailUserAPIView, DetailCourseAPIView, \
-    ListCreateResourceAPIView, ListCreateAnnouncementAPIView, LimitListAnnouncementAPIView, render_email, PostViewSet, CourseAllAPIView, \
-    MessageViewSet
+    ListCreateResourceAPIView, ListCreateAnnouncementAPIView, render_email, PostViewSet, \
+    MessageViewSet, CourseViewSet
 # import .views
 
 from django.conf import settings
 
+# API (Swagger)
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+# Seperate from url pattern
 # User
 user_list = UserViewSet.as_view({
     'get': 'list',
@@ -37,22 +42,31 @@ post_detail = PostViewSet.as_view({
 })
 
 # Message
-message_list = PostViewSet.as_view({
+message_list = MessageViewSet.as_view({
     'get': 'list',
     'post': 'create'
 })
-message_detail = PostViewSet.as_view({
+message_detail = MessageViewSet.as_view({
     'get': 'retrieve',
     'put': 'update',
     'patch': 'partial_update',
     'delete': 'destroy'
 })
 
-#schema_view = get_swagger_view(title='Y&D Learning API')
+# Course
+course_list = CourseViewSet.as_view({
+    'get': 'list',
+    'post': 'create'
+})
+course_detail = CourseViewSet.as_view({
+    'get': 'retrieve',
+    'put': 'update',
+    'patch': 'partial_update',
+    'delete': 'destroy'
+})
 
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
-
+"""Swagger API shema view
+"""
 schema_view = get_schema_view(
     openapi.Info(
         title="Y&D Learning API",
@@ -67,24 +81,25 @@ schema_view = get_schema_view(
     permission_classes=(permissions.IsAuthenticatedOrReadOnly,),
 )
 
+"""Urlpatterns to define reachable urls
+"""
 urlpatterns = [
     #path('', schema_view),
     path('token/auth/', obtain_jwt_token),
     path('token/refresh/', refresh_jwt_token),
     path('token/verify/', verify_jwt_token),
-    path('courses/', CourseAPIView.as_view(), name="course-list"),
-    path('courses/<int:pk>', DetailCourseAPIView.as_view()),
     path('students/', StudentListApiView.as_view()),
     path('users/', user_list, name="user-list"),
     path('users/<int:pk>', user_detail),
     path('activate/<uidb64>/<token>/', activate),
-    # use ...announcements/?limit=<int:limit>... for limited An
     path('resources/', ListCreateResourceAPIView.as_view()),
+    # use ...announcements/?limit=<int:limit>... for limited An
     path('announcements/', ListCreateAnnouncementAPIView.as_view()),
     path('payments/', include('payments.urls')),
     path('posts/', post_list, name="post-list"),
     path('posts/<int:pk>', post_detail, name="post-detail"),
-    path('courses/free/', CourseAllAPIView.as_view()),
+    path('courses/', course_list, name="course-list"),
+    path('courses/<int:pk>', course_detail, name="course-detail"),
     path('messages/', message_list, name="message-list"),
     path('messages/<int:pk>', message_detail),
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(
@@ -95,6 +110,8 @@ urlpatterns = [
                                        cache_timeout=None), name='schema-redoc'),
 ]
 
+"""Url to try out new html designs
+"""
 if settings.DEBUG:
     urlpatterns += [
         path('html', render_email),

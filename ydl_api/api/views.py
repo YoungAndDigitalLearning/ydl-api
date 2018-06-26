@@ -197,6 +197,14 @@ def activate(request, uidb64, token):
     else:
         return HttpResponse('Activation link is invalid!')
 
+def payment_details(request, payment_id):
+    payment = get_object_or_404(get_payment_model(), id=payment_id)
+    try:
+        form = payment.get_form(data=request.POST or None)
+    except RedirectNeeded as redirect_to:
+        return redirect(str(redirect_to))
+    return TemplateResponse(request, 'payment.html',
+                            {'form': form, 'payment': payment})
 
 class UserViewSet(ModelViewSet):
 
@@ -252,14 +260,13 @@ class CourseAPIView(ListAPIView):
     ]
 
 
-class CourseAllAPIView(ListAPIView):
+class CourseFreeAPIView(ListAPIView):
     model = Course
     serializer_class = CourseSerializer
 
     def get_queryset(self):
 
         return Course.objects.filter(price=0)
-
 
 class StudentListApiView(ListAPIView):
     model = Student
@@ -298,25 +305,25 @@ class ListCreateAnnouncementAPIView(ListCreateAPIView):
         permissions.AllowAny  # Or users can't register
     ]
 
-
-class LimitListAnnouncementAPIView(ListAPIView):
-    model = Announcement
-    serializer_class = AnnouncementSerializer
+class CourseViewSet(ModelViewSet):
+    model = Course
+    serializer_class = CourseSerializer
 
     def get_queryset(self):
-        print("Quarks", self.kwargs["limit"])
-        return Announcement.objects.all()[:self.kwargs["limit"]]
+        if self.request.method == "GET":
+            course_type = self.request.GET.get("type", None)
+            if course_type:
+                if course_type == "paid": 
+                    return Course.objects.filter(price__gt=0)
+                elif course_type == "free":
+                    return Course.objects.filter(price=0)
+            else: # initial call
+                return Course.objects.all()
 
-
-def payment_details(request, payment_id):
-    payment = get_object_or_404(get_payment_model(), id=payment_id)
-    try:
-        form = payment.get_form(data=request.POST or None)
-    except RedirectNeeded as redirect_to:
-        return redirect(str(redirect_to))
-    return TemplateResponse(request, 'payment.html',
-                            {'form': form, 'payment': payment})
-
+    # Everyone should see
+    permission_classes = [
+        permissions.AllowAny  # Or users can't register
+    ]
 
 class PostViewSet(ModelViewSet):
     model = Post

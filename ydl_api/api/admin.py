@@ -1,7 +1,8 @@
 from django.contrib import admin
 from .models import Teacher, Student, Course, CalendarEntry, Announcement, Resource, User, Language, Post, Message
 
-
+"""Defines specific view for django admin view
+"""
 class UserAdmin(admin.ModelAdmin):
     list_display = ("id", "__str__", "teacher", "is_teacher",
                     "student", "isEmailActivated", "credit")
@@ -55,6 +56,8 @@ class MessageAdmin(admin.ModelAdmin):
     list_display_links = ("__str__", "sender", "receiver")
 
 
+"""Models to be displayed
+"""
 # Register your models here.
 admin.site.register(User, UserAdmin)
 admin.site.register(Teacher, TeacherAdmin)
