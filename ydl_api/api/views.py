@@ -53,8 +53,23 @@ def render_email(request):
         'ydl_url_impr': "https://www.ydlearning.com/sites/impressum.html",
     }
 
+    context2 = {
+        'user': 'Croozer2',
+        'link': 'https://api.ydlearning.com/ressource/',
+        'expires_in': '1',
+        'expires_time': ' hours',  # change plural!
+        # 'logo_img_link':"",
+        'email_sendto': 'Croozer@ydlaerning.com',
+        'ydl_context': "Context Text",
+        'ydl_email': "admin@ydlearning.com",
+        'ydl_url': "https://www.ydlearning.com",
+        'ydl_url_github': "https://github.com/YoungAndDigitalLearning",
+        'ydl_url_impr': "https://www.ydlearning.com/sites/impressum.html",
+    }
+
     # return render(request, "api/verification_email.html", context)
-    return render(request, "api/verified.html", context)
+    # return render(request, "api/verified.html", context)
+    return render(request, "api/ressource_save.html", context2)
 
 
 def activate(request, uidb64, token):
@@ -240,34 +255,6 @@ class DetailCourseAPIView(RetrieveAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
-
-class CourseAPIView(ListAPIView):
-    model = Course
-    serializer_class = CourseSerializer
-
-    def get_queryset(self):
-        if self.request.user.is_teacher and self.request.user.is_student:
-            return Course.objects.filter(Q(teacher=self.request.user.id) | Q(student=self.request.user.id)).distinct() 
-        elif self.request.user.is_teacher:
-            return Course.objects.filter(teacher=self.request.user.id)
-        elif self.request.user.is_student:
-            return Course.objects.filter(student=self.request.user.id)
-        
-
-    # Debug
-    permission_classes = [
-        permissions.AllowAny  # Or users can't register
-    ]
-
-
-class CourseFreeAPIView(ListAPIView):
-    model = Course
-    serializer_class = CourseSerializer
-
-    def get_queryset(self):
-
-        return Course.objects.filter(price=0)
-
 class StudentListApiView(ListAPIView):
     model = Student
     serializer_class = StudentSerializer
@@ -308,6 +295,10 @@ class ListCreateAnnouncementAPIView(ListCreateAPIView):
 class CourseViewSet(ModelViewSet):
     model = Course
     serializer_class = CourseSerializer
+
+    def perform_create(self, serializer):
+        serializer.validated_data["teacher"] = Teacher.objects.get(user=self.request.user)
+        serializer.save()
 
     def get_queryset(self):
         if self.request.method == "GET":

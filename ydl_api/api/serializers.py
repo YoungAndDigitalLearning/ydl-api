@@ -109,6 +109,10 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = "__all__"
 
+        extra_kwargs = {
+            'teacher': {'write_only': False, 'read_only': True},
+        }
+
 
 # Nur für Get auf den User
 class LongUserSerializer(serializers.ModelSerializer):

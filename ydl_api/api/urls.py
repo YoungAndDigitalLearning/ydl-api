@@ -5,7 +5,7 @@ from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify
 from rest_framework_swagger.views import get_swagger_view
 from django.conf.urls import include, url
 
-from .views import CourseAPIView, UserViewSet, activate, StudentListApiView, DetailUserAPIView, DetailCourseAPIView, \
+from .views import UserViewSet, activate, StudentListApiView, DetailUserAPIView, DetailCourseAPIView, \
     ListCreateResourceAPIView, ListCreateAnnouncementAPIView, render_email, PostViewSet, \
     MessageViewSet, CourseViewSet
 # import .views
