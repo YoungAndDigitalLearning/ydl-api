@@ -1,7 +1,7 @@
 # -- coding: utf-8 --
 
 from rest_framework import serializers
-from .models import Student, Teacher, Course, Resource, Announcement, User, Post, Message
+from .models import Student, Teacher, Course, Resource, Announcement, User, Post, Message, CalendarEntry
 from django.core.mail import send_mail
 from django.db.models import Q
 
@@ -95,15 +95,21 @@ class UserSerializer(serializers.ModelSerializer):
             'password': {'write_only': True, 'read_only': False},
         }
 
+class CalendarEntrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CalendarEntry
+        fields = "__all__"
 
 class CourseSerializer(serializers.ModelSerializer):
     # PrimaryKeyRelatedField(many=True, read_only=True)
     posts = serializers.SerializerMethodField()
+    events = serializers.SerializerMethodField()
 
     def get_posts(self, obj):
-
         return [PostSerializer(post).data["id"] for post in Post.objects.filter(course=obj, childs__isnull=True)]
-        # PostSerializer(Post.objects.filter(course = obj)).data
+
+    def get_events(self, obj):
+        return [CalendarEntrySerializer(entry).data for entry in obj.calendarentry_set.all()]
 
     class Meta:
         model = Course
