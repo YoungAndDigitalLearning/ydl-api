@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
 from decimal import Decimal
+from django.db.models.signals import m2m_changed
 
 from payments import PurchasedItem
 from payments.models import BasePayment
@@ -96,10 +97,20 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
-
     class Meta:
         verbose_name = ('course')
         verbose_name_plural = ('courses')
+
+def resources_changed(sender, **kwargs):
+    action = kwargs.get("action", "None")
+    instance = kwargs.get("instance", None)
+    if action == "post_add":
+        if instance:
+            print(instance.student_set.all())
+            print("SEND HERE EMAIL TO ALL STUDENTS OF THE COURSE")
+        print("resource has been updated")
+
+m2m_changed.connect(resources_changed, sender=Course.resources.through)
 
 # class PaidCourse(models.Model):
 
