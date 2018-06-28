@@ -7,6 +7,22 @@ from django.db.models.signals import m2m_changed
 from payments import PurchasedItem
 from payments.models import BasePayment
 
+# Email Stuff
+from django.core.mail import EmailMessage
+from django.template.loader import get_template
+
+
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+from rest_framework_jwt.settings import api_settings
+from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 
 class Language(models.Model):
     name = models.CharField(max_length=100)
@@ -106,9 +122,44 @@ def resources_changed(sender, **kwargs):
     instance = kwargs.get("instance", None)
     if action == "post_add":
         if instance:
-            print(instance.student_set.all())
-            print("SEND HERE EMAIL TO ALL STUDENTS OF THE COURSE")
-        print("resource has been updated")
+            course_students = instance.student_set.all()
+            print("us", course_students)
+            students_username = [student.user.username for student in course_students]
+            students_emails = [student.user.email for student in course_students]
+            print("usn", students_username)
+            print("em", students_emails)
+
+            html_template = get_template('api/ressource_save.html')
+            context = {
+                #'user': self.objects user.username,
+                #'link': 'https://api.ydlearning.com/activate/{}/{}'.format(uid, token),
+                #'expires_in': str(settings.JWT_AUTH['JWT_EXPIRATION_DELTA']),
+                #'expires_time': ' hours',  # change plural!
+                # 'logo_img_link':"",
+                #'email_sendto': user.email,
+                #'ydl_context': "Context Text",
+                #'ydl_email': "admin@ydlearning.com",
+                #'ydl_url': "https://www.ydlearning.com",
+                #'ydl_url_github': "https://github.com/YoungAndDigitalLearning",
+                #'ydl_url_impr': "https://www.ydlearning.com/sites/impressum.html",
+            }
+            html = html_template.render(context)
+            email = EmailMessage(
+                # Subject:
+                '[Y&D Learning] New resource.',
+                # Body / Content ==> html_message:
+                html,
+                # Email send from:
+                'no-reply@ydlearning.com',
+                # Email send to:
+                [students_emails.pop()],
+                # bcc
+                students_emails,
+            ) 
+            email.content_subtype = "html" 
+            email.send(fail_silently=False)   
+
+        # resource has been updated
 
 m2m_changed.connect(resources_changed, sender=Course.resources.through)
 
@@ -146,42 +197,6 @@ class Resource(models.Model):
 
     def upload_to(self, filename):
         return "resources/{}/{}".format(self.id, filename)
-    
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        # html_template = get_template('api/verification_email.html')
-
-
-        #context = {
-        #    'user': self.objects user.username,
-        #    'link': 'https://api.ydlearning.com/activate/{}/{}'.format(uid, token),
-        #    'expires_in': str(settings.JWT_AUTH['JWT_EXPIRATION_DELTA']),
-        #    'expires_time': ' hours',  # change plural!
-        #    # 'logo_img_link':"",
-        #    'email_sendto': user.email,
-        #    'ydl_context': "Context Text",
-        #    'ydl_email': "admin@ydlearning.com",
-        #    'ydl_url': "https://www.ydlearning.com",
-        #    'ydl_url_github': "https://github.com/YoungAndDigitalLearning",
-        #    'ydl_url_impr': "https://www.ydlearning.com/sites/impressum.html",
-        #}
-        #html = html_template.render(context)
-#
-        #send_mail(
-        #    # Subject
-        #    '[Y&D Learning] Please verify your email address.',
-        #    '',
-        #    # Content
-        #    #
-        #    # Email send from
-        #    # 'admin@ydlearning.com',
-        #    'no-reply@ydlearning.com',
-        #    # Email send to
-        #    [user.email],
-        #    # fail silently
-        #    fail_silently=False,
-        #    html_message=html,
-        #)    
 
     content = models.FileField(upload_to=upload_to)
 
