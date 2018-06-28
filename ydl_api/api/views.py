@@ -255,10 +255,6 @@ class DetailCourseAPIView(RetrieveAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
-class EventAPIView(RetrieveAPIView):
-    def get_queryset(self):
-        own_courses = w
-
 class StudentListApiView(ListAPIView):
     model = Student
     serializer_class = StudentSerializer
