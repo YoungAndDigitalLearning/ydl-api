@@ -196,7 +196,7 @@ class Resource(models.Model):
 #   content
 
     def upload_to(self, filename):
-        return "resources/{}/{}".format(self.id, filename)
+        return "resources/{}/{}".format(self.uploader.id, filename)
 
     content = models.FileField(upload_to=upload_to)
 
