@@ -215,15 +215,16 @@ class TeacherSerializer(serializers.ModelSerializer):
 
 
 class ResourceSerializer(serializers.ModelSerializer):
-    content = serializers.SerializerMethodField()
+    # content = serializers.SerializerMethodField()
     size = serializers.SerializerMethodField()
+    # content = serializers.FileField()
 
     # only return content if effective date is now or already passed
-    def get_content(self, obj):
-        if obj.effective_from >= timezone.now():
-            return self.context["request"].build_absolute_uri(obj.content.url)
-        else:
-            return None
+    # def get_content(self, obj):
+    #     if obj.effective_from >= timezone.now():
+    #         return self.context["request"].build_absolute_uri(obj.content.url)
+    #     else:
+    #         return None
 
     def get_size(self, obj):
         return obj.content.size
