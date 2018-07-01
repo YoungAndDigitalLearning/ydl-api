@@ -310,6 +310,8 @@ class CourseViewSet(ModelViewSet):
                     return Course.objects.filter(price=0)
             else: # initial call
                 return Course.objects.all()
+        else:
+            return Course.objects.all()
 
     # Everyone should see
     permission_classes = [
