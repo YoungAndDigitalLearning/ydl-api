@@ -70,6 +70,14 @@ class Student(models.Model):
 
     def __str__(self):
         return str(self.user)
+    
+    # def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+    #    super().save(force_insert=False, force_update=False, using=None, update_fields=None)
+
+    #    if "course" in update_fields:
+    #        print("sda", self.courses)
+
+
 
     class Meta:
         verbose_name = ('student')
@@ -98,7 +106,6 @@ class Moderator(models.Model):
     class Meta:
         verbose_name = ('moderator')
         verbose_name_plural = ('moderators')
-
 
 class Course(models.Model):
     name = models.CharField(max_length=100)
@@ -165,6 +172,13 @@ m2m_changed.connect(resources_changed, sender=Course.resources.through)
 
 # class PaidCourse(models.Model):
 
+class Week(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE) 
+    week = models.DateField(auto_now_add=True)
+    content = models.CharField(max_length=4096)
+
+    def __str__(self):
+        return self.content[:20]
 
 class Announcement(models.Model):
     title = models.CharField(max_length=100)
@@ -256,7 +270,7 @@ class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="receiver")
     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sender")
     text = models.CharField(max_length=4096)
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.text[:20]
