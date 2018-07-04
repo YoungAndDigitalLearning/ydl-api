@@ -5,7 +5,7 @@ from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify
 from rest_framework_swagger.views import get_swagger_view
 from django.conf.urls import include, url
 
-from .views import UserViewSet, activate, StudentListApiView, DetailUserAPIView, DetailCourseAPIView, \
+from .views import UserViewSet, activate, StudentViewSet, DetailUserAPIView, DetailCourseAPIView, \
     ListCreateResourceAPIView, ListCreateAnnouncementAPIView, render_email, PostViewSet, \
     MessageViewSet, CourseViewSet
 # import .views
@@ -65,6 +65,16 @@ course_detail = CourseViewSet.as_view({
     'delete': 'destroy'
 })
 
+# Student
+
+student_list = StudentViewSet.as_view({
+    'get': 'list'
+})
+
+student_detail = StudentViewSet.as_view({
+    'put': 'update'
+})
+
 """Swagger API shema view
 """
 schema_view = get_schema_view(
@@ -84,24 +94,33 @@ schema_view = get_schema_view(
 """Urlpatterns to define reachable urls
 """
 urlpatterns = [
-    #path('', schema_view),
+    # Token
     path('token/auth/', obtain_jwt_token),
     path('token/refresh/', refresh_jwt_token),
     path('token/verify/', verify_jwt_token),
-    path('students/', StudentListApiView.as_view()),
+    path('activate/<uidb64>/<token>/', activate),
+    # Student
+    path('students/', student_list, name = "student-list"),
+    path('students/<int:pk>', student_detail, name = "student-detail"),
+    # User
     path('users/', user_list, name="user-list"),
     path('users/<int:pk>', user_detail),
-    path('activate/<uidb64>/<token>/', activate),
+    # Resource
     path('resources/', ListCreateResourceAPIView.as_view()),
-    # use ...announcements/?limit=<int:limit>... for limited An
-    path('announcements/', ListCreateAnnouncementAPIView.as_view()),
+    # Announcement
+    path('announcements/', ListCreateAnnouncementAPIView.as_view()), # use ...announcements/?limit=<int:limit>... for limited An
+    # Payment
     path('payments/', include('payments.urls')),
+    # Posts
     path('posts/', post_list, name="post-list"),
     path('posts/<int:pk>', post_detail, name="post-detail"),
+    # Courses
     path('courses/', course_list, name="course-list"),
     path('courses/<int:pk>', course_detail, name="course-detail"),
+    # Messages
     path('messages/', message_list, name="message-list"),
     path('messages/<int:pk>', message_detail),
+    # Swagger and redoc
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(
         cache_timeout=None), name='schema-json'),
     path('', schema_view.with_ui('swagger', cache_timeout=None),

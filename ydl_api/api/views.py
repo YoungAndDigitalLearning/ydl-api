@@ -255,7 +255,7 @@ class DetailCourseAPIView(RetrieveAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
-class StudentListApiView(ListAPIView):
+class StudentViewSet(ModelViewSet):
     model = Student
     serializer_class = StudentSerializer
 
