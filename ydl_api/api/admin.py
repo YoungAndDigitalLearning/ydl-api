@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Teacher, Student, Course, CalendarEntry, Announcement, Resource, User, Language, Post, Message
+from .models import Teacher, Student, Course, CalendarEntry, Announcement, Resource, User, Language, Post, Message, Week
 
 """Defines specific view for django admin view
 """
@@ -55,6 +55,9 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = ("id", "__str__", "sender", "receiver", "text", "date")
     list_display_links = ("__str__", "sender", "receiver")
 
+class WeekAdmin(admin.ModelAdmin):
+    list_display = ("id", "week")
+    list_display_links = []
 
 """Models to be displayed
 """
@@ -69,3 +72,4 @@ admin.site.register(Resource, ResourceAdmin)
 admin.site.register(Language, LanguageAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Message, MessageAdmin)
+admin.site.register(Week, WeekAdmin)
