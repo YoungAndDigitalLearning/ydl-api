@@ -116,3 +116,5 @@ if settings.DEBUG:
     urlpatterns += [
         path('html', render_email),
     ]
+
+# 100
