@@ -177,7 +177,7 @@ class LongUserSerializer(serializers.ModelSerializer):
     def get_courses(self, obj):
 
         if obj.is_teacher:
-            return TeacherSerializer(obj.teacher).data["course_set"]
+            return TeacherSerializer(obj.teacher).data["courses"]
         elif obj.is_student:
             return StudentSerializer(obj.student).data["courses"]
         
@@ -216,12 +216,18 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         fields = ["user", "courses"]
 
+        # make the user not changeable
+        extra_kwargs = {
+           "user": {"read_only": True}
+        }
+
 
 class TeacherSerializer(serializers.ModelSerializer):
+    courses = serializers.PrimaryKeyRelatedField(many=True, read_only=True, source="course_set")
 
     class Meta:
         model = Teacher
-        fields = ["user", "course_set"]
+        fields = ["user", "courses"]
 
 
 class ResourceSerializer(serializers.ModelSerializer):
