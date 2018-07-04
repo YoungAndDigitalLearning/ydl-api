@@ -1,7 +1,7 @@
 # -- coding: utf-8 --
 
 from rest_framework import serializers
-from .models import Student, Teacher, Course, Resource, Announcement, User, Post, Message, CalendarEntry
+from .models import Student, Teacher, Course, Resource, Announcement, User, Post, Message, CalendarEntry, Week
 from django.core.mail import send_mail
 from django.db.models import Q
 
@@ -103,12 +103,16 @@ class CourseSerializer(serializers.ModelSerializer):
     # PrimaryKeyRelatedField(many=True, read_only=True)
     posts = serializers.SerializerMethodField()
     events = serializers.SerializerMethodField()
+    weeks = serializers.SerializerMethodField()
 
     def get_posts(self, obj):
         return [PostSerializer(post).data["id"] for post in Post.objects.filter(course=obj, childs__isnull=True)]
 
     def get_events(self, obj):
         return [CalendarEntrySerializer(entry).data for entry in obj.calendarentry_set.all()]
+
+    def get_weeks(self, obj):
+        return [WeekSerialzier(week).data for week in Week.objects.filter(course=obj.id)]
 
     class Meta:
         model = Course
@@ -202,6 +206,12 @@ class LongUserSerializer(serializers.ModelSerializer):
 
 class StudentSerializer(serializers.ModelSerializer):
 
+    #def update(self, instance, validated_data):
+    #    print("sins", self.instance.courses)
+        #if set(self.instance.courses) 
+        #if self.instance 
+        
+
     class Meta:
         model = Student
         fields = ["user", "courses"]
@@ -265,4 +275,9 @@ class PostSerializer(serializers.ModelSerializer):
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
+        fields = "__all__"
+
+class WeekSerialzier(serializers.ModelSerializer):
+     class Meta:
+        model = Week
         fields = "__all__"
