@@ -309,9 +309,14 @@ class CourseViewSet(ModelViewSet):
                 elif course_type == "free":
                     return Course.objects.filter(price=0)
             else: # initial call
-                return Course.objects.filter(students = self.request.user)
-        else:
-            return Course.objects.all()
+                if self.request.user.is_teacher and self.request.user.is_student:
+                    return Course.objects.filter(Q(teacher=self.request.user.id) | Q(student=self.request.user.id)).distinct() 
+                elif self.request.user.is_teacher:
+                    return Course.objects.filter(teacher=self.request.user.id)
+                elif self.request.user.is_student:
+                    return Course.objects.filter(student=self.request.user.id)
+                else:
+                    return Course.objects.all()
 
     # Everyone should see
     permission_classes = [
