@@ -1,7 +1,7 @@
 from rest_framework import permissions
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, RetrieveAPIView
-from django.contrib.auth.models import User  # If used custom user model
+from django.contrib.auth.models import User, AnonymousUser  # If used custom user model
 # Our imports
 from .models import Course, Student, Resource, Announcement, Teacher, User, Post, Message
 from .serializers import UserSerializer, CourseSerializer, LongUserSerializer, StudentSerializer, \
@@ -233,11 +233,8 @@ class UserViewSet(ModelViewSet):
     permission_classes = [
         permissions.AllowAny  # Or users can't register
     ]
-    # serializer_class = UserSerializer
 
-    def get_queryset(self):
-        return User.objects.all()
-        # User.objects.filter(id=self.request.user.id)
+    queryset = User.objects.all()
 
     def get_serializer_class(self):
         if self.request.method == "POST":
@@ -245,24 +242,15 @@ class UserViewSet(ModelViewSet):
         else:
             return LongUserSerializer
 
-
-class DetailUserAPIView(RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = LongUserSerializer
-
-
-class DetailCourseAPIView(RetrieveAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
-
 class StudentViewSet(ModelViewSet):
     model = Student
     serializer_class = StudentSerializer
 
     queryset = Student.objects.all()
 
+    # Debug
     permission_classes = [
-        permissions.AllowAny  # Or users can't register
+        permissions.AllowAny
     ]
 
 
@@ -277,8 +265,7 @@ class ListCreateAnnouncementAPIView(ListCreateAPIView):
     model = Announcement
     serializer_class = AnnouncementSerializer
 
-    # queryset = Announcement.objects.all()
-
+    # allow a limit for announcements
     def get_queryset(self):
         if self.request.method == "GET":
             limit = self.request.GET.get("limit", None)
@@ -289,38 +276,42 @@ class ListCreateAnnouncementAPIView(ListCreateAPIView):
 
     # Everyone should see
     permission_classes = [
-        permissions.AllowAny  # Or users can't register
+        permissions.AllowAny
     ]
 
 class CourseViewSet(ModelViewSet):
     model = Course
     serializer_class = CourseSerializer
 
+    # automatically assign the teacher to the course
     def perform_create(self, serializer):
         serializer.validated_data["teacher"] = Teacher.objects.get(user=self.request.user)
         serializer.save()
 
     def get_queryset(self):
         if self.request.method == "GET":
+            # distinguished between paid and free courses if a type is provided
             course_type = self.request.GET.get("type", None)
             if course_type:
                 if course_type == "paid": 
                     return Course.objects.filter(price__gt=0)
                 elif course_type == "free":
                     return Course.objects.filter(price=0)
-            else: # initial call
-                if self.request.user.is_teacher and self.request.user.is_student:
+            # return the courses for the specific user
+            else:
+                if isinstance(self.request.user, AnonymousUser):
+                    return Course.objects.all()
+                elif self.request.user.is_teacher and self.request.user.is_student:
                     return Course.objects.filter(Q(teacher=self.request.user.id) | Q(student=self.request.user.id)).distinct() 
                 elif self.request.user.is_teacher:
                     return Course.objects.filter(teacher=self.request.user.id)
                 elif self.request.user.is_student:
                     return Course.objects.filter(student=self.request.user.id)
-                else:
-                    return Course.objects.all()
+
 
     # Everyone should see
     permission_classes = [
-        permissions.AllowAny  # Or users can't register
+        permissions.AllowAny
     ]
 
 class PostViewSet(ModelViewSet):
@@ -329,9 +320,8 @@ class PostViewSet(ModelViewSet):
     queryset = Post.objects.all()
 
     permission_classes = [
-        permissions.AllowAny  # Or users can't register
+        permissions.AllowAny 
     ]
-
 
 class MessageViewSet(ModelViewSet):
     model = Message
@@ -339,5 +329,5 @@ class MessageViewSet(ModelViewSet):
     queryset = Message.objects.all()
 
     permission_classes = [
-        permissions.AllowAny  # Or users can't register
+        permissions.AllowAny
     ]
