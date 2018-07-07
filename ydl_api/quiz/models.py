@@ -11,9 +11,13 @@ class Test(models.Model):
     scored_by = models.ForeignKey('api.User', blank=True, null=True, on_delete=models.CASCADE)
 
     def get_max_score(self):
-        #works for one Task
+        #dynamically compose OR query filter
+        q_objects = Q()
         tasks = Task.objects.filter(test=self)
-        return Answer.objects.filter(task=tasks[:1]).aggregate(models.Sum('max_score'))
+        for task in tasks:
+            q_objects.add(Q(task=task), Q.OR)
+
+        return Answer.objects.filter(q_objects).aggregate(models.Sum('max_score'))
 
     def get_score(self):
         #to be implemented @Rene
