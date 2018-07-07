@@ -5,7 +5,7 @@ from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify
 from rest_framework_swagger.views import get_swagger_view
 from django.conf.urls import include, url
 
-from .views import UserViewSet, activate, StudentViewSet, DetailUserAPIView, DetailCourseAPIView, \
+from .views import UserViewSet, activate, StudentViewSet, \
     ListCreateResourceAPIView, ListCreateAnnouncementAPIView, render_email, PostViewSet, \
     MessageViewSet, CourseViewSet
 # import .views
@@ -16,6 +16,7 @@ from django.conf import settings
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+# Viewset mapping function
 # Seperate from url pattern
 # User
 user_list = UserViewSet.as_view({

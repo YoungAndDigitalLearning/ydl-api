@@ -29,7 +29,7 @@ jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
 
 class UserSerializer(serializers.ModelSerializer):
-    # password = serializers.CharField(write_only=True)
+    # sending back token for initial login
     token = serializers.SerializerMethodField()
 
     def get_token(self, obj):
@@ -45,11 +45,14 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
 
+        # generate uid for activation email
         uid = urlsafe_base64_encode(force_bytes(user.pk)).decode()
 
+        # generate jwt token manually (see drf jwt docs)
         payload = jwt_payload_handler(user)
         token = jwt_encode_handler(payload)
 
+        # load email template
         html_template = get_template('api/verification_email.html')
 
         context = {
@@ -105,14 +108,14 @@ class CourseSerializer(serializers.ModelSerializer):
     events = serializers.SerializerMethodField()
     weeks = serializers.SerializerMethodField()
 
-    def get_posts(self, obj):
-        return [PostSerializer(post).data["id"] for post in Post.objects.filter(course=obj, childs__isnull=True)]
+    def get_posts(self, course):
+        return [PostSerializer(post).data["id"] for post in Post.objects.filter(course=course, childs__isnull=True)]
 
-    def get_events(self, obj):
-        return [CalendarEntrySerializer(entry).data for entry in obj.calendarentry_set.all()]
+    def get_events(self, course):
+        return [CalendarEntrySerializer(entry).data for entry in course.calendarentry_set.all()]
 
-    def get_weeks(self, obj):
-        return [WeekSerialzier(week).data for week in Week.objects.filter(course=obj.id)]
+    def get_weeks(self, course):
+        return [WeekSerialzier(week).data for week in Week.objects.filter(course=course.id)]
 
     class Meta:
         model = Course
@@ -206,12 +209,6 @@ class LongUserSerializer(serializers.ModelSerializer):
 
 class StudentSerializer(serializers.ModelSerializer):
 
-    #def update(self, instance, validated_data):
-    #    print("sins", self.instance.courses)
-        #if set(self.instance.courses) 
-        #if self.instance 
-        
-
     class Meta:
         model = Student
         fields = ["user", "courses"]
@@ -231,22 +228,10 @@ class TeacherSerializer(serializers.ModelSerializer):
 
 
 class ResourceSerializer(serializers.ModelSerializer):
-    # content = serializers.SerializerMethodField()
     size = serializers.SerializerMethodField()
-    # content = serializers.FileField()
-
-    # only return content if effective date is now or already passed
-    # def get_content(self, obj):
-    #     if obj.effective_from >= timezone.now():
-    #         return self.context["request"].build_absolute_uri(obj.content.url)
-    #     else:
-    #         return None
-
+    
     def get_size(self, obj):
         return obj.content.size
-
-    # def create(self, validated_data):
-       
 
     class Meta:
         model = Resource
