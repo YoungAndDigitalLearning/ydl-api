@@ -21,5 +21,6 @@ from rest_framework import permissions, routers, serializers, viewsets
 
 urlpatterns = [
     path('', include("api.urls")),
+    path('quiz/', include("quiz.urls")),
     path('admin/', admin.site.urls)
 ]
