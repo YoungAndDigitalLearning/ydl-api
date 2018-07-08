@@ -299,12 +299,7 @@ class CourseViewSet(ModelViewSet):
                     return Course.objects.filter(price=0)
             # return the courses for the specific user
             else:
-                if self.request.user.is_teacher and self.request.user.is_student:
-                    return Course.objects.filter(Q(teacher=self.request.user.id) | Q(student=self.request.user.id)).distinct() 
-                elif self.request.user.is_teacher:
-                    return Course.objects.filter(teacher=self.request.user.id)
-                elif self.request.user.is_student:
-                    return Course.objects.filter(student=self.request.user.id)
+                return self.request.user.get_courses()
 
 
     # Everyone should see
