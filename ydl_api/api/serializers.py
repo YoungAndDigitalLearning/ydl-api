@@ -177,7 +177,10 @@ class LongUserSerializer(serializers.ModelSerializer):
         
 
     def get_courses(self, user):
-        return user.get_courses()
+        if user.is_teacher:
+            return TeacherSerializer(user.teacher).data["courses"]
+        elif user.is_student:
+            return StudentSerializer(user.student).data["courses"]
         
     def get_messages(self, obj):
         messages = {}
@@ -215,8 +218,12 @@ class StudentSerializer(serializers.ModelSerializer):
 
 
 class TeacherSerializer(serializers.ModelSerializer):
-    # courses = serializers.SerializerMethodField()
-    courses = serializers.PrimaryKeyRelatedField(many=True, read_only=True, source="course_set")        
+    courses = serializers.SerializerMethodField()
+    # courses = serializers.PrimaryKeyRelatedField(many=True, read_only=True, source="course_set")
+    
+    def get_courses(self, teacher):
+        return [CourseSerializer(course).data["id"] for course in teacher.user.get_courses()]
+           
 
     class Meta:
         model = Teacher
