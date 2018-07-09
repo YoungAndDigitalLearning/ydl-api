@@ -27,8 +27,3 @@ pipenv install django-filter  # Filtering support
 ```
 
 pipenv run python manage.py runserver
-
-
-Edit bashrc
-sudo vim .bashrc
-source .bashrc
