@@ -17,23 +17,38 @@ class Test(models.Model):
         for task in tasks:
             q_objects.add(Q(task=task), Q.OR)
 
-        return Answer.objects.filter(q_objects).aggregate(models.Sum('max_score'))
+        return Answer.objects.filter(q_objects).aggregate(models.Sum('max_score'))['max_score__sum']
 
     def get_score(self):
-        #to be implemented @Rene
-        pass
+        #dynamically compose OR query filter
+        q_objects = Q()
+        tasks = Task.objects.filter(test=self)
+        for task in tasks:
+            q_objects.add(Q(task=task), Q.OR)
+
+        return Answer.objects.filter(q_objects).aggregate(models.Sum('score'))['score__sum']
     
     def __str__(self):
         return "Test Nr. {} for: {}".format(self.t_id, self.course)
 
 #Task is 'Reporter'
 class Task(models.Model):
+    RENDER_TYPES = (
+        ("MC","Multiple Choice"),
+        ("VT","Vocabulary Test")
+    )
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
     question = models.CharField(max_length=512)
+    render_type = models.CharField(max_length=2, choices=RENDER_TYPES)
 
 #Answer is 'Article'
 class Answer(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     answer = models.CharField(max_length=256)
+    correct_answer = models.CharField(max_length=256)
     max_score = models.IntegerField()
     score = models.IntegerField(default = 0)
+    order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['-order']
