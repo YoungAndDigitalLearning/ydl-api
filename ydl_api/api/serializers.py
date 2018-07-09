@@ -232,6 +232,7 @@ class TeacherSerializer(serializers.ModelSerializer):
 
 class ResourceSerializer(serializers.ModelSerializer):
     size = serializers.SerializerMethodField()
+    uploader_name = serializers.CharField(source="uploader")
     
     def get_size(self, obj):
         return obj.content.size
