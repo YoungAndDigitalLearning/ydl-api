@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
 from decimal import Decimal
@@ -42,6 +43,14 @@ class User(AbstractUser):
     languages = models.ForeignKey(
         Language, on_delete=models.CASCADE, blank=True, null=True)
     credit = models.DecimalField(max_digits=19, decimal_places=2, default=0)
+
+    def get_courses(self):
+        if self.is_teacher and self.is_student:
+            return Course.objects.filter(Q(teacher=self.id) | Q(student=self.id)).distinct() 
+        elif self.is_teacher:
+            return Course.objects.filter(teacher=self.id)
+        elif self.is_student:
+            return Course.objects.filter(student=self.id)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
