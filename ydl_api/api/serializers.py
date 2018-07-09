@@ -238,8 +238,7 @@ class ResourceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Resource
-        fields = ["name", "uploaded", "effective_from",
-                  "uploader", "expires", "size", "content"]
+        fields = "__all__"
 
 
 class AnnouncementSerializer(serializers.ModelSerializer):
