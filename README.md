@@ -1,5 +1,8 @@
 # backend
-## DjangoBlockchained submodule backend
+## ydl-api submodule backend
+
+## Server setup tutorial
+[tutorial](https://github.com/YoungAndDigitalLearning/ydl-api/blob/master/Server-setup-manual.md)
 
 ### Sync modules
 ``` bash
@@ -24,8 +27,3 @@ pipenv install django-filter  # Filtering support
 ```
 
 pipenv run python manage.py runserver
-
-
-Edit bashrc
-sudo vim .bashrc
-source .bashrc
