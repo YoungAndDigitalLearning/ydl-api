@@ -1,5 +1,8 @@
 # backend
-## DjangoBlockchained submodule backend
+## ydl-api submodule backend
+
+## Server setup tutorial
+[tutorial](https://github.com/YoungAndDigitalLearning/ydl-api/blob/master/Server-setup-manual.md)
 
 ### Sync modules
 ``` bash
