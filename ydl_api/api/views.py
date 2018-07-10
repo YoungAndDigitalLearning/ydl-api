@@ -260,6 +260,11 @@ class ListCreateResourceAPIView(ListCreateAPIView):
 
     queryset = Resource.objects.all()
 
+    # automatically assign the owner to the resource
+    def perform_create(self, serializer):
+        serializer.validated_data["uploader"] = self.request.user
+        serializer.save()
+
 
 class ListCreateAnnouncementAPIView(ListCreateAPIView):
     model = Announcement

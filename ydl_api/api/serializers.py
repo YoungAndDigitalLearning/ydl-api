@@ -240,6 +240,9 @@ class ResourceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Resource
         fields = "__all__"
+        extra_kwargs = {
+            "uploader": {"read_only": True}
+        }
 
 
 class AnnouncementSerializer(serializers.ModelSerializer):
