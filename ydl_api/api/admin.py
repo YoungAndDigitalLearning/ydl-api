@@ -5,7 +5,7 @@ from .models import Teacher, Student, Course, CalendarEntry, Announcement, Resou
 """
 class UserAdmin(admin.ModelAdmin):
     list_display = ("id", "__str__", "teacher", "is_teacher",
-                    "student", "isEmailActivated", "credit")
+                    "student", "is_student", "isEmailActivated", "credit")
     list_display_links = ("__str__", "teacher", "student")
 
 
