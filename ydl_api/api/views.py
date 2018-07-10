@@ -34,6 +34,7 @@ from django.shortcuts import (
     render_to_response
 )
 from django.template import RequestContext
+from .permissions import IsTeacherOrHasAuthority
 
 jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
 
@@ -254,11 +255,12 @@ class StudentViewSet(ModelViewSet):
     ]
 
 
-class ListCreateResourceAPIView(ListCreateAPIView):
+class ResourceViewSet(ModelViewSet):
     model = Resource
     serializer_class = ResourceSerializer
 
     queryset = Resource.objects.all()
+    permission_classes = [IsTeacherOrHasAuthority]
 
     # automatically assign the owner to the resource
     def perform_create(self, serializer):

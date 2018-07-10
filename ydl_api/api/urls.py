@@ -6,7 +6,7 @@ from rest_framework_swagger.views import get_swagger_view
 from django.conf.urls import include, url
 
 from .views import UserViewSet, activate, StudentViewSet, \
-    ListCreateResourceAPIView, ListCreateAnnouncementAPIView, render_email, PostViewSet, \
+    ResourceViewSet, ListCreateAnnouncementAPIView, render_email, PostViewSet, \
     MessageViewSet, CourseViewSet
 # import .views
 
@@ -76,6 +76,19 @@ student_detail = StudentViewSet.as_view({
     'put': 'update'
 })
 
+# Resource
+resource_list = ResourceViewSet.as_view({
+    'get': 'list',
+    'post': 'create'
+})
+
+resource_detail = ResourceViewSet.as_view({
+    'get': 'retrieve',
+    'put': 'update',
+    'patch': 'partial_update',
+    'delete': 'destroy'
+})
+
 """Swagger API shema view
 """
 schema_view = get_schema_view(
@@ -101,15 +114,17 @@ urlpatterns = [
     path('token/verify/', verify_jwt_token),
     path('activate/<uidb64>/<token>/', activate),
     # Student
-    path('students/', student_list, name = "student-list"),
-    path('students/<int:pk>', student_detail, name = "student-detail"),
+    path('students/', student_list, name="student-list"),
+    path('students/<int:pk>', student_detail, name="student-detail"),
     # User
     path('users/', user_list, name="user-list"),
     path('users/<int:pk>', user_detail),
     # Resource
-    path('resources/', ListCreateResourceAPIView.as_view()),
+    path('resources/', resource_list),
+    path('resources/<int:pk>', resource_detail),
     # Announcement
-    path('announcements/', ListCreateAnnouncementAPIView.as_view()), # use ...announcements/?limit=<int:limit>... for limited An
+    # use ...announcements/?limit=<int:limit>... for limited An
+    path('announcements/', ListCreateAnnouncementAPIView.as_view()),
     # Payment
     path('payments/', include('payments.urls')),
     # Posts
