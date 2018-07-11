@@ -11,3 +11,11 @@ class TestViewSet(ModelViewSet):
     permission_classes = [
         permissions.AllowAny
     ]
+
+class AnswerViewSet(ModelViewSet):
+    serializer_class = serializers.AnswerSerializer
+    queryset = m.Answer.objects.all()
+
+    permission_classes = [
+        permissions.AllowAny
+    ]

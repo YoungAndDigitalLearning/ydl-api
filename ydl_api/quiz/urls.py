@@ -17,9 +17,15 @@ test_detail = v.TestViewSet.as_view({
     'delete': 'destroy'
 })
 
+answer_detail = v.AnswerViewSet.as_view({
+    'put': 'update',
+})
+
+
 """Urlpatterns to define reachable urls
 """
 urlpatterns = [
     path('tests/', test_list, name="test-list"),
     path('tests/<int:pk>', test_detail, name="test-detail"),
+    path('answers/<int:pk>', answer_detail, name="answer-detail")
     ]

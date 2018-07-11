@@ -16,13 +16,21 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class TestSerializer(serializers.ModelSerializer):
-    tasks = serializers.SerializerMethodField()
+    tasks = TaskSerializer(many=True, source='task_set')
     score = serializers.IntegerField(source='get_score', read_only = True)
     max_score = serializers.IntegerField(source='get_max_score', read_only = True)
+
+    def update(self, instance, validated_data):
+        
+        print("val", validated_data)
+        for task in validated_data["task_set"]:
+            task_object = m.Task.objects.get(id = task["id"])
+            task_object.answer = task[answer]
+            print("pr", task["question"])
 
     def get_tasks(self, test):
         return [TaskSerializer(task).data for task in m.Task.objects.filter(test=test)]
 
     class Meta:
         model = m.Test
-        fields = "__all__"
+        fields = ["tasks","score", "max_score"]
