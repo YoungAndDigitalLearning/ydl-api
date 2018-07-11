@@ -45,6 +45,7 @@ class Task(models.Model):
 class Answer(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     answer = models.CharField(max_length=256)
+    checked = models.BooleanField(default = False)
     correct_answer = models.CharField(max_length=256)
     max_score = models.IntegerField()
     score = models.IntegerField(default = 0)
