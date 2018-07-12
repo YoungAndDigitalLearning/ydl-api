@@ -27,6 +27,19 @@ from django.utils import timezone
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
+class ResourceSerializer(serializers.ModelSerializer):
+    size = serializers.SerializerMethodField()
+    uploader_name = serializers.CharField(source="uploader", read_only=True)
+    
+    def get_size(self, obj):
+        return obj.content.size
+
+    class Meta:
+        model = Resource
+        fields = "__all__"
+        extra_kwargs = {
+            "uploader": {"read_only": True}
+        }
 
 class UserSerializer(serializers.ModelSerializer):
     # sending back token for initial login
@@ -106,7 +119,11 @@ class CourseSerializer(serializers.ModelSerializer):
     posts = serializers.SerializerMethodField()
     events = serializers.SerializerMethodField()
     weeks = serializers.SerializerMethodField()
+    resources = serializers.SerializerMethodField()
     tests = serializers.PrimaryKeyRelatedField(many=True, read_only=True, source="test_set")
+
+    def get_resources(self, course):
+        return [ResourceSerializer(resource).data for resource in course.resources_set.all()]
 
     def get_posts(self, course):
         return [PostSerializer(post).data["id"] for post in Post.objects.filter(course=course, childs__isnull=True)]
@@ -229,22 +246,6 @@ class TeacherSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teacher
         fields = ["user", "courses"]
-
-
-class ResourceSerializer(serializers.ModelSerializer):
-    size = serializers.SerializerMethodField()
-    uploader_name = serializers.CharField(source="uploader", read_only=True)
-    
-    def get_size(self, obj):
-        return obj.content.size
-
-    class Meta:
-        model = Resource
-        fields = "__all__"
-        extra_kwargs = {
-            "uploader": {"read_only": True}
-        }
-
 
 class AnnouncementSerializer(serializers.ModelSerializer):
     author = LongUserSerializer(many=False, read_only=True)
