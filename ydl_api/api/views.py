@@ -304,9 +304,9 @@ class CourseViewSet(ModelViewSet):
                     return Course.objects.filter(price__gt=0)
                 elif course_type == "free":
                     return Course.objects.filter(price=0)
-        else:
-            # return the courses for the specific user
-            return self.request.user.get_courses()
+                    
+        # return the courses for the specific user
+        return self.request.user.get_courses()
 
 
     # Everyone should see
