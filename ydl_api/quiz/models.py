@@ -11,22 +11,12 @@ class Test(models.Model):
     scored_by = models.ForeignKey('api.User', blank=True, null=True, on_delete=models.CASCADE)
 
     def get_max_score(self):
-        #dynamically compose OR query filter
-        q_objects = Q()
         tasks = Task.objects.filter(test=self)
-        for task in tasks:
-            q_objects.add(Q(task=task), Q.OR)
-
-        return Answer.objects.filter(q_objects).aggregate(models.Sum('max_score'))['max_score__sum']
+        return Answer.objects.filter(task__in = tasks).aggregate(models.Sum('max_score'))['max_score__sum']
 
     def get_score(self):
-        #dynamically compose OR query filter
-        q_objects = Q()
         tasks = Task.objects.filter(test=self)
-        for task in tasks:
-            q_objects.add(Q(task=task), Q.OR)
-
-        return Answer.objects.filter(q_objects).aggregate(models.Sum('score'))['score__sum']
+        return Answer.objects.filter(task__in = tasks).aggregate(models.Sum('score'))['score__sum']
     
     def __str__(self):
         return "Test Nr. {} for: {}".format(self.t_id, self.course)
