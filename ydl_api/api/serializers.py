@@ -119,11 +119,7 @@ class CourseSerializer(serializers.ModelSerializer):
     posts = serializers.SerializerMethodField()
     events = serializers.SerializerMethodField()
     weeks = serializers.SerializerMethodField()
-    resources = serializers.SerializerMethodField()
     tests = serializers.PrimaryKeyRelatedField(many=True, read_only=True, source="test_set")
-
-    def get_resources(self, course):
-        return [ResourceSerializer(resource).data for resource in course.resources.all()]
 
     def get_posts(self, course):
         return [PostSerializer(post).data["id"] for post in Post.objects.filter(course=course, childs__isnull=True)]
