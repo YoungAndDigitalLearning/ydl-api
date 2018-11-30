@@ -1,29 +1,38 @@
-# backend
-## ydl-api submodule backend
+# Young And Digital Learning <img src="https://ydlearning.com/.media/logo-ydl/SVG/YDL-Logo.svg" height="35">
+
+## Backend
+
+### ydl-api submodule backend
+
+Standalone Rest-API Backend, made with Python / Django.
+
+This project was completed for the module "Programming Lab: Social Networking" at TU Berlin.
+
 
 ## Server setup tutorial
 [tutorial](https://github.com/YoungAndDigitalLearning/ydl-api/blob/master/Server-setup-manual.md)
 
-### Sync modules
-``` bash
-pipenv sync
-``` 
+## Links 
+Our organization: [YoungAndDigitalLearning](https://github.com/YoungAndDigitalLearning)
 
-### Initialize
-``` bash
-pip install pipenv==2018.5.18 
+Homepage: [www.ydlearning.com](https://ydlearning.com/)
 
-pipenv install --python 3.6
+Wikipage: [wiki](https://github.com/YoungAndDigitalLearning/ydl/wiki)
 
-pipenv run django-admin startproject ydl_api
+Rest-API: [api](https://api.ydlearning.com/)
 
-```
+API-Documentation: 
 
-Install Django rest
-``` bash
-pipenv install djangorestframework
-pipenv install markdown       # Markdown support for the browsable API.
-pipenv install django-filter  # Filtering support
-```
+- [swagger](https://api.ydlearning.com/)
+- [redoc](https://api.ydlearning.com/redoc/)
 
-pipenv run python manage.py runserver
+## Modules
+
+- [Main](https://github.com/YoungAndDigitalLearning/ydl)
+  - [Frontend](https://github.com/YoungAndDigitalLearning/ydl-front)
+  - [Backend](https://github.com/YoungAndDigitalLearning/ydl-api)
+  
+---
+
+Other Names:
+YD Learning, Y&D Learning, Young & Digital Learning
