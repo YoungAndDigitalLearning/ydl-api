@@ -23,7 +23,7 @@ Wikipage: [wiki](https://github.com/YoungAndDigitalLearning/ydl/wiki)
 
 ## Tech Stack YDL
 
-<img alt="Tech stack" target="_blank" src="/images/stack_features.jpg" href="https://raw.githubusercontent.com/YoungAndDigitalLearning/ydl-front/master/images/stack_features.jpg">
+<img alt="Tech stack" target="_blank" src="https://raw.githubusercontent.com/YoungAndDigitalLearning/ydl-front/master/images/stack_features.jpg" href="https://raw.githubusercontent.com/YoungAndDigitalLearning/ydl-front/master/images/stack_features.jpg">
 
 View bigger image file: [Image Link](https://raw.githubusercontent.com/YoungAndDigitalLearning/ydl-front/master/images/stack_features.jpg)
 
