@@ -1,4 +1,7 @@
-# Young And Digital Learning <img src="https://ydlearning.com/static/.media/logo-ydl/SVG/YDL-Logo.svg" height="35">
+<p align="center">
+    <img alt="YDL Logo" src="https://raw.githubusercontent.com/YoungAndDigitalLearning/ydl-front/master/images/YDL-Logo-220px.png" width="220">
+  </p>
+  <h1 align="center">Young And Digital Learning</h1>
 
 ## Backend
 
@@ -8,23 +11,21 @@ Standalone Rest-API Backend, made with Python / Django.
 
 This project was completed for the module "Programming Lab: Social Networking" at TU Berlin.
 
-
-## Server setup tutorial
-[tutorial](https://github.com/YoungAndDigitalLearning/ydl-api/blob/master/Server-setup-manual.md)
+## Setup tutorial
+[Setup](https://github.com/YoungAndDigitalLearning/ydl-front/blob/master/Setup.md)
 
 ## Links 
 Our organization: [YoungAndDigitalLearning](https://github.com/YoungAndDigitalLearning)
 
-Homepage: [www.ydlearning.com](https://ydlearning.com/)
+Homepage: [YoungAndDigitalLearning.github.io/ydl-front](https://YoungAndDigitalLearning.github.io/ydl-front/)
 
 Wikipage: [wiki](https://github.com/YoungAndDigitalLearning/ydl/wiki)
 
-Rest-API: [api](https://api.ydlearning.com/)
+## Tech Stack YDL
 
-API-Documentation: 
+<img alt="Tech stack" target="_blank" src="/images/stack_features.jpg" href="https://raw.githubusercontent.com/YoungAndDigitalLearning/ydl-front/master/images/stack_features.jpg">
 
-- [swagger](https://api.ydlearning.com/)
-- [redoc](https://api.ydlearning.com/redoc/)
+View bigger image file: [Image Link](https://raw.githubusercontent.com/YoungAndDigitalLearning/ydl-front/master/images/stack_features.jpg)
 
 ## Modules
 
