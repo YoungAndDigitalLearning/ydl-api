@@ -1,5 +1,5 @@
 <p align="center">
-    <img alt="YDL Logo" src="https://raw.githubusercontent.com/YoungAndDigitalLearning/ydl-front/master/images/YDL-Logo-220px.png" width="220">
+    <img alt="YDL Logo" src="https://raw.githubusercontent.com/YoungAndDigitalLearning/ydl-front/refs/heads/master/images/YDL-Logo-35px.svg" width="220">
   </p>
   <h1 align="center">Young And Digital Learning</h1>
 
