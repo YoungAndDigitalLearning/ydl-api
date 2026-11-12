@@ -122,10 +122,81 @@ class Command(BaseCommand):
                 course=course, matter=subject, date=when
             )
 
-        Post.objects.update_or_create(
-            course=courses[0], author=teacher, title="Course introduction",
-            defaults={"text": "Welcome! Introduce yourself and share your learning goals."},
+        # Remove only the exact placeholder created by our previous seeder.
+        Post.objects.filter(
+            course=courses[0], author=teacher,
+            title="Course introduction",
+            text="Welcome! Introduce yourself and share your learning goals."
+        ).delete()
+
+        # Forum: three realistic top-level discussions and two replies.
+        # update_or_create ensures repeatable data without duplicates.
+        discussions = [
+            (courses[0], teacher, "Welcome to German Conversation A2",
+             "Welcome to the course! Each week we will practise speaking through "
+             "everyday situations. Please introduce yourself and tell us one "
+             "conversation topic you would like to explore."),
+            (courses[0], student, "Preparing for our next speaking session",
+             "For next week's session, please prepare a short introduction "
+             "to a place you enjoy visiting. We will use these examples "
+             "to practise asking follow-up questions in German."),
+            (courses[1], teacher, "Spanish A1: learning resources and vocabulary",
+             "Our first vocabulary set covers greetings, introductions and "
+             "common expressions. Review the examples before the next class "
+             "and share a useful phrase you have learned."),
+        ]
+        roots = []
+        for course, author, title, body in discussions:
+            post, _ = Post.objects.update_or_create(
+                course=course, author=author, title=title,
+                defaults={"text": body}
+            )
+            roots.append(post)
+
+        replies = [
+            (roots[0], student, "My learning goals",
+             "Hi everyone! I would like to become more confident "
+             "speaking German at university and in everyday conversations."),
+            (roots[0], teacher, "A good starting point",
+             "Great goal! We will start with introductions and "
+             "short role-playing exercises."),
+            (roots[1], guest, "My presentation topic",
+             "I will prepare a short presentation about my favourite "
+             "park and why I enjoy spending time there."),
+        ]
+        for root, author, title, body in replies:
+            reply, _ = Post.objects.update_or_create(
+                course=root.course, author=author, title=title,
+                defaults={"text": body}
+            )
+            root.childs.add(reply)
+
+        # A quiz to back the legacy frontend's GET /quiz/tests/1 call.
+        # Note: in a nonempty database this may not have primary key 1.
+        from quiz.models import Test, Task, Answer
+        quiz, _ = Test.objects.get_or_create(
+            course=courses[0], t_id=1,
+            defaults={"scored_by": student}
         )
+        question, _ = Task.objects.get_or_create(
+            test=quiz, question="Which phrase is a polite greeting in German?",
+            defaults={"render_type": "MC"}
+        )
+        for order, (text, score) in enumerate([
+            ("Guten Morgen", 1), ("Auf Wiedersehen", 0),
+            ("Gute Nacht", 0)
+        ], start=1):
+            Answer.objects.update_or_create(
+                task=question, answer=text,
+                defaults={
+                    "checked": False,
+                    "correct_answer": "Guten Morgen",
+                    "max_score": score,
+                    "score": 0,
+                    "order": order,
+                }
+            )
+
         Message.objects.get_or_create(
             sender=teacher, receiver=student,
             text="Welcome to your German conversation course!",
@@ -133,7 +204,7 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.SUCCESS(
             "Demo data ready: 3 fictional users, 3 courses, 2 announcements, "
-            "3 calendar entries, 1 forum post and 1 message."
+            "3 calendar entries, 3 forum threads, 3 replies, 1 quiz and 1 message."
         ))
         self.stdout.write(
             "Login: demo_student or demo_teacher (password from DEMO_PASSWORD)."
