@@ -252,19 +252,13 @@ class AnnouncementSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-
-    childs = serializers.SerializerMethodField()
-
-    def get_childs(self, obj):
-        for child in obj.childs.all():
-            if obj.childs is not "":
-                yield PostSerializer(child).data
-            else:
-                return None
+    author_name = serializers.CharField(source="author.username", read_only=True)
+    # Return IDs rather than recursive serializer objects; simplifies client-side threading.
+    childs = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Post
-        fields = ["id", "title", "text", "date", "author", "course", "childs"]
+        fields = ["id", "title", "text", "date", "author", "author_name", "course", "childs"]
 
 
 class MessageSerializer(serializers.ModelSerializer):
