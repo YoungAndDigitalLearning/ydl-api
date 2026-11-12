@@ -14,7 +14,6 @@ database.cnf
 db.conf
 
 # Settings.py
-ydl_api/ydl_api/settings.py
 ydl_api/static
 
 # __________________________________________
