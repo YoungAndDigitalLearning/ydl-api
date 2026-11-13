@@ -84,9 +84,9 @@ class Command(BaseCommand):
             Language.objects.get_or_create(name=name)
 
         course_data = [
-            ("German Conversation A2", "Practice speaking German in everyday situations.", 0, 14),
-            ("Introduction to Spanish", "Vocabulary and grammar for first-time learners.", 0, 12),
-            ("Intercultural Communication", "Explore communication across cultures.", 15, 9),
+            ("German Conversation A2", "An interactive A2 conversation course focused on practical German for university and everyday life. Learners practise introducing opinions, making plans, describing experiences and asking follow-up questions through guided discussions, partner exercises and short presentations. Each session includes useful expressions and constructive speaking feedback.", 0, 14),
+            ("Introduction to Spanish", "A beginner-friendly introduction to Spanish language and culture. The course builds confidence with greetings, introductions, numbers, everyday vocabulary and simple present-tense sentences. Lessons combine listening activities, short dialogues, pronunciation practice and small exercises that prepare learners for real-life conversations.", 0, 12),
+            ("Intercultural Communication", "Explore how cultural expectations shape communication in international study and work settings. Through short case studies, group discussions and role-playing activities, learners practise active listening, giving feedback, resolving misunderstandings and collaborating effectively across cultural contexts.", 0, 9),
         ]
         courses = []
         for index, (name, description, price, count) in enumerate(course_data):
@@ -102,6 +102,8 @@ class Command(BaseCommand):
             )
             courses.append(course)
         student_role.courses.add(courses[0], courses[1])
+        # Deliberately leave the third course unenrolled for demo_student.
+        student_role.courses.remove(courses[2])
         guest_role.courses.add(courses[1])
 
         announcements = [
