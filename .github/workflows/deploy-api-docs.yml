@@ -1,0 +1,67 @@
+name: Deploy archived API documentation
+
+on:
+  push:
+    branches:
+      - feature/local-demo
+    paths:
+      - "api-docs/**"
+      - "scripts/export_openapi.py"
+      - ".github/workflows/deploy-api-docs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ydl-api-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout API documentation
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Swagger UI distribution
+        run: pnpm install --dir api-docs --no-frozen-lockfile
+
+      - name: Prepare static site
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s api-docs/openapi.json || { echo 'Export api-docs/openapi.json locally and commit it first.' >&2; exit 1; }
+          python3 -m json.tool api-docs/openapi.json >/dev/null
+          mkdir -p "$RUNNER_TEMP/ydl-api-pages/vendor"
+          cp api-docs/index.html api-docs/app.js api-docs/openapi.json "$RUNNER_TEMP/ydl-api-pages/"
+          cp api-docs/node_modules/swagger-ui-dist/swagger-ui.css "$RUNNER_TEMP/ydl-api-pages/vendor/"
+          cp api-docs/node_modules/swagger-ui-dist/swagger-ui-bundle.js "$RUNNER_TEMP/ydl-api-pages/vendor/"
+          touch "$RUNNER_TEMP/ydl-api-pages/.nojekyll"
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ runner.temp }}/ydl-api-pages
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
