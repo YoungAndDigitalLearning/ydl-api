@@ -31,7 +31,7 @@ python3 -m json.tool api-docs/openapi.json >/dev/null
 3. Run **Actions → Deploy archived API documentation → Run workflow** (or push to `feature/local-demo`).
 4. Open `https://younganddigitallearning.github.io/ydl-api/`.
 
-There is no need for a `gh-pages` branch: GitHub Actions uploads an isolated Pages artifact containing only the static UI, vendored CSS/JS, and the exported schema. The backend source is not published as website assets. The workflow pins `swagger-ui-dist` and installs it with pnpm.
+There is no need for a `gh-pages` branch: GitHub Actions uploads an isolated Pages artifact containing only the static UI, vendored CSS/JS, and the exported schema. The backend source is not published as website assets. The workflow pins `swagger-ui-dist` and installs it with pnpm 12.18.0 on Node.js 24.
 
 ## Local test
 
@@ -40,7 +40,8 @@ From the `ydl-api` submodule:
 ```bash
 pnpm install --dir api-docs
 mkdir -p api-docs/vendor
-cp api-docs/node_modules/swagger-ui-dist/{swagger-ui.css,swagger-ui-bundle.js} api-docs/vendor/
+cp api-docs/node_modules/swagger-ui-dist/swagger-ui.css api-docs/vendor/
+cp api-docs/node_modules/swagger-ui-dist/swagger-ui-bundle.js api-docs/vendor/
 python3 -m http.server 4174 --directory api-docs
 ```
 
