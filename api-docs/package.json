@@ -1,0 +1,10 @@
+{
+  "name": "ydl-api-reference",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Build-time Swagger UI assets for archived YDL API documentation",
+  "packageManager": "pnpm@9.15.9",
+  "devDependencies": {
+    "swagger-ui-dist": "5.18.2"
+  }
+}
