@@ -1,0 +1,1510 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Y&D Learning API",
+    "description": "Rest API Documentation for Y&D Learning",
+    "termsOfService": "https://ydlearning.com/sites/impressum.html",
+    "contact": {
+      "email": "admin@ydlearning.com"
+    },
+    "license": {
+      "name": ""
+    },
+    "version": "v1"
+  },
+  "host": "api.example.invalid",
+  "schemes": ["https"],
+  "basePath": "/",
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "securityDefinitions": {
+    "basic": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basic": []
+    }
+  ],
+  "paths": {
+    "/announcements/": {
+      "get": {
+        "operationId": "announcements_list",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Announcement"
+              }
+            }
+          }
+        },
+        "tags": ["announcements"]
+      },
+      "post": {
+        "operationId": "announcements_create",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Announcement"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Announcement"
+            }
+          }
+        },
+        "tags": ["announcements"]
+      },
+      "parameters": []
+    },
+    "/courses/": {
+      "get": {
+        "operationId": "courses_list",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Course"
+              }
+            }
+          }
+        },
+        "tags": ["courses"]
+      },
+      "post": {
+        "operationId": "courses_create",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Course"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Course"
+            }
+          }
+        },
+        "tags": ["courses"]
+      },
+      "parameters": []
+    },
+    "/courses/{id}": {
+      "get": {
+        "operationId": "courses_read",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Course"
+            }
+          }
+        },
+        "tags": ["courses"]
+      },
+      "put": {
+        "operationId": "courses_update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Course"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Course"
+            }
+          }
+        },
+        "tags": ["courses"]
+      },
+      "patch": {
+        "operationId": "courses_partial_update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Course"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Course"
+            }
+          }
+        },
+        "tags": ["courses"]
+      },
+      "delete": {
+        "operationId": "courses_delete",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": ["courses"]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/messages/": {
+      "get": {
+        "operationId": "messages_list",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Message"
+              }
+            }
+          }
+        },
+        "tags": ["messages"]
+      },
+      "post": {
+        "operationId": "messages_create",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Message"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Message"
+            }
+          }
+        },
+        "tags": ["messages"]
+      },
+      "parameters": []
+    },
+    "/messages/{id}": {
+      "get": {
+        "operationId": "messages_read",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Message"
+            }
+          }
+        },
+        "tags": ["messages"]
+      },
+      "put": {
+        "operationId": "messages_update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Message"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Message"
+            }
+          }
+        },
+        "tags": ["messages"]
+      },
+      "patch": {
+        "operationId": "messages_partial_update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Message"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Message"
+            }
+          }
+        },
+        "tags": ["messages"]
+      },
+      "delete": {
+        "operationId": "messages_delete",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": ["messages"]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this message.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/posts/": {
+      "get": {
+        "operationId": "posts_list",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Post"
+              }
+            }
+          }
+        },
+        "tags": ["posts"]
+      },
+      "post": {
+        "operationId": "posts_create",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        },
+        "tags": ["posts"]
+      },
+      "parameters": []
+    },
+    "/posts/{id}": {
+      "get": {
+        "operationId": "posts_read",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        },
+        "tags": ["posts"]
+      },
+      "put": {
+        "operationId": "posts_update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        },
+        "tags": ["posts"]
+      },
+      "patch": {
+        "operationId": "posts_partial_update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        },
+        "tags": ["posts"]
+      },
+      "delete": {
+        "operationId": "posts_delete",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": ["posts"]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this post.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/quiz/answers/{id}": {
+      "put": {
+        "operationId": "quiz_answers_update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Answer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Answer"
+            }
+          }
+        },
+        "tags": ["quiz"]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this answer.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/quiz/tests/": {
+      "get": {
+        "operationId": "quiz_tests_list",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Test"
+              }
+            }
+          }
+        },
+        "tags": ["quiz"]
+      },
+      "post": {
+        "operationId": "quiz_tests_create",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Test"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Test"
+            }
+          }
+        },
+        "tags": ["quiz"]
+      },
+      "parameters": []
+    },
+    "/quiz/tests/{id}": {
+      "get": {
+        "operationId": "quiz_tests_read",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Test"
+            }
+          }
+        },
+        "tags": ["quiz"]
+      },
+      "put": {
+        "operationId": "quiz_tests_update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Test"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Test"
+            }
+          }
+        },
+        "tags": ["quiz"]
+      },
+      "patch": {
+        "operationId": "quiz_tests_partial_update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Test"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Test"
+            }
+          }
+        },
+        "tags": ["quiz"]
+      },
+      "delete": {
+        "operationId": "quiz_tests_delete",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": ["quiz"]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this test.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/resources/": {
+      "get": {
+        "operationId": "resources_list",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Resource"
+              }
+            }
+          }
+        },
+        "tags": ["resources"]
+      },
+      "post": {
+        "operationId": "resources_create",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Resource"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Resource"
+            }
+          }
+        },
+        "tags": ["resources"]
+      },
+      "parameters": []
+    },
+    "/resources/{id}": {
+      "get": {
+        "operationId": "resources_read",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Resource"
+            }
+          }
+        },
+        "tags": ["resources"]
+      },
+      "put": {
+        "operationId": "resources_update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Resource"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Resource"
+            }
+          }
+        },
+        "tags": ["resources"]
+      },
+      "patch": {
+        "operationId": "resources_partial_update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Resource"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Resource"
+            }
+          }
+        },
+        "tags": ["resources"]
+      },
+      "delete": {
+        "operationId": "resources_delete",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": ["resources"]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this resource.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/students/": {
+      "get": {
+        "operationId": "students_list",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Student"
+              }
+            }
+          }
+        },
+        "tags": ["students"]
+      },
+      "parameters": []
+    },
+    "/students/{user}": {
+      "put": {
+        "operationId": "students_update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Student"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Student"
+            }
+          }
+        },
+        "tags": ["students"]
+      },
+      "parameters": [
+        {
+          "name": "user",
+          "in": "path",
+          "description": "A unique value identifying this student.",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/token/auth/": {
+      "post": {
+        "operationId": "token_auth_create",
+        "description": "API View that receives a POST with a user's username and password.\n\nReturns a JSON Web Token that can be used for authenticated requests.",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/JSONWebToken"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/JSONWebToken"
+            }
+          }
+        },
+        "tags": ["token"]
+      },
+      "parameters": []
+    },
+    "/token/refresh/": {
+      "post": {
+        "operationId": "token_refresh_create",
+        "description": "API View that returns a refreshed token (with new expiration) based on\nexisting token\n\nIf 'orig_iat' field (original issued-at-time) is found, will first check\nif it's within expiration window, then copy it to the new token",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RefreshJSONWebToken"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/RefreshJSONWebToken"
+            }
+          }
+        },
+        "tags": ["token"]
+      },
+      "parameters": []
+    },
+    "/token/verify/": {
+      "post": {
+        "operationId": "token_verify_create",
+        "description": "API View that checks the veracity of a token, returning the token if it\nis valid.",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/VerifyJSONWebToken"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/VerifyJSONWebToken"
+            }
+          }
+        },
+        "tags": ["token"]
+      },
+      "parameters": []
+    },
+    "/users/": {
+      "get": {
+        "operationId": "users_list",
+        "description": "User Resource\n---",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/LongUser"
+              }
+            }
+          }
+        },
+        "tags": ["users"]
+      },
+      "post": {
+        "operationId": "users_create",
+        "description": "User Resource\n---",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "tags": ["users"]
+      },
+      "parameters": []
+    },
+    "/users/{id}": {
+      "get": {
+        "operationId": "users_read",
+        "description": "User Resource\n---",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/LongUser"
+            }
+          }
+        },
+        "tags": ["users"]
+      },
+      "put": {
+        "operationId": "users_update",
+        "description": "User Resource\n---",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LongUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/LongUser"
+            }
+          }
+        },
+        "tags": ["users"]
+      },
+      "patch": {
+        "operationId": "users_partial_update",
+        "description": "User Resource\n---",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LongUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/LongUser"
+            }
+          }
+        },
+        "tags": ["users"]
+      },
+      "delete": {
+        "operationId": "users_delete",
+        "description": "User Resource\n---",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": ["users"]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this user.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "LongUser": {
+      "title": "Author",
+      "required": ["username"],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "username": {
+          "title": "Username",
+          "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+          "type": "string",
+          "pattern": "^[\\w.@+-]+$",
+          "maxLength": 150,
+          "minLength": 1
+        },
+        "first_name": {
+          "title": "First name",
+          "type": "string",
+          "maxLength": 30
+        },
+        "last_name": {
+          "title": "Last name",
+          "type": "string",
+          "maxLength": 150
+        },
+        "last_login": {
+          "title": "Last login",
+          "type": "string",
+          "format": "date-time"
+        },
+        "date_joined": {
+          "title": "Date joined",
+          "type": "string",
+          "format": "date-time"
+        },
+        "isEmailActivated": {
+          "title": "IsEmailActivated",
+          "type": "boolean"
+        },
+        "courses": {
+          "title": "Courses",
+          "type": "string",
+          "readOnly": true
+        },
+        "is_teacher": {
+          "title": "Is teacher",
+          "type": "boolean"
+        },
+        "messages": {
+          "title": "Messages",
+          "type": "string",
+          "readOnly": true
+        }
+      },
+      "readOnly": true
+    },
+    "Announcement": {
+      "required": ["title", "content"],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "author": {
+          "$ref": "#/definitions/LongUser"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "date": {
+          "title": "Date",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "image": {
+          "title": "Image",
+          "type": "string",
+          "readOnly": true,
+          "format": "uri"
+        },
+        "content": {
+          "title": "Content",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "Course": {
+      "required": ["name", "description", "deadline"],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "posts": {
+          "title": "Posts",
+          "type": "string",
+          "readOnly": true
+        },
+        "events": {
+          "title": "Events",
+          "type": "string",
+          "readOnly": true
+        },
+        "weeks": {
+          "title": "Weeks",
+          "type": "string",
+          "readOnly": true
+        },
+        "tests": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "readOnly": true,
+          "uniqueItems": true
+        },
+        "name": {
+          "title": "Name",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "description": {
+          "title": "Description",
+          "type": "string",
+          "maxLength": 512,
+          "minLength": 1
+        },
+        "deadline": {
+          "title": "Deadline",
+          "type": "string",
+          "format": "date-time"
+        },
+        "student_count": {
+          "title": "Student count",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": 0
+        },
+        "created": {
+          "title": "Created",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "price": {
+          "title": "Price",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": -2147483648
+        },
+        "teacher": {
+          "title": "Teacher",
+          "type": "string",
+          "readOnly": true
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "Message": {
+      "required": ["text", "sender", "receiver"],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "text": {
+          "title": "Text",
+          "type": "string",
+          "maxLength": 4096,
+          "minLength": 1
+        },
+        "date": {
+          "title": "Date",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "sender": {
+          "title": "Sender",
+          "type": "integer"
+        },
+        "receiver": {
+          "title": "Receiver",
+          "type": "integer"
+        }
+      }
+    },
+    "Post": {
+      "required": ["title", "text", "author", "course"],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "title": {
+          "title": "Title",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "text": {
+          "title": "Text",
+          "type": "string",
+          "minLength": 1
+        },
+        "date": {
+          "title": "Date",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "author": {
+          "title": "Author",
+          "type": "integer"
+        },
+        "author_name": {
+          "title": "Author name",
+          "type": "string",
+          "readOnly": true,
+          "minLength": 1
+        },
+        "course": {
+          "title": "Course",
+          "type": "integer"
+        },
+        "childs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "readOnly": true,
+          "uniqueItems": true
+        }
+      }
+    },
+    "Answer": {
+      "required": ["answer", "correct_answer", "max_score", "task"],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "answer": {
+          "title": "Answer",
+          "type": "string",
+          "maxLength": 256,
+          "minLength": 1
+        },
+        "checked": {
+          "title": "Checked",
+          "type": "boolean"
+        },
+        "correct_answer": {
+          "title": "Correct answer",
+          "type": "string",
+          "maxLength": 256,
+          "minLength": 1
+        },
+        "max_score": {
+          "title": "Max score",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": -2147483648
+        },
+        "score": {
+          "title": "Score",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": -2147483648
+        },
+        "order": {
+          "title": "Order",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": -2147483648
+        },
+        "task": {
+          "title": "Task",
+          "type": "integer"
+        }
+      }
+    },
+    "Task": {
+      "required": ["question", "render_type", "test"],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "answers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Answer"
+          },
+          "readOnly": true
+        },
+        "question": {
+          "title": "Question",
+          "type": "string",
+          "maxLength": 512,
+          "minLength": 1
+        },
+        "render_type": {
+          "title": "Render type",
+          "type": "string",
+          "enum": ["MC", "VT"]
+        },
+        "test": {
+          "title": "Test",
+          "type": "integer"
+        }
+      }
+    },
+    "Test": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "course": {
+          "title": "Course",
+          "type": "integer"
+        },
+        "t_id": {
+          "title": "T id",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": -2147483648
+        },
+        "tasks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Task"
+          },
+          "readOnly": true
+        },
+        "score": {
+          "title": "Score",
+          "type": "integer",
+          "readOnly": true
+        },
+        "max_score": {
+          "title": "Max score",
+          "type": "integer",
+          "readOnly": true
+        }
+      }
+    },
+    "Resource": {
+      "required": ["name", "effective_from", "expires"],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "size": {
+          "title": "Size",
+          "type": "string",
+          "readOnly": true
+        },
+        "uploader_name": {
+          "title": "Uploader name",
+          "type": "string",
+          "readOnly": true,
+          "minLength": 1
+        },
+        "name": {
+          "title": "Name",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "uploaded": {
+          "title": "Uploaded",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "effective_from": {
+          "title": "Effective from",
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires": {
+          "title": "Expires",
+          "type": "string",
+          "format": "date-time"
+        },
+        "content": {
+          "title": "Content",
+          "type": "string",
+          "readOnly": true,
+          "format": "uri"
+        },
+        "uploader": {
+          "title": "Uploader",
+          "type": "integer",
+          "readOnly": true
+        }
+      }
+    },
+    "Student": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "title": "User",
+          "type": "integer",
+          "readOnly": true
+        },
+        "courses": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "JSONWebToken": {
+      "required": ["username", "password"],
+      "type": "object",
+      "properties": {
+        "username": {
+          "title": "Username",
+          "type": "string",
+          "minLength": 1
+        },
+        "password": {
+          "title": "Password",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "RefreshJSONWebToken": {
+      "required": ["token"],
+      "type": "object",
+      "properties": {
+        "token": {
+          "title": "Token",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "VerifyJSONWebToken": {
+      "required": ["token"],
+      "type": "object",
+      "properties": {
+        "token": {
+          "title": "Token",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "User": {
+      "required": ["password", "username"],
+      "type": "object",
+      "properties": {
+        "password": {
+          "title": "Password",
+          "type": "string",
+          "maxLength": 128,
+          "minLength": 1
+        },
+        "username": {
+          "title": "Username",
+          "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+          "type": "string",
+          "pattern": "^[\\w.@+-]+$",
+          "maxLength": 150,
+          "minLength": 1
+        },
+        "email": {
+          "title": "Email address",
+          "type": "string",
+          "format": "email",
+          "maxLength": 254
+        },
+        "token": {
+          "title": "Token",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    }
+  }
+}
