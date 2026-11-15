@@ -126,4 +126,9 @@ venv.bak/
 **/database_dump/dump_basic.json
 
 **/node_modules/
-/api-docs/vendor/
+
+/api-docs/vendor/*
+!/api-docs/vendor/swagger-ui.css
+!/api-docs/vendor/swagger-ui-bundle.js
+!/api-docs/vendor/LICENSE
+!/api-docs/vendor/NOTICE
