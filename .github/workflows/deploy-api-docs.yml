@@ -40,7 +40,8 @@ jobs:
           node-version: '22'
 
       - name: Install Swagger UI distribution
-        run: pnpm install --dir api-docs --no-frozen-lockfile
+        working-directory: api-docs
+        run: pnpm install --no-frozen-lockfile
 
       - name: Prepare static site
         shell: bash
