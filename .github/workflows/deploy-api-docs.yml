@@ -5,8 +5,10 @@ on:
     branches:
       - feature/local-demo
     paths:
-      - "api-docs/**"
-      - "scripts/export_openapi.py"
+      - "api-docs/index.html"
+      - "api-docs/app.js"
+      - "api-docs/openapi.json"
+      - "api-docs/vendor/**"
       - ".github/workflows/deploy-api-docs.yml"
   workflow_dispatch:
 
@@ -25,35 +27,40 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Checkout API documentation
         uses: actions/checkout@v4
 
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 12.18.0
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:  
-          node-version: "24"
-
-      - name: Install Swagger UI distribution
-        working-directory: api-docs
-        run: pnpm install --no-frozen-lockfile
+      - name: Verify static API documentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            api-docs/index.html \
+            api-docs/app.js \
+            api-docs/openapi.json \
+            api-docs/vendor/swagger-ui.css \
+            api-docs/vendor/swagger-ui-bundle.js; do
+            if [ ! -s "$file" ]; then
+              echo "Missing or empty: $file" >&2
+              exit 1
+            fi
+          done
+          python3 -m json.tool api-docs/openapi.json >/dev/null
+          echo "Static Swagger UI and OpenAPI JSON are ready"
 
       - name: Prepare static site
         shell: bash
         run: |
           set -euo pipefail
-          test -s api-docs/openapi.json || { echo 'Export api-docs/openapi.json locally and commit it first.' >&2; exit 1; }
-          python3 -m json.tool api-docs/openapi.json >/dev/null
-          mkdir -p "$RUNNER_TEMP/ydl-api-pages/vendor"
-          cp api-docs/index.html api-docs/app.js api-docs/openapi.json "$RUNNER_TEMP/ydl-api-pages/"
-          cp api-docs/node_modules/swagger-ui-dist/swagger-ui.css "$RUNNER_TEMP/ydl-api-pages/vendor/"
-          cp api-docs/node_modules/swagger-ui-dist/swagger-ui-bundle.js "$RUNNER_TEMP/ydl-api-pages/vendor/"
-          touch "$RUNNER_TEMP/ydl-api-pages/.nojekyll"
+          site="$RUNNER_TEMP/ydl-api-pages"
+          mkdir -p "$site/vendor"
+          cp api-docs/index.html api-docs/app.js api-docs/openapi.json "$site/"
+          cp api-docs/vendor/swagger-ui.css api-docs/vendor/swagger-ui-bundle.js "$site/vendor/"
+          if [ -f api-docs/vendor/LICENSE ]; then cp api-docs/vendor/LICENSE "$site/vendor/"; fi
+          if [ -f api-docs/vendor/NOTICE ]; then cp api-docs/vendor/NOTICE "$site/vendor/"; fi
+          touch "$site/.nojekyll"
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -62,6 +69,7 @@ jobs:
         uses: actions/upload-pages-artifact@v4
         with:
           path: ${{ runner.temp }}/ydl-api-pages
+          include-hidden-files: true
 
       - name: Deploy
         id: deployment
