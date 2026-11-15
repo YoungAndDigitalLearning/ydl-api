@@ -60,8 +60,6 @@ jobs:
           cp api-docs/vendor/swagger-ui.css api-docs/vendor/swagger-ui-bundle.js "$site/vendor/"
           if [ -f api-docs/vendor/LICENSE ]; then cp api-docs/vendor/LICENSE "$site/vendor/"; fi
           if [ -f api-docs/vendor/NOTICE ]; then cp api-docs/vendor/NOTICE "$site/vendor/"; fi
-          touch "$site/.nojekyll"
-
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
@@ -69,7 +67,6 @@ jobs:
         uses: actions/upload-pages-artifact@v4
         with:
           path: ${{ runner.temp }}/ydl-api-pages
-          include-hidden-files: true
 
       - name: Deploy
         id: deployment
