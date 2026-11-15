@@ -1,2 +1,5 @@
+packages:
+  - "api-docs"
+
 allowBuilds:
-  '@scarf/scarf': set this to true or false
+  "@scarf/scarf": false
