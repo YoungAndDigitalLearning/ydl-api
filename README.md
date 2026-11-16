@@ -5,7 +5,7 @@
     src="https://raw.githubusercontent.com/YoungAndDigitalLearning/ydl-front/refs/heads/master/images/YDL-Logo-35px.svg"
   >
 </p>
-<h1 align="center">Young And Digital Learning</h1>
+<h1 align="center">Young & Digital Learning</h1>
 
 <p align="center">
   <!-- Workflow GitHub Actions - Deployment -->
@@ -43,7 +43,6 @@
   <a 
     target="_blank"
     rel="noopener noreferrer"
-    target="_blank" 
     href="https://stats.uptimerobot.com/VNKWLhxGJn"
   >
     <img 
@@ -100,11 +99,19 @@
 
 ## Backend
 
-### ydl-api submodule backend
+The **YDL REST API** is the server-side component of Young & Digital Learning, originally developed with Python, Django, and Django REST Framework.
 
-Standalone Rest-API Backend, made with Python / Django.
+The backend provides endpoints for user authentication, course enrollment, announcements, forum discussions, quizzes, and learning resources. MariaDB is used for persistent relational data storage.
 
-This project was completed for the module "Programming Lab: Social Networking" at TU Berlin.
+The legacy backend has been restored for local development using Docker Compose, with fictional demonstration data for testing and documentation.
+
+### API Documentation
+
+The original API contract is available as an [archived OpenAPI reference](https://younganddigitallearning.github.io/ydl-api/), rendered using Swagger UI.
+
+The documentation is **read-only** and does not expose a live Django backend.
+
+[Explore Swagger UI](https://younganddigitallearning.github.io/ydl-api/) · [Download OpenAPI JSON](https://younganddigitallearning.github.io/ydl-api/openapi.json)
 
 ## Setup tutorial
 
@@ -114,7 +121,7 @@ This project was completed for the module "Programming Lab: Social Networking" a
 
 Our organization: [YoungAndDigitalLearning](https://github.com/YoungAndDigitalLearning)
 
-Homepage: [YoungAndDigitalLearning.github.io/ydl-front](https://YoungAndDigitalLearning.github.io/ydl-front/)
+Homepage: [YoungAndDigitalLearning.github.io/ydl-front](https://YoungAndDigitalLearning.github.io/)
 
 Wikipage: [wiki](https://github.com/YoungAndDigitalLearning/ydl/wiki)
 
