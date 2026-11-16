@@ -2,7 +2,7 @@
 
 Tutorial for setting up a new server for this or a similar project
 
-
+```bash
 ## Install Python 3.6.5
 https://www.rosehosting.com/blog/how-to-install-python-3-6-4-on-debian-9/
 sudo apt-get update && sudo apt-get upgrade
@@ -38,12 +38,12 @@ sudo apt install mariadb-server
 mysql -u root -pip
 create database skb;
 
-## nginx 
+## nginx
 http://nginx.org/keys/nginx_signing.key
 sudo apt-key add nginx_signing.key
 cd /etc/apt/sources.list.d/
 sudo vim nginx.list
-## add to file 
+## add to file
 deb http://nginx.org/packages/debian/ codename nginx
 deb-src http://nginx.org/packages/debian/ codename nginx
 sudo apt update
@@ -58,7 +58,7 @@ sudo apt install htop
 # fix mysql 'mysql_config not found' -> mariadb_config
 sudo apt install libmariadb-dev
 sudo ln -s /usr/bin/mariadb_config /usr/bin/mysql_config
-cd ... /ydl_api 
+cd ... /ydl_api
 pipenv sync
 
 ## npm
@@ -70,7 +70,7 @@ npm run build
 
 cd ~/repos/ydl-front
 npm install
-npm run build 
+npm run build
 
 cd /usr/share/nginx/
 sudo ln -s ~/repos/ydl-front/dist/ ydl
@@ -116,3 +116,4 @@ source ~/.bashrc
 
 # webhook
 sudo apt install webhook
+```
