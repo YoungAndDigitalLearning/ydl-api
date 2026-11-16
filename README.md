@@ -113,6 +113,17 @@ The documentation is **read-only** and does not expose a live Django backend.
 
 [Explore Swagger UI](https://younganddigitallearning.github.io/ydl-api/) · [Download OpenAPI JSON](https://younganddigitallearning.github.io/ydl-api/openapi.json)
 
+## Backend Documentation
+
+- [Backend Architecture and REST API](https://github.com/YoungAndDigitalLearning/ydl/wiki/Backend-and-REST-API)
+- [Local Development](https://github.com/YoungAndDigitalLearning/ydl/wiki/Local-Development)
+- [Historical Server Setup](https://github.com/YoungAndDigitalLearning/ydl/wiki/Historical-Server-Setup)
+- [Complete Project Wiki](https://github.com/YoungAndDigitalLearning/ydl/wiki)
+
+The restored backend, including the fictional `seed_demo`
+management command, is maintained on the
+`feature/local-demo` branch.
+
 ## Setup tutorial
 
 [Setup](https://github.com/YoungAndDigitalLearning/ydl-front/blob/master/Setup.md)
